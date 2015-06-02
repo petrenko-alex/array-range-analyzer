@@ -43,6 +43,9 @@
     <ClCompile Include="exceeding.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="array.h">
@@ -52,6 +55,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="exceeding.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="input.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
