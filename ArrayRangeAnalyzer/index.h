@@ -25,8 +25,13 @@ public:
 	index();
 	~index();
 
+	/*! Создает объект класса index на основе имени, границ, шага и счетчика повторных значений */
+	index(QString name, int from, int to, int step, int looped = 10);
 
-public:
+	/*! Сравнивает два объекта класса index */
+	bool operator==(const index &other);
+
+
 	QString name;				///< Имя переменной
 	int     from;				///< Левая граница диапазона
 	int     to;					///< Правая граница диапазона
