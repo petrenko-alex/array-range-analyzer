@@ -25,7 +25,12 @@ public:
 	Array();
 	~Array();
 
-public:
+	/*! Создает объект класса Array на основе имени, размеров измерений и элементов массива */
+	Array(QString name, QVector<int> &size, QVector<int> &elements);
+
+	/*! Сравнивает два объекта класса Array */
+	bool operator==(const Array &other);
+
 	QString		   name;				///< Имя массива
 	QVector <int>  size;				///< Вектор с размерами массива
 	QVector <int>  elements;			///< Вектор с элементами массива
