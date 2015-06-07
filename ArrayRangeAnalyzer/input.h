@@ -17,7 +17,6 @@
 #include "index.h"
 //#include "operations.h"
 
-//class operations;
 
 /*!
  *\brief Класс считывания входных данных.

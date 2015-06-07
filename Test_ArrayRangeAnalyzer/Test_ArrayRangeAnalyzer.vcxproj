@@ -137,7 +137,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\ArrayRangeAnalyzer\input.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_test_input.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -171,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ArrayRangeAnalyzer\input.h" />
+    <ClInclude Include="declarations.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -43,9 +43,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_test_input.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="..\ArrayRangeAnalyzer\input.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="test_input.h">
@@ -54,6 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ArrayRangeAnalyzer\input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="declarations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

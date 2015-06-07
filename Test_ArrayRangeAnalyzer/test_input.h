@@ -4,11 +4,7 @@
 #include <QObject>
 #include <QtTest>
 #include "../ArrayRangeAnalyzer/input.h"
-
-Q_DECLARE_METATYPE(index)
-Q_DECLARE_METATYPE(Array)
-Q_DECLARE_METATYPE(QVector<index>)
-Q_DECLARE_METATYPE(QVector<Array>)
+#include "declarations.h"
 
 class input;
 class test_input : public QObject
