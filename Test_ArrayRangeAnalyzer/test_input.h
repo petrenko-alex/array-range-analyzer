@@ -6,7 +6,7 @@
 #include "../ArrayRangeAnalyzer/input.h"
 #include "declarations.h"
 
-class input;
+
 class Test_input : public QObject
 {
 	Q_OBJECT
@@ -16,25 +16,25 @@ private slots:
 	void readVarInfo_data();
 
 	/*! Подготавливает данные для тестирования readArrInfo */
-	//void readArrInfo_data();
+	void readArrInfo_data();
 
 	/*! Подготавливает данные для тестирования readExpression */
-	//void readExpression_data();
+	void readExpression_data();
 
 	/*! Подготавливает данные для тестирования readData */
-	//void readData_data();
+	void readData_data();
 
 	/*! Тестирует функцию readVarInfo */
 	void readVarInfo();
 
 	/*! Тестирует функцию readArrInfo*/
-	//void readArrInfo();
+	void readArrInfo();
 
 	/*! Тестирует функцию readExpression*/
-	//void readExpression();
+	void readExpression();
 
 	/*! Тестирует функцию readData*/
- 	//void readData();
+ 	void readData();
 };
 
 #endif // TEST_INPUT_H
