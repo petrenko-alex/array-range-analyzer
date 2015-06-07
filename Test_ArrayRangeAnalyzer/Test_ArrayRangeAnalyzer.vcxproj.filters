@@ -52,9 +52,24 @@
     <ClCompile Include="..\ArrayRangeAnalyzer\input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="test_analyzer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_test_analyzer.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_test_analyzer.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ArrayRangeAnalyzer\exceeding.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="test_input.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="test_analyzer.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
