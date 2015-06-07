@@ -1,5 +1,6 @@
 #include "test_analyzer.h"
 
+
 void Test_analyzer::analyzeExpression_data()
 {
 	QStringList		   indexNames;

@@ -1,0 +1,8 @@
+********* Start testing of Test_analyzer *********
+Config: Using QtTest library 5.4.1, Qt 5.4.1 (x86_64-little_endian-llp64 shared (dynamic) debug build; by MSVC 2013)
+PASS   : Test_analyzer::initTestCase()
+QFATAL : Test_analyzer::analyzeExpression() ASSERT failure in QVector<T>::operator[]: "index out of range", file C:\Qt\Qt5.4.1\5.4\msvc2013_64\include\QtCore/qvector.h, line 396
+FAIL!  : Test_analyzer::analyzeExpression() Received a fatal error.
+Unknown file(0) : failure location
+Totals: 1 passed, 1 failed, 0 skipped, 0 blacklisted
+********* Finished testing of Test_analyzer *********

@@ -10,7 +10,8 @@ class Test_analyzer : public QObject
 {
 	Q_OBJECT
 
-public:
+private slots:
+
 	/*! Подготавливает данные для тестирования analyzeExpression */
 	void analyzeExpression_data();
 

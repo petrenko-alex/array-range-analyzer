@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\ArrayRangeAnalyzer\analyzer.cpp" />
     <ClCompile Include="..\ArrayRangeAnalyzer\array.cpp" />
     <ClCompile Include="..\ArrayRangeAnalyzer\exceeding.cpp" />
     <ClCompile Include="..\ArrayRangeAnalyzer\index.cpp" />
