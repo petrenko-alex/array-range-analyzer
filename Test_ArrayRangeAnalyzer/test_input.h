@@ -7,7 +7,7 @@
 #include "declarations.h"
 
 class input;
-class test_input : public QObject
+class Test_input : public QObject
 {
 	Q_OBJECT
 

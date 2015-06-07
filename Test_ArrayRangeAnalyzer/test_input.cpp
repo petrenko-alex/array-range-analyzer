@@ -2,12 +2,12 @@
 
 
 
-void test_input::readVarInfo_data()
+void Test_input::readVarInfo_data()
 {
 
 }
 
-void test_input::readVarInfo()
+void Test_input::readVarInfo()
 {
 
 }
