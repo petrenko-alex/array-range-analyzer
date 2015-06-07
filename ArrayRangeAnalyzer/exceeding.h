@@ -26,14 +26,21 @@ class exceeding
 {
 public:
 	exceeding();
+
+	/*! Создает объект класса на основе всех полей данного класса */
+	exceeding(QString arrayName, QStringList indexName, QVector<double> indexValue, int requestedElement, int dimension);
+
+	/*! Сравнивает два объекта класса exceeding */
+	bool operator==(const exceeding &other);
+
 	~exceeding();
 
 private:
-	QString       arrayName;				///< Имя массива, для которого произошел выход за пределы
-	QStringList   indexName;				///< Имена переменных, при которых произошёл выход
-	QVector <int> indexValue;				///< Значения переменных при выходе за пределы
-	int           requestedElement;			///< Элемент массива, к которому производится обращение
-	int           dimension;				///< Номер измерения массива
+	QString			 arrayName;				///< Имя массива, для которого произошел выход за пределы
+	QStringList		 indexName;				///< Имена переменных, при которых произошёл выход
+	QVector <double> indexValue;			///< Значения переменных при выходе за пределы
+	int				 requestedElement;		///< Элемент массива, к которому производится обращение
+	int				 dimension;				///< Номер измерения массива
 };
 
 #endif // EXCEEDING_H

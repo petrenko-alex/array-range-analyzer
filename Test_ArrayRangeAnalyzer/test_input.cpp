@@ -1,12 +1,13 @@
 #include "test_input.h"
 
-test_input::test_input(QObject *parent)
-	: QObject(parent)
+
+
+void test_input::readVarInfo_data()
 {
 
 }
 
-test_input::~test_input()
+void test_input::readVarInfo()
 {
 
 }
