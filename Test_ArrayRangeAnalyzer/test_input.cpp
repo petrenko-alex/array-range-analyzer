@@ -219,14 +219,14 @@ void Test_input::readExpression_data()
 										   << vars
 										   << arrs
 										   << expr
-										   << "Wrong expression. Defininte arrays are not used in the expression. Please, check the expression";
+										   << "Wrong expression. Definite arrays are not used in the expression. Please, check the expression";
 
 /*! Переменные не используются */
 	QTest::newRow("6.Variables Are Not Used") << "../../Tests/readExpression/6.Variables Are Not Used.txt"
 											  << vars
 											  << arrs
 											  << expr
-											  << "Wrong expression. Defininte variables are not used in the expression. Please, check the expression";
+											  << "Wrong expression. Definite variables are not used in the expression. Please, check the expression";
 
 /*! Операндов больше чем  операций - лишние операнды */
 	QTest::newRow("7.Too much operands") << "../../Tests/readExpression/7.Too much operands.txt"

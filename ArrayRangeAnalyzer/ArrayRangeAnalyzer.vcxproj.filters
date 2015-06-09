@@ -49,6 +49,9 @@
     <ClCompile Include="analyzer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="operations.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="array.h">
@@ -64,6 +67,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="analyzer.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="operations.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
