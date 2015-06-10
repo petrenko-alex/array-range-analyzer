@@ -1,21 +1,21 @@
 #include "analyzer.h"
 
-analyzer::analyzer()
+Analyzer::Analyzer()
 {
 
 }
 
-analyzer::~analyzer()
+Analyzer::~Analyzer()
 {
 
 }
 
-void analyzer::analyzeExpression(QVector<index> &vars, QVector<Array> &arrs, const QStringList &expr, QVector<exceeding> &exceedings) throw(QString&)
+void Analyzer::analyzeExpression(QVector<Index> &vars, QVector<Array> &arrs, const QStringList &expr, QVector<Exceeding> &exceedings) throw(QString&)
 {
 
 }
 
-void analyzer::checkExpression(QVector<index> &vars, QVector<Array> &arrs, const QStringList &expr, QVector<exceeding> &exceedings) throw(QString&)
+void Analyzer::checkExpression(QVector<Index> &vars, QVector<Array> &arrs, const QStringList &expr, QVector<Exceeding> &exceedings) throw(QString&)
 {
 
 }

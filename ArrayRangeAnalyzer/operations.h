@@ -32,11 +32,11 @@
 * - ќпределить, €вл€етьс€ ли символ известным массивом;
 * - ќпределить, €вл€етьс€ ли символ известным элементом(операци€, переменна€, константа или массив).
 */
-class operations
+class Operations
 {
 public:
-	operations();
-	~operations();
+	Operations();
+	~Operations();
 
 	/*!
 	 * ¬озвращает арность операции
@@ -58,7 +58,7 @@ public:
 	 *\param[in] vars вектор заданных переменных
 	 *\retrun         логическое значение true - если €вл€етс€, false - если нет
 	 */
-	bool isDefiniteVariable(const QString &var, const QVector<index> &vars);
+	bool isDefiniteVariable(const QString &var, const QVector<Index> &vars);
 
 	/*!
 	 * ќпредел€ет, €вл€етс€ ли символ вещественным числом
@@ -88,7 +88,7 @@ public:
 	 *\param[in] arrs   вектор заданных массивов
 	 *\retrun           логическое значение true - если €вл€етс€, false - если нет
 	 */
-	bool isOperand(const QString &operand, const QVector<index> &vars, const QVector<Array> &arrs);
+	bool isOperand(const QString &operand, const QVector<Index> &vars, const QVector<Array> &arrs);
 
 	/*!
 	 * ќпредел€ет, €вл€етс€ ли элемент заданным массивом
@@ -105,10 +105,10 @@ public:
 	 *\param[in] vars    вектор заданных переменных
 	 *\retrun            логическое значение true - если €вл€етс€, false - если нет
 	 */
-	bool isDefiniteElement(const QString &element, const QVector <Array> &arrs, const QVector<index> &vars);
+	bool isDefiniteElement(const QString &element, const QVector <Array> &arrs, const QVector<Index> &vars);
 
 private:
-	QMap<QString, int> Operations;			///< ѕоддерживаемые в программе операции и их арность
+	QMap<QString, int> operations;			///< ѕоддерживаемые в программе операции и их арность
 
 };
 

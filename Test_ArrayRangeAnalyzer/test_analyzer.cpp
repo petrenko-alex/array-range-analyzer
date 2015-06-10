@@ -6,14 +6,14 @@ void Test_analyzer::analyzeExpression_data()
 	QStringList		   indexNames;
 	QVector<double>    indexValues;
 	QStringList		   fileNames;
-	input			   inp;
+	Input			   inp;
 
 
 	/*! Колонки таблицы */
-	QTest::addColumn <QVector<index> >("vars");
+	QTest::addColumn <QVector<Index> >("vars");
 	QTest::addColumn <QVector<Array> >("arrs");
 	QTest::addColumn <QStringList>("expr");
-	QTest::addColumn <QVector<exceeding> >("expectedExceedings");
+	QTest::addColumn <QVector<Exceeding> >("expectedExceedings");
 	QTest::addColumn <QString>("expectedString");
 
 	/*! Ряды таблицы - тесты */
@@ -31,7 +31,7 @@ void Test_analyzer::analyzeExpression_data()
 		vars[0].curValue = 9;
 		indexValues << 9;
 		indexNames  << vars[0].name;
-		exceedings  << exceeding(arrs[0].name, indexNames, indexValues, 11, 1);
+		exceedings  << Exceeding(arrs[0].name, indexNames, indexValues, 11, 1);
 	QTest::newRow("2.One Array One Exceeding") << vars << arrs << expr << exceedings << "correct";
 
 /*! Несколько массивов - выхода нет */
@@ -46,7 +46,7 @@ void Test_analyzer::analyzeExpression_data()
 		vars[0].curValue = 7;
 		indexValues[0]	 = 7;
 		indexNames[0]	 = vars[0].name;
-		exceedings		 << exceeding(arrs[1].name, indexNames, indexValues, 14, 1);
+		exceedings		 << Exceeding(arrs[1].name, indexNames, indexValues, 14, 1);
 	QTest::newRow("4.Many Arrays One Exceeding") << vars << arrs << expr << exceedings << "correct";
 
 /*! Выход уже происходил - исключение сформировано не будет */
@@ -77,7 +77,7 @@ void Test_analyzer::analyzeExpression_data()
 		vars[0].curValue = 9;
 		indexValues[0]   = 10;
 		indexNames[0]    = vars[0].name;
-		exceedings		 << exceeding(arrs[0].name, indexNames, indexValues, 10, 1);
+		exceedings		 << Exceeding(arrs[0].name, indexNames, indexValues, 10, 1);
 	QTest::newRow("8.Left Inc Exceeding") << vars << arrs << expr << exceedings << "correct";
 
 /*! Постфиксная инкрементация, не приводящая к выходу */
@@ -94,7 +94,7 @@ void Test_analyzer::analyzeExpression_data()
 		vars[0].curValue = 0;
 		indexValues[0]   = -1;
 		indexNames[0]    = vars[0].name;
-		exceedings		 << exceeding(arrs[0].name, indexNames, indexValues, -1, 1);
+		exceedings		 << Exceeding(arrs[0].name, indexNames, indexValues, -1, 1);
 	QTest::newRow("10.Left Dec Exceeding") << vars << arrs << expr << exceedings << "correct";
 
 /*! Постфиксная декрементация, не приводящая к выходу */
@@ -111,7 +111,7 @@ void Test_analyzer::analyzeExpression_data()
 		vars[0].curValue = 0;
 		indexValues[0]	 = 23;
 		indexNames[0]	 = vars[0].name;
-		exceedings		 << exceeding(arrs[0].name, indexNames, indexValues, 27, 1);
+		exceedings		 << Exceeding(arrs[0].name, indexNames, indexValues, 27, 1);
 	QTest::newRow("12.Pre-change Of Variable") << vars << arrs << expr << exceedings << "correct";
 
 /*! Присваивание переменной значения арифметического выражения */
@@ -121,7 +121,7 @@ void Test_analyzer::analyzeExpression_data()
 		vars[0].curValue = 1;
 		indexValues[0]   = 12;
 		indexNames[0]    = vars[0].name;
-		exceedings		 << exceeding(arrs[0].name, indexNames, indexValues, 12, 1);
+		exceedings		 << Exceeding(arrs[0].name, indexNames, indexValues, 12, 1);
 	QTest::newRow("13.Arithmetic Assignment") << vars << arrs << expr << exceedings << "correct";
 
 /*! Выход при комбинации нескольких переменных в индексе */
@@ -137,7 +137,7 @@ void Test_analyzer::analyzeExpression_data()
 		indexNames[0]    = vars[0].name;
 		indexNames		 << vars[1].name;
 		indexNames		 << vars[2].name;
-		exceedings		 << exceeding(arrs[0].name, indexNames, indexValues, 18, 1);
+		exceedings		 << Exceeding(arrs[0].name, indexNames, indexValues, 18, 1);
 	QTest::newRow("14.Many Variables in Index") << vars << arrs << expr << exceedings << "correct";
 
 /*! Унарный минус, приводящий к выходу */
@@ -149,7 +149,7 @@ void Test_analyzer::analyzeExpression_data()
 		vars[2].curValue = 5;
 		indexValues		 << 5;
 		indexNames		 << vars[2].name;
-		exceedings		 << exceeding(arrs[0].name, indexNames, indexValues, -5, 1);
+		exceedings		 << Exceeding(arrs[0].name, indexNames, indexValues, -5, 1);
 	QTest::newRow("15.Unary Minus") << vars << arrs << expr << exceedings << "correct";
 
 /*! Функция abs(), приводящая к выходу */
@@ -159,7 +159,7 @@ void Test_analyzer::analyzeExpression_data()
 		vars[0].curValue = -15;
 		indexValues[0]   = -15;
 		indexNames[0]    = vars[0].name;
-		exceedings		 << exceeding(arrs[0].name, indexNames, indexValues, 15, 1);
+		exceedings		 << Exceeding(arrs[0].name, indexNames, indexValues, 15, 1);
 	QTest::newRow("16.Function abs") << vars << arrs << expr << exceedings << "correct";
 
 /*! Функция ceil() с положительным числом, приводящая к выходу */
@@ -169,7 +169,7 @@ void Test_analyzer::analyzeExpression_data()
 		vars[0].curValue = 10.5;
 		indexValues[0]   = 10.5;
 		indexNames[0]    = vars[0].name;
-		exceedings		 << exceeding(arrs[0].name, indexNames, indexValues, 11, 1);
+		exceedings		 << Exceeding(arrs[0].name, indexNames, indexValues, 11, 1);
 	QTest::newRow("17.Function ceil(positive)") << vars << arrs << expr << exceedings << "correct";
 
 /*! Функция ceil() с отрицательным числом, приводящая к выходу */
@@ -178,7 +178,7 @@ void Test_analyzer::analyzeExpression_data()
 		vars[0].curValue = -10.5;
 		indexValues[0]   = -10.5;
 		indexNames[0]    = vars[0].name;
-		exceedings		 << exceeding(arrs[0].name, indexNames, indexValues, -10, 1);
+		exceedings		 << Exceeding(arrs[0].name, indexNames, indexValues, -10, 1);
 	QTest::newRow("18.Function ceil(negative)") << vars << arrs << expr << exceedings << "correct";
 
 /*! Функция fabs(), приводящая к выходу */
@@ -188,7 +188,7 @@ void Test_analyzer::analyzeExpression_data()
 		vars[0].curValue = -11.5;
 		indexValues[0]   = -11.5;
 		indexNames[0]    = vars[0].name;
-		exceedings		 << exceeding(arrs[0].name, indexNames, indexValues, 11, 1);
+		exceedings		 << Exceeding(arrs[0].name, indexNames, indexValues, 11, 1);
 	QTest::newRow("19.Function fabs") << vars << arrs << expr << exceedings << "correct";
 
 /*! Функция floor(), приводящая к выходу */
@@ -198,7 +198,7 @@ void Test_analyzer::analyzeExpression_data()
 		vars[0].curValue = 10.6;
 		indexValues[0]   = 10.6;
 		indexNames[0]    = vars[0].name;
-		exceedings		 << exceeding(arrs[0].name, indexNames, indexValues, 10, 1);
+		exceedings		 << Exceeding(arrs[0].name, indexNames, indexValues, 10, 1);
 	QTest::newRow("20.Function floor") << vars << arrs << expr << exceedings << "correct";
 
 /*! Функция pow(), приводящая к выходу */
@@ -208,7 +208,7 @@ void Test_analyzer::analyzeExpression_data()
 		vars[0].curValue = 2;
 		indexValues[0]   = 2;
 		indexNames[0]    = vars[0].name;
-		exceedings		 << exceeding(arrs[0].name, indexNames, indexValues, 32, 1);
+		exceedings		 << Exceeding(arrs[0].name, indexNames, indexValues, 32, 1);
 	QTest::newRow("21.Function pow") << vars << arrs << expr << exceedings << "correct";
 
 /*! Операция остаток от деления, приводящая к выходу */
@@ -218,7 +218,7 @@ void Test_analyzer::analyzeExpression_data()
 		vars[0].curValue = 11;
 		indexValues[0]   = 11;
 		indexNames[0]    = vars[0].name;
-		exceedings		 << exceeding(arrs[0].name, indexNames, indexValues, 11, 1);
+		exceedings		 << Exceeding(arrs[0].name, indexNames, indexValues, 11, 1);
 	QTest::newRow("22. Modulo operation") << vars << arrs << expr << exceedings << "correct";
 
 /*! Операция приведение типа к int, приводящая к выходу */
@@ -228,7 +228,7 @@ void Test_analyzer::analyzeExpression_data()
 		vars[0].curValue = 13.21232;
 		indexValues[0]   = 13.21232;
 		indexNames[0]    = vars[0].name;
-		exceedings		 << exceeding(arrs[0].name, indexNames, indexValues, 13, 1);
+		exceedings		 << Exceeding(arrs[0].name, indexNames, indexValues, 13, 1);
 	QTest::newRow("23.Type conversion To Int") << vars << arrs << expr << exceedings << "correct";
 
 /*! Выход во втором массиве(в первом произошел ранее) */
@@ -239,7 +239,7 @@ void Test_analyzer::analyzeExpression_data()
 		vars[0].curValue    = 20;
 		indexValues[0]	    = 20;
 		indexNames[0]		= vars[0].name;
-		exceedings			<< exceeding(arrs[1].name, indexNames, indexValues, 40, 1);
+		exceedings			<< Exceeding(arrs[1].name, indexNames, indexValues, 40, 1);
 	QTest::newRow("24.Exceeding In Second Array") << vars << arrs << expr << exceedings << "correct";
 
 /*! Выход в третьем измерении массива */
@@ -251,7 +251,7 @@ void Test_analyzer::analyzeExpression_data()
 		vars[0].curValue = 20;
 		indexValues[0]   = 20;
 		indexNames[0]    = vars[0].name;
-		exceedings		 << exceeding(arrs[0].name, indexNames, indexValues, 18, 3);
+		exceedings		 << Exceeding(arrs[0].name, indexNames, indexValues, 18, 3);
 	QTest::newRow("25.Exceeding In Third Dimension") << vars << arrs << expr << exceedings << "correct";
 
 /*! Несколько массивов - выход для каждого */
@@ -265,13 +265,13 @@ void Test_analyzer::analyzeExpression_data()
 		vars[1].curValue = 14;
 		indexValues[0]   = 8;
 		indexNames[0]    = vars[0].name;
-		exceedings		 << exceeding(arrs[0].name, indexNames, indexValues, 13, 1);
+		exceedings		 << Exceeding(arrs[0].name, indexNames, indexValues, 13, 1);
 		indexValues[0]   = 10;
 		indexNames[0]	 = vars[2].name;
-		exceedings		 << exceeding(arrs[0].name, indexNames, indexValues, 15, 2);
+		exceedings		 << Exceeding(arrs[0].name, indexNames, indexValues, 15, 2);
 		indexValues[0]   = 14;
 		indexNames[0]    = vars[1].name;
-		exceedings		 << exceeding(arrs[1].name, indexNames, indexValues, 14, 1);
+		exceedings		 << Exceeding(arrs[1].name, indexNames, indexValues, 14, 1);
 	QTest::newRow("26.Many Arrays Many Exceedings") << vars << arrs << expr << exceedings << "correct";
 }
 
@@ -280,14 +280,14 @@ void Test_analyzer::checkExpression_data()
 	QStringList		   indexNames;
 	QVector<double>    indexValues;
 	QStringList		   fileNames;
-	input			   inp;
+	Input			   inp;
 
 
 	/*! Колонки таблицы */
-	QTest::addColumn <QVector<index> >("vars");
+	QTest::addColumn <QVector<Index> >("vars");
 	QTest::addColumn <QVector<Array> >("arrs");
 	QTest::addColumn <QStringList>("expr");
-	QTest::addColumn <QVector<exceeding> >("expectedExceedings");
+	QTest::addColumn <QVector<Exceeding> >("expectedExceedings");
 	QTest::addColumn <QString>("expectedString");
 
 /*! Зацикливание переменной */
@@ -305,7 +305,7 @@ void Test_analyzer::checkExpression_data()
 		inp.readData(fileNames, vars, arrs, expr);
 		indexValues << 0;
 		indexNames  << vars[0].name;
-		exceedings  << exceeding(arrs[0].name, indexNames, indexValues, 15, 1);
+		exceedings  << Exceeding(arrs[0].name, indexNames, indexValues, 15, 1);
 	QTest::newRow("2.One Variable One Step") << vars << arrs << expr << exceedings << "correct";
 
 /*! Одна переменная - несколько шагов цикла */
@@ -315,7 +315,7 @@ void Test_analyzer::checkExpression_data()
 		inp.readData(fileNames, vars, arrs, expr);
 		indexValues[0] = 6;
 		indexNames[0]  = vars[0].name;
-		exceedings	   << exceeding(arrs[0].name, indexNames, indexValues, 12, 1);
+		exceedings	   << Exceeding(arrs[0].name, indexNames, indexValues, 12, 1);
 	QTest::newRow("3.One Variable Many Steps") << vars << arrs << expr << exceedings << "correct";
 
 /*! Несколько переменных - только один шаг цикла у каждой */
@@ -326,10 +326,10 @@ void Test_analyzer::checkExpression_data()
 		inp.readData(fileNames, vars, arrs, expr);
 		indexValues[0] = 5;
 		indexNames[0]  = vars[1].name;
-		exceedings     << exceeding(arrs[1].name, indexNames, indexValues, 7, 1);
+		exceedings     << Exceeding(arrs[1].name, indexNames, indexValues, 7, 1);
 		indexValues[0] = -5;
 		indexNames[0]  = vars[2].name;
-		exceedings     << exceeding(arrs[2].name, indexNames, indexValues, -5, 1);
+		exceedings     << Exceeding(arrs[2].name, indexNames, indexValues, -5, 1);
 	QTest::newRow("4.Many Variables One Step Each") << vars << arrs << expr << exceedings << "correct";
 
 /*! Несколько переменных -  разное количество шагов цикла у каждой */
@@ -340,13 +340,13 @@ void Test_analyzer::checkExpression_data()
 		inp.readData(fileNames, vars, arrs, expr);
 		indexValues[0] = 5;
 		indexNames[0]  = vars[0].name;
-		exceedings	   << exceeding(arrs[0].name, indexNames, indexValues, 7, 1);
+		exceedings	   << Exceeding(arrs[0].name, indexNames, indexValues, 7, 1);
 		indexValues[0] = 8;
 		indexNames[0]  = vars[2].name;
-		exceedings	   << exceeding(arrs[2].name, indexNames, indexValues, 9, 1);
+		exceedings	   << Exceeding(arrs[2].name, indexNames, indexValues, 9, 1);
 		indexValues[0] = 6;
 		indexNames[0]  = vars[1].name;
-		exceedings	   << exceeding(arrs[1].name, indexNames, indexValues, 13, 1);
+		exceedings	   << Exceeding(arrs[1].name, indexNames, indexValues, 13, 1);
 	QTest::newRow("5.Many Variables Different Step’s Number For Each") << vars << arrs << expr << exceedings << "correct";
 
 /*! Нарастающий цикл */
@@ -357,7 +357,7 @@ void Test_analyzer::checkExpression_data()
 		inp.readData(fileNames, vars, arrs, expr);
 		indexValues[0] = 15;
 		indexNames[0]  = vars[0].name;
-		exceedings	   << exceeding(arrs[0].name, indexNames, indexValues, 15, 1);
+		exceedings	   << Exceeding(arrs[0].name, indexNames, indexValues, 15, 1);
 	QTest::newRow("6.Increasing Loop") << vars << arrs << expr << exceedings << "correct";
 
 /*! Убывающий цикл */
@@ -366,7 +366,7 @@ void Test_analyzer::checkExpression_data()
 		inp.readData(fileNames, vars, arrs, expr);
 		indexValues[0] = -1;
 		indexNames[0]  = vars[0].name;
-		exceedings     << exceeding(arrs[0].name, indexNames, indexValues, -1, 1);
+		exceedings     << Exceeding(arrs[0].name, indexNames, indexValues, -1, 1);
 	QTest::newRow("7.Decreasing Loop") << vars << arrs << expr << exceedings << "correct";
 
 	/*! Комбинация нарастающего и убывающего цикла */
@@ -377,24 +377,24 @@ void Test_analyzer::checkExpression_data()
 		inp.readData(fileNames, vars, arrs, expr);
 		indexValues[0] = 10;
 		indexNames[0]  = vars[0].name;
-		exceedings     << exceeding(arrs[0].name, indexNames, indexValues, 10, 1);
+		exceedings     << Exceeding(arrs[0].name, indexNames, indexValues, 10, 1);
 		indexValues[0] = -1;
 		indexNames[0]  = vars[1].name;
-		exceedings     << exceeding(arrs[0].name, indexNames, indexValues, -1, 2);
+		exceedings     << Exceeding(arrs[0].name, indexNames, indexValues, -1, 2);
 	QTest::newRow("8.Various Loop") << vars << arrs << expr << exceedings << "correct";
 }
 
 void Test_analyzer::analyzeExpression()
 {
-	analyzer analyze;
-	QVector<exceeding> testExceedings;
+	Analyzer analyze;
+	QVector<Exceeding> testExceedings;
 	QString exception("correct");
 
 	/*! Извлечь данные из таблицы */
-	QFETCH(QVector<index>,		vars);
+	QFETCH(QVector<Index>,		vars);
 	QFETCH(QVector<Array>,		arrs);
 	QFETCH(QStringList,			expr);
-	QFETCH(QVector<exceeding>,	expectedExceedings);
+	QFETCH(QVector<Exceeding>,	expectedExceedings);
 	QFETCH(QString,				expectedString);
 
 	/*! Вызвать тестируемую функцию */
@@ -415,15 +415,15 @@ void Test_analyzer::analyzeExpression()
 
 void Test_analyzer::checkExpression()
 {
-	analyzer analyze;
-	QVector<exceeding> testExceedings;
+	Analyzer analyze;
+	QVector<Exceeding> testExceedings;
 	QString exception("correct");
 
 	/*! Извлечь данные из таблицы */
-	QFETCH(QVector<index>,		vars);
+	QFETCH(QVector<Index>,		vars);
 	QFETCH(QVector<Array>,		arrs);
 	QFETCH(QStringList,			expr);
-	QFETCH(QVector<exceeding>,	expectedExceedings);
+	QFETCH(QVector<Exceeding>,	expectedExceedings);
 	QFETCH(QString,				expectedString);
 
 	/*! Вызвать тестируемую функцию */

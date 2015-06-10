@@ -3,11 +3,11 @@
 
 void Test_input::readVarInfo_data()
 {
-	QVector<index> vars;
+	QVector<Index> vars;
 
 	/*! Колонки таблицы */
 	QTest::addColumn <QString>("inputFileName");
-	QTest::addColumn <QVector<index> >("expectedVars");
+	QTest::addColumn <QVector<Index> >("expectedVars");
 	QTest::addColumn <QString>("expectedString");
 
 
@@ -50,19 +50,19 @@ void Test_input::readVarInfo_data()
 
 
 /*! Задана одна переменная во входном файле */
-	vars << index("i", 0, 2, -1);
+	vars << Index("i", 0, 2, -1);
 	QTest::newRow("8.One Variable") << "../../Tests/readVarInfo/8.One Variable.xml"
 									<< vars
 									<< "correct";
 
 /*! Заданы две переменные во входном файле */
-	vars << index("jvar", 5, 123, 12);
+	vars << Index("jvar", 5, 123, 12);
 	QTest::newRow("9.Two Variables") << "../../Tests/readVarInfo/9.Two Variables.xml"
 									 << vars
 									 << "correct";
 
 /*! Заданы три переменные во входном файле */
-	vars << index("iter", -5, 10, 3);
+	vars << Index("iter", -5, 10, 3);
 	QTest::newRow("10.Three Variables") << "../../Tests/readVarInfo/10.Three Variables.xml"
 										<< vars
 										<< "correct";
@@ -170,14 +170,14 @@ void Test_input::readArrInfo_data()
 void Test_input::readExpression_data()
 {
 	QVector<Array> arrs;
-	QVector<index> vars;
+	QVector<Index> vars;
 	QStringList    expr;
 	QVector<int>   size;
 	QVector<int>   elements;
 
 	/*! Колонки таблицы */
 	QTest::addColumn <QString>("inputFileName");
-	QTest::addColumn <QVector<index> >("inputVars");
+	QTest::addColumn <QVector<Index> >("inputVars");
 	QTest::addColumn <QVector<Array> >("inputArrs");
 	QTest::addColumn <QStringList>("expectedExpr");
 	QTest::addColumn <QString>("expectedString");
@@ -199,7 +199,7 @@ void Test_input::readExpression_data()
 										<< "File ../../Tests/readExpression/2.Empty Input File.txt is empty";
 
 /*! Неизвестный элемент во входном файле */
-		vars << index("i", 0, 0, 0);
+		vars << Index("i", 0, 0, 0);
 		arrs << Array("arr", size, elements);
 	QTest::newRow("3.Undefined Element") << "../../Tests/readExpression/3.Undefined Element.txt"
 										 << vars
@@ -243,7 +243,7 @@ void Test_input::readExpression_data()
 											<< "Wrong expression. Excess of operations for the present set of operands. Please, check the expression";
 
 /*! Корректное выражение */
-		vars << index("j", 0, 0, 0);
+		vars << Index("j", 0, 0, 0);
 		expr << "i" << "2" << "j" << "+" << "=" << "j" << "2" << "3" << "+"
 			<< "=" << "arr" << "i" << "j" << "*" << "[]" << "+" << "+";
 	QTest::newRow("9.Normal Expression") << "../../Tests/readExpression/9.Normal Expression.txt"
@@ -256,7 +256,7 @@ void Test_input::readExpression_data()
 void Test_input::readData_data()
 {
 	QVector<Array> arrs;
-	QVector<index> vars;
+	QVector<Index> vars;
 	QVector<int>   size;
 	QVector<int>   elements;
 	QStringList    expr;
@@ -264,7 +264,7 @@ void Test_input::readData_data()
 
 	/*! Колонки таблицы */
 	QTest::addColumn <QStringList>("inputFileNames");
-	QTest::addColumn <QVector<index> >("expectedVars");
+	QTest::addColumn <QVector<Index> >("expectedVars");
 	QTest::addColumn <QVector<Array> >("expectedArrs");
 	QTest::addColumn <QStringList>("expectedExpr");
 	QTest::addColumn <bool>("expectedSuccess");
@@ -281,7 +281,7 @@ void Test_input::readData_data()
 										  << false;
 
 /*! Функция чтения информации о массивах завершиться неуспешно */
-		vars << index("i", 0, 2, -1);
+		vars << Index("i", 0, 2, -1);
 		fileNames[0] = "../../Tests/readVarInfo/8.One Variable.xml";
 		fileNames << "../../Tests/readArrInfo/No Input File.xml";
 	QTest::newRow("2.ReadArrInfo Failed") << fileNames
@@ -314,13 +314,13 @@ void Test_input::readData_data()
 
 void Test_input::readVarInfo()
 {
-	input inp;
-	QVector<index> vars;
+	Input inp;
+	QVector<Index> vars;
 	QString exception("correct");
 
 	/*! Извлечь данные из таблицы */
 	QFETCH(QString,			inputFileName);
-	QFETCH(QVector<index>,	expectedVars);
+	QFETCH(QVector<Index>,	expectedVars);
 	QFETCH(QString,			expectedString);
 
 	/*! Вызвать тестируемую функцию */
@@ -340,7 +340,7 @@ void Test_input::readVarInfo()
 
 void Test_input::readArrInfo()
 {
-	input inp;
+	Input inp;
 	QVector<Array> arrs;
 	QString exception("correct");
 
@@ -366,14 +366,14 @@ void Test_input::readArrInfo()
 
 void Test_input::readExpression()
 {
-	input inp;
+	Input inp;
 	QStringList expr;
 	QString exception("correct");
 
 
 	/*! Извлечь данные из таблицы */
 	QFETCH(QString,		   inputFileName);
-	QFETCH(QVector<index>, inputVars);
+	QFETCH(QVector<Index>, inputVars);
 	QFETCH(QVector<Array>, inputArrs);
 	QFETCH(QStringList,    expectedExpr);
 	QFETCH(QString,		   expectedString);
@@ -395,16 +395,16 @@ void Test_input::readExpression()
 
 void Test_input::readData()
 {
-	input inp;
+	Input inp;
 	bool success = false;
 	QVector<Array> arrs;
-	QVector<index> vars;
+	QVector<Index> vars;
 	QStringList    expr;
 	QStringList    fileNames;
 
 	/*! Колонки таблицы */
 	QFETCH(QStringList,    inputFileNames);
-	QFETCH(QVector<index>, expectedVars);
+	QFETCH(QVector<Index>, expectedVars);
 	QFETCH(QVector<Array>, expectedArrs);
 	QFETCH(QStringList,    expectedExpr);
 	QFETCH(bool,		   expectedSuccess);

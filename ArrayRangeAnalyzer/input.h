@@ -24,11 +24,11 @@
  *
  * Данный класс содержит необходимые функции для считывания входных данных программы.
  */
-class input
+class Input
 {
 public:
-	input();
-	~input();
+	Input();
+	~Input();
 
 	/*!
 	 * Считывает входные данные программы
@@ -38,7 +38,7 @@ public:
 	 *\param[out] expr				выражение в виже списка строк
 	 *\return						признак успешности считывания
 	 */
-	bool readData(const QStringList &inputFileNames, QVector <index> &vars, QVector <Array> &arrs, QStringList &expr);
+	bool readData(const QStringList &inputFileNames, QVector <Index> &vars, QVector <Array> &arrs, QStringList &expr);
 
 
 	/*!
@@ -47,7 +47,7 @@ public:
 	 *\param[out] vars          вектор объектов класса \ref index – информация о переменных
 	 *\exception  errorString   строка с информацией о возникшем исключении
 	 */
-	void readVarInfo(const QString fileName, QVector <index> &vars) throw(QString&);
+	void readVarInfo(const QString fileName, QVector <Index> &vars) throw(QString&);
 
 	/*!
 	 * Считывает значения аттрибутов тега variable в файле входных данных с информацией о переменных
@@ -56,7 +56,7 @@ public:
 	 *\param[in]  i            номер тега variable в файле
 	 *\exception  errorString  строка с информацией о возникшем исключении
 	 */
-	void readVarAttributes(index &var, QXmlStreamAttributes &atrs, int i) throw(QString&);
+	void readVarAttributes(Index &var, QXmlStreamAttributes &atrs, int i) throw(QString&);
 
 	/*!
 	 * Считывает входной файл с информацией об использующихся в выражении массивах
@@ -83,7 +83,7 @@ public:
 	 *\param[in]  arrs		    вектор объектов класса \ref Array - информация о массивах
 	 *\exception  errorString   строка с информацией о возникшем исключении
 	 */
-	void readExpression(const QString fileName, QStringList  &expr, const QVector<index> &vars, const QVector<Array> &arrs) throw(QString&);
+	void readExpression(const QString fileName, QStringList  &expr, const QVector<Index> &vars, const QVector<Array> &arrs) throw(QString&);
 };
 
 #endif // INPUT_H

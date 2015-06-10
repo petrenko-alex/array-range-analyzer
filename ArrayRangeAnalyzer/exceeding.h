@@ -22,18 +22,18 @@
  * их значения, элемент массива, которому производится обращение
  * и номер измерения массива.
  */
-class exceeding
+class Exceeding
 {
 public:
-	exceeding();
+	Exceeding();
 
 	/*! Создает объект класса на основе всех полей данного класса */
-	exceeding(QString arrayName, QStringList indexName, QVector<double> indexValue, int requestedElement, int dimension);
+	Exceeding(QString arrayName, QStringList indexName, QVector<double> indexValue, int requestedElement, int dimension);
 
 	/*! Сравнивает два объекта класса exceeding */
-	bool operator==(const exceeding &other);
+	bool operator==(const Exceeding &other);
 
-	~exceeding();
+	~Exceeding();
 
 private:
 	QString			 arrayName;				///< Имя массива, для которого произошел выход за пределы

@@ -1,6 +1,6 @@
 #include "index.h"
 
-index::index()
+Index::Index()
 {
 	this->name		= "";
 	this->from      = 0;
@@ -11,7 +11,7 @@ index::index()
 	this->looped	= 10;
 }
 
-index::index(QString name, int from, int to, int step, int looped /*= 10*/)
+Index::Index(QString name, int from, int to, int step, int looped /*= 10*/)
 {
 	this->name		= name;
 	this->from		= from;
@@ -22,7 +22,7 @@ index::index(QString name, int from, int to, int step, int looped /*= 10*/)
 	this->looped	= looped;
 }
 
-bool index::operator==(const index &other)
+bool Index::operator==(const Index &other)
 {
 	return this->name	   == other.name
 		&& this->from	   == other.from
@@ -33,7 +33,7 @@ bool index::operator==(const index &other)
 		&& this->looped	   == other.looped;
 }
 
-index::~index()
+Index::~Index()
 {
 
 }

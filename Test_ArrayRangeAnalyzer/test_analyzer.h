@@ -28,9 +28,9 @@ private:
 	/*! Очищает содержимое контейнеров класса */
 	void clearData();
 
-	QVector<index>     vars;
+	QVector<Index>     vars;
 	QVector<Array>	   arrs;
-	QVector<exceeding> exceedings;
+	QVector<Exceeding> exceedings;
 	QStringList        expr;
 };
 

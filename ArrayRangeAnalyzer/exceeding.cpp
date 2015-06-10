@@ -1,6 +1,6 @@
 #include "exceeding.h"
 
-exceeding::exceeding()
+Exceeding::Exceeding()
 {
 	arrayName		 = "";
 	indexName;
@@ -9,7 +9,7 @@ exceeding::exceeding()
 	dimension		 = 0;
 }
 
-exceeding::exceeding(QString arrayName, QStringList indexName, QVector<double> indexValue, int requestedElement, int dimension)
+Exceeding::Exceeding(QString arrayName, QStringList indexName, QVector<double> indexValue, int requestedElement, int dimension)
 {
 	this->arrayName		   = arrayName;
 	this->indexName		   = indexName;
@@ -18,7 +18,7 @@ exceeding::exceeding(QString arrayName, QStringList indexName, QVector<double> i
 	this->dimension		   = dimension;
 }
 
-bool exceeding::operator==(const exceeding &other)
+bool Exceeding::operator==(const Exceeding &other)
 {
 	return this->arrayName		  == other.arrayName
 		&& this->indexName		  == other.indexName
@@ -27,7 +27,7 @@ bool exceeding::operator==(const exceeding &other)
 		&& this->dimension		  == other.dimension;
 }
 
-exceeding::~exceeding()
+Exceeding::~Exceeding()
 {
 
 }

@@ -19,17 +19,17 @@
  * диапазон и шаг ее изменения, ее промежуточное значение на каждом шаге вычислений,
  * значение на предыдущем шаге и счетчик зацикливания.
  */
-class index
+class Index
 {
 public:
-	index();
-	~index();
+	Index();
+	~Index();
 
 	/*! Создает объект класса index на основе имени, границ, шага и счетчика повторных значений */
-	index(QString name, int from, int to, int step, int looped = 10);
+	Index(QString name, int from, int to, int step, int looped = 10);
 
 	/*! Сравнивает два объекта класса index */
-	bool operator==(const index &other);
+	bool operator==(const Index &other);
 
 
 	QString name;				///< Имя переменной

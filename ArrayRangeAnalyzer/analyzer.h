@@ -20,11 +20,11 @@
 *
 * Данный класс содержит основные функции для проверки выражения на наличие выходов за пределы массивов.
 */
-class analyzer
+class Analyzer
 {
 public:
-	analyzer();
-	~analyzer();
+	Analyzer();
+	~Analyzer();
 
 	/*!
 	 *\brief Проверяет наличие выходов за пределы массивов в выражении при текущих значениях переменных
@@ -36,7 +36,7 @@ public:
 	 *param[out] exceedings   вектор объектов класса \ref exceeding - информация о выходах за пределы
 	 *\exception errorString  строка с информацией о возникшем исключении
 	 */
-	void analyzeExpression(QVector<index> &vars, QVector<Array> &arrs, const QStringList &expr, QVector<exceeding> &exceedings) throw(QString&);
+	void analyzeExpression(QVector<Index> &vars, QVector<Array> &arrs, const QStringList &expr, QVector<Exceeding> &exceedings) throw(QString&);
 
 
 	/*!
@@ -49,7 +49,7 @@ public:
 	 *param[out] exceedings   вектор объектов класса \ref exceeding - информация о выходах за пределы
 	 *\exception errorString  строка с информацией о возникшем исключении
 	 */
-	void checkExpression(QVector<index> &vars, QVector<Array> &arrs, const QStringList &expr, QVector<exceeding> &exceedings) throw(QString&);
+	void checkExpression(QVector<Index> &vars, QVector<Array> &arrs, const QStringList &expr, QVector<Exceeding> &exceedings) throw(QString&);
 
 
 };
