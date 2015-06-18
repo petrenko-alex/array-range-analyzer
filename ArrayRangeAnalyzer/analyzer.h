@@ -1,10 +1,10 @@
 /*!
-*\file
-*\brief Файл объявления класса проверки выражения на наличие выходов за пределы массивов.
-*\author Александр Петренко gafk555@gmail.com.
-*
-* Данный файл содержит в себе класс проверки выражения на наличие выходов за пределы массивов.
-*/
+ *\file
+ *\brief Файл объявления класса проверки выражения на наличие выходов за пределы массивов.
+ *\author Александр Петренко gafk555@gmail.com.
+ * 
+ * Данный файл содержит в себе класс проверки выражения на наличие выходов за пределы массивов.
+ */
 
 #ifndef ANALYZER_H
 #define ANALYZER_H
@@ -13,17 +13,20 @@
 #include "index.h"
 #include "array.h"
 #include "exceeding.h"
+#include "operations.h"
 
 /*!
-*\brief Класс проверки выражения на наличие выходов за пределы массива.
-*\author Александр Петренко gafk555@gmail.com.
-*
-* Данный класс содержит основные функции для проверки выражения на наличие выходов за пределы массивов.
-*/
+ *\brief Класс проверки выражения на наличие выходов за пределы массива.
+ *\author Александр Петренко gafk555@gmail.com.
+ *
+ * Данный класс содержит основные функции для проверки выражения на наличие выходов за пределы массивов.
+ */
 class Analyzer
 {
 public:
+	/*! Конструктор по-умолчанию */
 	Analyzer();
+	/*! Деструктор */
 	~Analyzer();
 
 	/*!
@@ -51,6 +54,12 @@ public:
 	 */
 	void checkExpression(QVector<Index> &vars, QVector<Array> &arrs, const QStringList &expr, QVector<Exceeding> &exceedings) throw(QString&);
 
+private:
+	Operations ops;							///< Объект класса вспомагательных операций
+	int iteration;							///< Номер итерации "захода" в analyzeExpression из checkExpression
+	QString leftOpS, rightOpS, resultS;		///< Операнды для вычислений в виде строки
+	double  leftOpD, rightOpD, resultD;		///< Операнды для вычислений в виде числа
+	int exprPos;							///< Позиция в выражении при обходе
 
 };
 
