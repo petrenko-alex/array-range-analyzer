@@ -6,6 +6,7 @@ Array::Array()
 	this->size;
 	this->elements;
 	this->isExceeding;
+	this->usedInExpression = false;
 }
 
 Array::Array(QString name, QVector<int> &size, QVector<int> &elements)
