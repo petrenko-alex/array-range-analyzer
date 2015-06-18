@@ -135,7 +135,7 @@ void Test_input::readArrInfo_data()
 /*! Неверно задано значение необходимого атрибута во входном файде */
 	QTest::newRow("7.Wrong Attribute Value") << "../../Tests/readArrInfo/7.Wrong Attribute Value.xml"
 											 << arrs
-											 << "The size of the 1 dimension of \"arr\" array is not an integer value";
+											 << "The size of the 1 dimension of \"arr\" array is not a positive integer value";
 
 /*! Не заданы массивы во входном файле */
 	QTest::newRow("8.No Arrays") << "../../Tests/readArrInfo/8.No Arrays.xml"
