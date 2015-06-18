@@ -91,3 +91,14 @@ bool Operations::isDefiniteElement(const QString &element, const QVector <Array>
 {
 	return isOperand(element, vars, arrs) || isDefiniteOperation(element);
 }
+
+int Operations::findVar(QString var, const QVector<Index> &vars)
+{
+	int size = vars.size();
+	for (int i = 0; i < size; ++i)
+	{
+		if (vars[i].name == var)
+			return i;
+	}
+	return -1;
+}
