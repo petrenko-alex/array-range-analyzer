@@ -114,3 +114,14 @@ int Operations::findArr(QString arr, const QVector<Array> &arrs)
 	return -1;
 }
 
+double Operations::stringOpToDoubleOp(QString operand, const QVector<Index> &vars)
+{
+	int varIndex = -1;
+	if (isDefiniteVariable(operand, vars))
+	{
+		varIndex = findVar(operand, vars);
+		return vars[varIndex].curValue;
+	}
+	else
+		return operand.toDouble();
+}
