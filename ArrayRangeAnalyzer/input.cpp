@@ -475,5 +475,47 @@ void Input::checkNonExecutableCycle(QVector<Index> &vars) throw(QString&)
 
 void Input::removeUnusedVarsAndArrs(QVector<Array> &arrs, QVector<Index> &vars, QStringList &expr)
 {
+	Operations ops;
+	int exprSize = expr.size();
 
+	/*! Анализируем, какие переменные и массивы используются в выражении */
+	for (int i = 0; i < exprSize; ++i)
+	{
+		/*! Если встретилось имя переменной */
+		if (ops.isDefiniteVariable(expr[i], vars))
+		{
+			int var = ops.findVar(expr[i], vars);
+			vars[var].usedInExpression = true;
+		}
+		/*! Если встретилось имя массива */
+		else if (ops.isDefiniteArray(expr[i], arrs))
+		{
+			int arr = ops.findArr(expr[i], arrs);
+			arrs[arr].usedInExpression = true;
+		}
+	}
+
+	/*! Удаляем из vars неиспользующиеся переменные */
+	for (auto &var : vars)
+	{
+		if (!var.usedInExpression)
+		{
+			int i = ops.findVar(var.name, vars);
+			vars.remove(i);
+		}
+		else
+			var.usedInExpression = false;
+	}
+
+	/*! Удаляем из arrs неиспользующиеся массивы */
+	for (auto &arr : arrs)
+	{
+		if (!arr.usedInExpression)
+		{
+			int i = ops.findArr(arr.name, arrs);
+			arrs.remove(i);
+		}
+		else
+			arr.usedInExpression = false;
+	}
 }
