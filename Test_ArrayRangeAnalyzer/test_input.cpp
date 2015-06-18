@@ -178,6 +178,7 @@ void Test_input::readArrInfo_data()
 
 void Test_input::readExpression_data()
 {
+	Input inp;
 	QVector<Array> arrs;
 	QVector<Index> vars;
 	QStringList    expr;
@@ -190,6 +191,10 @@ void Test_input::readExpression_data()
 	QTest::addColumn <QVector<Array> >("inputArrs");
 	QTest::addColumn <QStringList>("expectedExpr");
 	QTest::addColumn <QString>("expectedString");
+
+	/*! Требуемые для проверки циклов данные */
+	inp.readArrInfo(QString("../../Tests/readArrInfo/10.Many Arrays.xml"), arrs);
+	inp.readVarInfo(QString("../../Tests/readVarInfo/10.Three Variables.xml"), vars);
 
 	/*! Ряды таблицы - тесты */
 
