@@ -116,6 +116,12 @@ private:
 		}
 	};
 
+	struct curentArray						///< Структура описывающая текущий массив при обходе выражения
+	{
+		unsigned int dimension;
+		QString name;
+	}curArr;
+
 };
 
 #endif // ANALYZER_H
