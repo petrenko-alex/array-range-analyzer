@@ -6,7 +6,7 @@ Index::Index()
 	this->from      = 0;
 	this->to        = 0;
 	this->curValue  = 0;
-	this->prevValue = 0;
+	this->prevValue = 1.23456789;
 	this->step		= 0;
 	this->looped	= 10;
 	this->usedInExpression = false;
@@ -18,7 +18,7 @@ Index::Index(QString name, int from, int to, int step, int looped /*= 10*/)
 	this->from		= from;
 	this->to		= to;
 	this->curValue	= from;
-	this->prevValue = 0;
+	this->prevValue = 1.23456789;
 	this->step		= step;
 	this->looped	= looped;
 }
