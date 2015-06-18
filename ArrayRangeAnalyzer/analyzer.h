@@ -122,6 +122,165 @@ private:
 		QString name;
 	}curArr;
 
+	/*!
+	 * Функция сложения двух операндов
+	 * Выполняется, когда в выражении встречается знак операции сложения "+"
+	 *\param[in|out] operands стек
+	 *\param[in]     vars     вектор переменных
+	 *\param[in]     arrs     вектор массивов
+	 */
+	void addition(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs);
+
+	/*!
+	 * Функция вычитания двух операндов
+	 * Выполняется, когда в выражении встречается знак операции вычитания "-"
+	 *\param[in|out] operands стек
+	 *\param[in]     vars     вектор переменных
+	 *\param[in]     arrs     вектор массивов
+	 */
+	void substraction(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs);
+
+	/*!
+	 * Функция деления двух операндов
+	 * Выполняется, когда в выражении встречается знак операции деления "/"
+	 *\param[in|out] operands		стек
+	 *\param[in]     vars			вектор переменных
+	 *\param[in]     arrs			вектор массивов
+	 *\exception     errorString		строка с информацией о возникшем исключении(деление на нуль)
+	 */
+	void division(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs)  throw(QString&);
+
+	/*!
+	 * Функция умножения двух операндов
+	 * Выполняется, когда в выражении встречается знак операции умножения "*"
+	 *\param[in|out] operands		стек
+	 *\param[in]     vars			вектор переменных
+	 *\param[in]     arrs			вектор массивов
+	 */
+	void multiplication(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs);
+
+	/*!
+	 * Функция операции остаток от деления
+	 * Выполняется, когда в выражении встречается знак операции остаток от деления "%"
+	 *\param[in|out] operands		стек
+	 *\param[in]     vars			вектор переменных
+	 *\param[in]     arrs			вектор массивов
+	 *\exception     errorString		строка с информацией о возникшем исключении(деление на нуль)
+	 */
+	void modulo(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs)  throw(QString&);
+
+	/*!
+	 * Функция операции обращения к элементу массива
+	 * Выполняется, когда в выражении встречается знак операции обращения к элементу массива "[]"
+	 *\param[in|out] operands		стек
+	 *\param[in]     vars			вектор переменных
+	 *\param[in]     arrs			вектор массивов
+	 *\param[in|out] exceedings		вектор выходов за пределы массива
+	 */
+	void subscript(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs, QVector<Exceeding> &exceedings);
+
+	/*!
+	 * Функция операции префиксной инкрементации
+	 * Выполняется, когда в выражении встречается знак операции префиксной инкрементации "+\"
+	 *\param[in|out] operands		стек
+	 *\param[in|out] vars			вектор переменных
+	 *\param[in|out] arrs			вектор массивов
+	 *\exception     errorString	строка с информацией о возникшем исключении(инкрементация не l-value,операция с неопределенным элементом)
+	 */
+	void incL(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs) throw(QString&);
+
+	/*!
+	 * Функция операции префиксной декрементации
+	 * Выполняется, когда в выражении встречается знак операции префиксной декрементации "-\"
+	 *\param[in|out] operands		стек
+	 *\param[in|out] vars			вектор переменных
+	 *\param[in|out] arrs			вектор массивов
+	 *\exception     errorString	строка с информацией о возникшем исключении(декрементация не l-value,операция с неопределенным элементом)
+	 */
+	void decL(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs) throw(QString&);
+
+	/*!
+	 * Функция операции постфиксной инкрементации
+	 * Выполняется, когда в выражении встречается знак операции постфиксной инкрементации "\+"
+	 *\param[in|out] operands стек
+	 *\exception     errorString	строка с информацией о возникшем исключении(инкрементация не l-value,операция с неопределенным элементом)
+	 */
+	void incR(QStack<stackElement> &operands) throw(QString&);
+
+	/*!
+	 * Функция операции постфиксной декрементации
+	 * Выполняется, когда в выражении встречается знак операции постфиксной декрементации "\-"
+	 *\param[in|out] operands		стек
+	 *\exception     errorString	строка с информацией о возникшем исключении(декрементация не l-value,операция с неопределенным элементом)
+	 */
+	void decR(QStack<stackElement> &operands) throw(QString&);
+
+	/*!
+	 * Функция операции унарный минус
+	 * Выполняется, когда в выражении встречается знак операции унарный минус "/-"
+	 *\param[in|out] operands		стек
+	 */
+	void unaryMinus(QStack<stackElement> &operands);
+
+	/*!
+	 * Функция, выполняющаяся, когда в выражении встречается "abs()"
+	 *\param[in|out] operands	стек
+	 *\param[in]	 vars		вектор переменных
+	 *\param[in]	 arrs		вектор массивов
+	 */
+	void absF(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs);
+
+	/*!
+	 * Функция, выполняющаяся, когда в выражении встречается "ceil()"
+	 *\param[in|out] operands	стек
+	 *\param[in]	 vars		вектор переменных
+	 *\param[in]	 arrs		вектор массивов
+	 */
+	void ceilF(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs);
+
+	/*!
+	 * Функция, выполняющаяся, когда в выражении встречается "fabs()"
+	 *\param[in|out] operands	стек
+	 *\param[in]	 vars		вектор переменных
+	 *\param[in]	 arrs		вектор массивов
+	 */
+	void fabsF(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs);
+
+	/*!
+	 * Функция, выполняющаяся, когда в выражении встречается "floor()"
+	 *\param[in|out] operands	стек
+	 *\param[in]	 vars		вектор переменных
+	 *\param[in]	 arrs		вектор массивов
+	 */
+	void floorF(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs);
+
+	/*!
+	 * Функция, выполняющаяся, когда в выражении встречается "pow()"
+	 *\param[in|out] operands	стек
+	 *\param[in]	 vars		вектор переменных
+	 *\param[in]	 arrs		вектор массивов
+	 */
+	void powF(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs);
+
+	/*!
+	 * Функция операции присваивания
+	 * Выполняется, когда в выражении встречается знак операции присваивания "="
+	 *\param[in|out] operands		стек
+	 *\param[in|out] vars			вектор переменных
+	 *\param[in|out] arrs			вектор массивов
+	 *\param[in]     type			тип присваивания: "=","+=","-=","*=","/=",
+	 *\exception     errorString	строка с информацией о возникшем исключении(присваивание не l-value,операция с неопределенным элементом)
+	 */
+	void assignment(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs, QString &type) throw(QString&);
+
+	/*!
+	 * Функция операции приведения типа к int
+	 * Выполняется, когда в выражении встречается знак операции приведения типа к int "(int)"
+	 *\param[in|out] operands	стек
+	 *\param[in] vars			вектор переменных
+	 *\param[in] arrs			вектор массивов
+	 */
+	void typeConversionToInt(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs);
 };
 
 #endif // ANALYZER_H
