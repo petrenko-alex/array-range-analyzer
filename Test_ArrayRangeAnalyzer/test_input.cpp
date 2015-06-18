@@ -434,5 +434,4 @@ void Test_input::readData()
 	QVERIFY2(arrs	 == expectedArrs, "Returned arrs are not correct");
 	QVERIFY2(expr	 == expectedExpr, "Returned expression is not correct");
 	QVERIFY2(success == expectedSuccess, "Returned success is not correct");
-
 }

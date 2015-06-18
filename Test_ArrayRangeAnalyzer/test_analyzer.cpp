@@ -50,7 +50,7 @@ void Test_analyzer::analyzeExpression_data()
 	QTest::newRow("4.Many Arrays One Exceeding") << vars << arrs << expr << exceedings << "correct";
 
 /*! Выход уже происходил - исключение сформировано не будет */
-		arrs[1].isExceeding << true;
+		arrs[1].isExceeding[0] = true;
 		vars[0].curValue	= 8;
 		exceedings.clear();
 	QTest::newRow("5.Already Has An Exceeding") << vars << arrs << expr << exceedings << "correct";
@@ -67,7 +67,7 @@ void Test_analyzer::analyzeExpression_data()
 		clearData();
 		inp.readData(fileNames, vars, arrs, expr);
 		vars[0].curValue	= 5;
-		arrs[0].isExceeding << true;
+		arrs[0].isExceeding[0] = true;
 	QTest::newRow("7.Operation With Undefined Element") << vars << arrs << expr << exceedings << "Operation with undefined element is detected on the 9 position during the 1 iteration";
 
 /*! Префиксная инкрементация, приводящая к выходу */
@@ -146,9 +146,9 @@ void Test_analyzer::analyzeExpression_data()
 		inp.readData(fileNames, vars, arrs, expr);
 		indexNames.clear();
 		indexValues.clear();
-		vars[2].curValue = 5;
+		vars[1].curValue = 5;
 		indexValues		 << 5;
-		indexNames		 << vars[2].name;
+		indexNames		 << vars[1].name;
 		exceedings		 << Exceeding(arrs[0].name, indexNames, indexValues, -5, 1);
 	QTest::newRow("15.Unary Minus") << vars << arrs << expr << exceedings << "correct";
 
@@ -235,7 +235,7 @@ void Test_analyzer::analyzeExpression_data()
 		fileNames[2] = "../../Tests/analyzeExpression/24.txt";
 		clearData();
 		inp.readData(fileNames, vars, arrs, expr);
-		arrs[0].isExceeding << true;
+		arrs[0].isExceeding[0] = true;
 		vars[0].curValue    = 20;
 		indexValues[0]	    = 20;
 		indexNames[0]		= vars[0].name;
@@ -324,7 +324,7 @@ void Test_analyzer::checkExpression_data()
 		fileNames[2] = "../../Tests/checkExpression/4expr.txt";
 		clearData();
 		inp.readData(fileNames, vars, arrs, expr);
-		indexValues[0] = 5;
+		indexValues[0] = 7;
 		indexNames[0]  = vars[1].name;
 		exceedings     << Exceeding(arrs[1].name, indexNames, indexValues, 7, 1);
 		indexValues[0] = -5;
@@ -340,14 +340,14 @@ void Test_analyzer::checkExpression_data()
 		inp.readData(fileNames, vars, arrs, expr);
 		indexValues[0] = 5;
 		indexNames[0]  = vars[0].name;
-		exceedings	   << Exceeding(arrs[0].name, indexNames, indexValues, 7, 1);
+		exceedings	   << Exceeding(arrs[0].name, indexNames, indexValues, 8, 1);
 		indexValues[0] = 8;
 		indexNames[0]  = vars[2].name;
 		exceedings	   << Exceeding(arrs[2].name, indexNames, indexValues, 9, 1);
 		indexValues[0] = 6;
 		indexNames[0]  = vars[1].name;
 		exceedings	   << Exceeding(arrs[1].name, indexNames, indexValues, 13, 1);
-	QTest::newRow("5.Many Variables Different Step’s Number For Each") << vars << arrs << expr << exceedings << "correct";
+	QTest::newRow("5.Many Variables Different Steps Number For Each") << vars << arrs << expr << exceedings << "correct";
 
 /*! Нарастающий цикл */
 		fileNames[0] = "../../Tests/checkExpression/6var.xml";
@@ -375,12 +375,12 @@ void Test_analyzer::checkExpression_data()
 		fileNames[2] = "../../Tests/checkExpression/8expr.txt";
 		clearData();
 		inp.readData(fileNames, vars, arrs, expr);
-		indexValues[0] = 10;
-		indexNames[0]  = vars[0].name;
-		exceedings     << Exceeding(arrs[0].name, indexNames, indexValues, 10, 1);
 		indexValues[0] = -1;
 		indexNames[0]  = vars[1].name;
 		exceedings     << Exceeding(arrs[0].name, indexNames, indexValues, -1, 2);
+		indexValues[0] = 10;
+		indexNames[0]  = vars[0].name;
+		exceedings	   << Exceeding(arrs[0].name, indexNames, indexValues, 10, 1);
 	QTest::newRow("8.Various Loop") << vars << arrs << expr << exceedings << "correct";
 }
 
