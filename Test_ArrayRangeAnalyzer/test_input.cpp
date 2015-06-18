@@ -295,7 +295,7 @@ void Test_input::readData_data()
 										  << false;
 
 /*! Функция чтения информации о массивах завершиться неуспешно */
-		vars << Index("i", 0, 2, -1);
+		vars << Index("i", 0, 2, 1);
 		fileNames[0] = "../../Tests/readVarInfo/8.One Variable.xml";
 		fileNames << "../../Tests/readArrInfo/No Input File.xml";
 	QTest::newRow("2.ReadArrInfo Failed") << fileNames
@@ -344,6 +344,7 @@ void Test_input::readVarInfo()
 	}
 	catch (QString& errorString)
 	{
+		vars.clear();
 		exception = errorString;
 	}
 
@@ -370,6 +371,7 @@ void Test_input::readArrInfo()
 	}
 	catch (QString &errorString)
 	{
+		arrs.clear();
 		exception = errorString;
 	}
 
@@ -399,6 +401,7 @@ void Test_input::readExpression()
 	}
 	catch (QString &errorString)
 	{
+		expr.clear();
 		exception = errorString;
 	}
 
