@@ -195,12 +195,73 @@ void Input::readVarAttributes(Index &var, QXmlStreamAttributes &atrs, int i) thr
 
 void Input::readArrInfo(const QString fileName, QVector <Array> &arrs) throw(QString&)
 {
+	QFile file(fileName);
 
+	if (file.open(QIODevice::ReadOnly))
+	{
+		QXmlStreamReader reader(&file);
+		int i = 1;
+
+		while (!reader.atEnd() && !reader.hasError())
+		{
+			QXmlStreamReader::TokenType token = reader.readNext();
+			/*! Если встретился открывающий тег array */
+			if (token == QXmlStreamReader::StartElement && reader.name() == "array")
+			{
+				Array arr;
+				/*! Получаем атрибуты тега array */
+				QXmlStreamAttributes atrs = reader.attributes();
+				try
+				{
+					/*! Читаем значения атрибутов тега array */
+					readArrAttributes(arr, atrs, i);
+				}
+				catch (...)
+				{
+					file.close();
+					throw;
+				}
+				/*! Сохраняем считанный массив в вектор */
+				arrs << arr;
+			}
+			/*! Если встретился закрывающий тег array */
+			else if (token == QXmlStreamReader::EndElement && reader.name() == "array")
+				++i;
+			/*! Если встретился неизвестный тег */
+			else if (token == QXmlStreamReader::StartElement && reader.name() != "arrayInfo")
+			{
+				QString errorString = "Unknown tag \"" + reader.name().toString() + "\"";
+				throw errorString;
+			}
+		}
+
+		file.close();
+
+		/*! Ошибки в структуре xml файла */
+		if (reader.hasError())
+		{
+			QString errorString = "File structure error in the file " + fileName + " containing the array's info";
+			throw errorString;
+		}
+
+		/*! В файле не заданы массивы */
+		if (arrs.isEmpty())
+		{
+			QString errorString = "There no arrays info in " + fileName + " file";
+			throw errorString;
+		}
+
+	}
+	else
+	{
+		QString errorString = "Can't open the file " + fileName;
+		throw errorString;
+	}
 }
 
 void Input::readArrAttributes(Array &arr, QXmlStreamAttributes &atrs, int i) throw(QString&)
 {
-
+	
 }
 
 void Input::readExpression(const QString fileName, QStringList &expr, const QVector<Index> &vars, const QVector<Array> &arrs) throw(QString&)
