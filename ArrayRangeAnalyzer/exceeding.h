@@ -25,7 +25,11 @@
 class Exceeding
 {
 public:
+	/*! Конструктор по-умолчанию */
 	Exceeding();
+
+	/*! Деструктор */
+	~Exceeding();
 
 	/*! Создает объект класса на основе всех полей данного класса */
 	Exceeding(QString arrayName, QStringList indexName, QVector<double> indexValue, int requestedElement, int dimension);
@@ -33,9 +37,6 @@ public:
 	/*! Сравнивает два объекта класса exceeding */
 	bool operator==(const Exceeding &other);
 
-	~Exceeding();
-
-private:
 	QString			 arrayName;				///< Имя массива, для которого произошел выход за пределы
 	QStringList		 indexName;				///< Имена переменных, при которых произошёл выход
 	QVector <double> indexValue;			///< Значения переменных при выходе за пределы
