@@ -261,7 +261,94 @@ void Input::readArrInfo(const QString fileName, QVector <Array> &arrs) throw(QSt
 
 void Input::readArrAttributes(Array &arr, QXmlStreamAttributes &atrs, int i) throw(QString&)
 {
-	
+	auto it = atrs.begin();
+	auto itEnd = atrs.end();
+	QString tmpString;
+	Operations ops;
+	int dimNum = 1;
+	QString dimSize = "dim" + QString::number(dimNum) + "size";
+
+	/*! Проверка наличия аттрибутов */
+	if (!atrs.hasAttribute("name"))
+	{
+		QString errorString = "Missed attribute \"name\" in the " + QString::number(i) + " \"array\" tag";
+		throw errorString;
+	}
+	if (!atrs.hasAttribute("dim1size"))
+	{
+		QString errorString = "Missed attribute \"dim1size\" in the " + QString::number(i) + " \"array\" tag";
+		throw errorString;
+	}
+	if (!atrs.hasAttribute("elements"))
+	{
+		QString errorString = "Missed attribute \"elements\" in the " + QString::number(i) + " \"array\" tag";
+		throw errorString;
+	}
+
+	/*! Чтение значений атрибутов тега array */
+	for (it; it != itEnd; ++it)
+	{
+		/*! Чтение атрибута name */
+		if ((*it).name() == "name")
+		{
+			tmpString = (*it).value().toString();
+			if (tmpString == QString(""))
+			{
+				QString errorString = "The value of attribute \"name\" in the " + QString::number(i) + " \"array\" tag is not set";
+				throw errorString;
+			}
+			else
+				arr.name = tmpString;
+		}
+		/*! Чтение атрибута elements */
+		else if ((*it).name() == "elements")
+		{
+			QString elementsString = (*it).value().toString();
+			if (elementsString == QString(""))
+			{
+				QString errorString = "The value of attribute \"elements\" in the " + QString::number(i) + " \"array\" tag is not set";
+				throw errorString;
+			}
+			else
+			{
+				int j = 0;
+				QStringList elements = elementsString.split(" ");
+				while (j < elements.size())
+				{
+					arr.elements << elements[j].toInt();
+					++j;
+				}
+			}
+
+		}
+		/*! Чтение атрибута dimSize */
+		else if ((*it).name() == dimSize)
+		{
+			tmpString = (*it).value().toString();
+			if (tmpString == QString(""))
+			{
+				QString errorString = "The value of attribute \"" + dimSize + "\" in the " + QString::number(i) + " \"array\" tag is not set";
+				throw errorString;
+			}
+			else if (!ops.isPositiveIntNumber(tmpString))
+			{
+				QString errorString = "The size of the " + QString::number(dimNum) + " dimension of \"" + arr.name + "\" array is not a positive integer value";
+				throw errorString;
+			}
+			else if (tmpString.toInt() == 0)
+			{
+				QString errorString = "The value of attribute \"" + dimSize + "\" in the " + QString::number(i) + " \"array\" tag can't be 0";
+				throw errorString;
+			}
+			else
+			{
+				arr.size << tmpString.toInt();
+				arr.isExceeding << false;
+				++dimNum;
+				dimSize = "dim" + QString::number(dimNum) + "size";
+			}
+		}
+	}
 }
 
 void Input::readExpression(const QString fileName, QStringList &expr, const QVector<Index> &vars, const QVector<Array> &arrs) throw(QString&)
