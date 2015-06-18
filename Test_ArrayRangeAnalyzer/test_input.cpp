@@ -75,7 +75,7 @@ void Test_input::readVarInfo_data()
 /*! Не заданы переменные во входном файле */
 	QTest::newRow("12.No Variables") << "../../Tests/readVarInfo/12.No Variables.xml"
 									 << vars
-									 << "There no variables info in ../../Tests/readVarInfo/12.No Variables.xml file";
+									 << "There is no variables info in ../../Tests/readVarInfo/12.No Variables.xml file";
 
 /*! Не выполняющийся цикл (возрастающий, но шаг < 0) */
 	QTest::newRow("13.Non Executable(increasing loop)") << "../../Tests/readVarInfo/13.Non Executable(increasing loop).xml"
