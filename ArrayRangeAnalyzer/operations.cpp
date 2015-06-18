@@ -102,3 +102,15 @@ int Operations::findVar(QString var, const QVector<Index> &vars)
 	}
 	return -1;
 }
+
+int Operations::findArr(QString arr, const QVector<Array> &arrs)
+{
+	int size = arrs.size();
+	for (int i = 0; i < size; ++i)
+	{
+		if (arrs[i].name == arr)
+			return i;
+	}
+	return -1;
+}
+
