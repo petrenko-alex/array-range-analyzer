@@ -48,9 +48,8 @@ void Test_input::readVarInfo_data()
 											 << vars
 											 << "The value of attribute \"to\" in the 1 \"variable\" tag is not an integer value";
 
-
 /*! Задана одна переменная во входном файле */
-	vars << Index("i", 0, 2, -1);
+	vars << Index("i", 0, 2, 1);
 	QTest::newRow("8.One Variable") << "../../Tests/readVarInfo/8.One Variable.xml"
 									<< vars
 									<< "correct";
@@ -77,6 +76,16 @@ void Test_input::readVarInfo_data()
 	QTest::newRow("12.No Variables") << "../../Tests/readVarInfo/12.No Variables.xml"
 									 << vars
 									 << "There no variables info in ../../Tests/readVarInfo/12.No Variables.xml file";
+
+/*! Не выполняющийся цикл (возрастающий, но шаг < 0) */
+	QTest::newRow("13.Non Executable(increasing loop)") << "../../Tests/readVarInfo/13.Non Executable(increasing loop).xml"
+														<< vars
+														<< "Wrong cycle ranges for variable \"i\". Cycle wouldn't execute";
+
+/*! Не выполняющийся цикл (убывающий, но шаг > 0) */
+	QTest::newRow("14.Non Executable(decreasing loop)")	<< "../../Tests/readVarInfo/14.Non Executable(decreasing loop).xml"
+														<< vars
+														<< "Wrong cycle ranges for variable \"i\". Cycle wouldn't execute";
 }
 
 void Test_input::readArrInfo_data()
