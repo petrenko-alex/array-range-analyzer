@@ -353,7 +353,105 @@ void Input::readArrAttributes(Array &arr, QXmlStreamAttributes &atrs, int i) thr
 
 void Input::readExpression(const QString fileName, QStringList &expr, const QVector<Index> &vars, const QVector<Array> &arrs) throw(QString&)
 {
+	QFile file(fileName);
 
+	if (file.open(QIODevice::ReadOnly))
+	{
+		int operandsCounter = 0;
+		int operandsCount = 0;
+		int operationsCount = 0;
+		int arrCounter = 0;
+		bool arrayUsed = false;
+		bool varUsed = false;
+		Operations ops;
+
+		/*! Читаем из файла выражение */
+		QString exprString(file.readAll());
+		if (!exprString.size())
+		{
+			QString errorString = "File " + fileName + " is empty";
+			throw errorString;
+		}
+		/*! Заносим выражение по-элементно в массив строк */
+		expr = exprString.split(" ");
+		int size = expr.size();
+
+		/*! Проверка корректности выражения(допустимые элементы,количество операндов для операции и т.п.) */
+		for (int i = 0; i < size; ++i)
+		{
+			/*! Если встретилось имя массива */
+			if (ops.isDefiniteArray(expr[i], arrs))
+			{
+				arrayUsed = true;
+				int arr = ops.findArr(expr[i], arrs);
+				arrCounter += arrs[arr].size.size();
+			}
+			/*! Если встретилось имя переменной */
+			else if (ops.isDefiniteVariable(expr[i], vars))
+				varUsed = true;
+
+			/*! Если встретился операнд, но не имя массива */
+			if (ops.isOperand(expr[i], vars, arrs) && !ops.isDefiniteArray(expr[i], arrs))
+			{
+				++operandsCount;
+				++operandsCounter;
+			}
+			/*! Если встретилась операция и для нее достаточно операндов */
+			else if (ops.isDefiniteOperation(expr[i]) && operandsCounter >= ops.getArity(expr[i]))
+			{
+				++operationsCount;
+				operandsCounter -= (ops.getArity(expr[i]) - 1);
+				if (expr[i] == QString("[]"))
+				{
+					--arrCounter;
+				}
+			}
+			/*! Если встретилась операция и для нее не достаточно операндов */
+			else if (ops.isDefiniteOperation(expr[i]) && operandsCounter < ops.getArity(expr[i]))
+			{
+				QString errorString = "Wrong expression. Not enough operands to calculate \"" + expr[i] + "\" on the " + QString::number(i + 1) + " position";
+				throw errorString;
+
+			}
+			/*! Если встретился неизвестный элемент */
+			else if (!ops.isDefiniteElement(expr[i], arrs, vars))
+			{
+				QString errorString = "Wrong expression. Undefined element \"" + expr[i] + "\" on the " + QString::number(i + 1) + " position";
+				throw errorString;
+			}
+		}
+
+
+		/*! Проверка соответствия количества операндов и операций */
+		int difference = operandsCount - operationsCount;
+		if (difference > 1)
+		{
+			QString errorString = "Wrong expression. Not enough operations for all the operands. Please, check the expression";
+			throw errorString;
+		}
+		if (arrCounter < 0)
+		{
+			QString errorString = "Wrong expression. Too much square brackets for arrs. Please, check the expression";
+			throw errorString;
+		}
+
+		/*! Проверка наличия заданных переменнных и массивов в выражении */
+		if (!arrayUsed)
+		{
+			QString errorString = "Wrong expression. Definite arrays are not used in the expression. Please, check the expression";
+			throw errorString;
+		}
+		else if (!varUsed)
+		{
+			QString errorString = "Wrong expression. Definite variables are not used in the expression. Please, check the expression";
+			throw errorString;
+		}
+	}
+	else
+	{
+		QString errorString = "Can't open the file " + fileName;
+		throw errorString;
+	}
 }
 
 void Input::checkNonExecutableCycle(QVector<Index> &vars) throw(QString&)
