@@ -349,8 +349,8 @@ void Test_input::readVarInfo()
 	}
 
 	/*! Проверить результат */
-	QVERIFY2(exception == expectedString
-		&& vars		   == expectedVars, "Test failed!");
+	QVERIFY2(exception == expectedString, "Returned string is not correct");
+	QVERIFY2(vars	   == expectedVars, "Returned vars are not correct");
 }
 
 void Test_input::readArrInfo()
@@ -376,8 +376,8 @@ void Test_input::readArrInfo()
 	}
 
 	/*! Проверить результат */
-	QVERIFY2(exception == expectedString
-		&& arrs		   == expectedArrs, "Test failed!");
+	QVERIFY2(exception == expectedString, "Returned string is not correct");
+	QVERIFY2(arrs	   == expectedArrs, "Returned arrs are not correct");
 }
 
 void Test_input::readExpression()
@@ -406,8 +406,8 @@ void Test_input::readExpression()
 	}
 
 	/*! Проверить результат */
-	QVERIFY2(exception == expectedString
-		&& expr		   == expectedExpr,   "Test failed!");
+	QVERIFY2(exception == expectedString, "Returned string is not correct");
+	QVERIFY2(expr	   == expectedExpr, "Returned expression is not correct");
 }
 
 void Test_input::readData()
@@ -430,9 +430,9 @@ void Test_input::readData()
 	success = inp.readData(inputFileNames, vars, arrs, expr);
 
 	/*! Проверить результат */
-	QVERIFY2(vars  == expectedVars
-		&& arrs    == expectedArrs
-		&& expr    == expectedExpr
-		&& success == expectedSuccess, "Test failed!");
+	QVERIFY2(vars	 == expectedVars, "Returned vars are not correct");
+	QVERIFY2(arrs	 == expectedArrs, "Returned arrs are not correct");
+	QVERIFY2(expr	 == expectedExpr, "Returned expression is not correct");
+	QVERIFY2(success == expectedSuccess, "Returned success is not correct");
 
 }
