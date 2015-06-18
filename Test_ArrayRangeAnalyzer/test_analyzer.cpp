@@ -408,8 +408,8 @@ void Test_analyzer::analyzeExpression()
 	}
 
 	/*! Проверить результат */
-	QVERIFY2(exception    == expectedString
-		&& testExceedings == expectedExceedings, "Test failed!");
+	QVERIFY2(exception		== expectedString, "Returned string is not correct");
+	QVERIFY2(testExceedings == expectedExceedings, "Returned exceedings are not correct");
 
 }
 
@@ -437,8 +437,8 @@ void Test_analyzer::checkExpression()
 	}
 
 	/*! Проверить результат */
-	QVERIFY2(exception    == expectedString
-		&& testExceedings == expectedExceedings, "Test failed!");
+	QVERIFY2(exception		== expectedString, "Returned string is not correct");
+	QVERIFY2(testExceedings == expectedExceedings, "Returned exceedings are not correct");
 }
 
 void Test_analyzer::clearData()
