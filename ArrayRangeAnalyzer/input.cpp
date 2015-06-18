@@ -94,7 +94,103 @@ void Input::readVarInfo(const QString fileName, QVector <Index> &vars) throw(QSt
 
 void Input::readVarAttributes(Index &var, QXmlStreamAttributes &atrs, int i) throw(QString&)
 {
+	QString tmpString;
+	Operations ops;
 
+	/*! Чтение значения аттрибута name в теге variable */
+	if (atrs.hasAttribute("name"))
+	{
+		tmpString = atrs.value("name").toString();
+		if (tmpString == QString(""))
+		{
+			QString errorString = "The value of attribute \"name\" in the " + QString::number(i) + " \"variable\" tag is not set";
+			throw errorString;
+		}
+		else
+			var.name = tmpString;
+	}
+	else
+	{
+		QString errorString = "Missed attribute \"name\" in the " + QString::number(i) + " \"variable\" tag";
+		throw errorString;
+	}
+
+	/*! Чтение значения аттрибута from в теге variable */
+	if (atrs.hasAttribute("from"))
+	{
+		tmpString = atrs.value("from").toString();
+		if (tmpString == QString(""))
+		{
+			QString errorString = "The value of attribute \"from\" in the " + QString::number(i) + " \"variable\" tag is not set";
+			throw errorString;
+		}
+		else if (!ops.isIntNumber(tmpString))
+		{
+			QString errorString = "The value of attribute \"from\" in the " + QString::number(i) + " \"variable\" tag is not an integer value";
+			throw errorString;
+		}
+		else
+		{
+			var.curValue = var.from = tmpString.toInt();
+
+		}
+	}
+	else
+	{
+		QString errorString = "Missed attribute \"from\" in the " + QString::number(i) + " \"variable\" tag";
+		throw errorString;
+	}
+
+	/*! Чтение значения аттрибута to в теге variable */
+	if (atrs.hasAttribute("to"))
+	{
+		tmpString = atrs.value("to").toString();
+		if (tmpString == QString(""))
+		{
+			QString errorString = "The value of attribute \"to\" in the " + QString::number(i) + " \"variable\" tag is not set";
+			throw errorString;
+		}
+		else if (!ops.isIntNumber(tmpString))
+		{
+			QString errorString = "The value of attribute \"to\" in the " + QString::number(i) + " \"variable\" tag is not an integer value";
+			throw errorString;
+		}
+		else
+			var.to = tmpString.toInt();
+	}
+	else
+	{
+		QString errorString = "Missed attribute \"to\" in the " + QString::number(i) + " \"variable\" tag";
+		throw errorString;
+	}
+
+	/*! Чтение значения аттрибута step в теге variable */
+	if (atrs.hasAttribute("step"))
+	{
+		tmpString = atrs.value("step").toString();
+		if (tmpString == QString(""))
+		{
+			QString errorString = "The value of attribute \"step\" in the " + QString::number(i) + " \"variable\" tag is not set";
+			throw errorString;
+		}
+		else if (!ops.isIntNumber(tmpString))
+		{
+			QString errorString = "The value of attribute \"step\" in the " + QString::number(i) + " \"variable\" tag is not an integer value";
+			throw errorString;
+		}
+		else if (tmpString.toInt() == 0)
+		{
+			QString errorString = "The value of attribute \"step\" in the " + QString::number(i) + " \"variable\" tag can't be 0";
+			throw errorString;
+		}
+		else
+			var.step = tmpString.toInt();
+	}
+	else
+	{
+		QString errorString = "Missed attribute \"step\" in the " + QString::number(i) + " \"variable\" tag";
+		throw errorString;
+	}
 }
 
 void Input::readArrInfo(const QString fileName, QVector <Array> &arrs) throw(QString&)
