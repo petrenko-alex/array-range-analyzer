@@ -249,12 +249,12 @@ void Test_input::readExpression_data()
 										 << expr
 										 << "Wrong expression. Not enough operations for all the operands. Please, check the expression";
 
-/*! Операций больше чем операндов - лишние операции */
-	QTest::newRow("8.Excess of operations") << "../../Tests/readExpression/8.Excess of operations.txt"
-											<< vars
-											<< arrs
-											<< expr
-											<< "Wrong expression. Excess of operations for the present set of operands. Please, check the expression";
+/*! Избыток квадратных скобок в выражении */
+	QTest::newRow("8.Excess of square brackets")	<< "../../Tests/readExpression/8.Excess of square brackets.txt"
+													<< vars
+													<< arrs
+													<< expr
+													<< "Wrong expression. Too much square brackets for arrs. Please, check the expression";
 
 /*! Корректное выражение */
 		vars << Index("j", 0, 0, 0);
