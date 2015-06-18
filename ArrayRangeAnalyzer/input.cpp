@@ -2,17 +2,67 @@
 
 Input::Input()
 {
-
 }
 
 Input::~Input()
 {
-
 }
 
 bool Input::readData(const QStringList &inputFileNames, QVector <Index> &vars, QVector <Array> &arrs, QStringList &expr)
 {
-	return true;
+	bool isSuccess = true;
+	Output out;
+
+	/*! Читаем информацию о переменных */
+	try
+	{
+		readVarInfo(inputFileNames[0], vars);
+	}
+	catch (QString &errorString)
+	{
+		errorString.prepend("File containing the information about vars:\nFilename: " + inputFileNames[0] + "\nError: ");
+		isSuccess = false;
+		vars.clear();
+		out.writeError(errorString);
+	}
+
+	/*! Читаем информацию о массивах, если чтение переменных произошло успешно */
+	if (isSuccess)
+	{
+		try
+		{
+			readArrInfo(inputFileNames[1], arrs);
+		}
+		catch (QString &errorString)
+		{
+			errorString.prepend("File containing the information about arrs:\nFilename: " + inputFileNames[1] + "\nError: ");
+			isSuccess = false;
+			arrs.clear();
+			out.writeError(errorString);
+		}
+	}
+
+	/*! Читаем выражение, если чтение переменных и массивов произошло успешно */
+	if (isSuccess)
+	{
+		try
+		{
+			readExpression(inputFileNames[2], expr, vars, arrs);
+		}
+		catch (QString &errorString)
+		{
+			errorString.prepend("File containing the expression:\nFilename: " + inputFileNames[2] + "\nError: ");
+			isSuccess = false;
+			expr.clear();
+			out.writeError(errorString);
+		}
+	}
+	
+	/*! Освобождаем вектора переменных и массивов от неиспользующихся в выражении переменных и массивов */
+	if (isSuccess)
+		removeUnusedVarsAndArrs(arrs, vars, expr);
+
+	return isSuccess;
 }
 
 void Input::readVarInfo(const QString fileName, QVector <Index> &vars) throw(QString&)
