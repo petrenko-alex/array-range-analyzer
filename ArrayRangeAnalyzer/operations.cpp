@@ -62,6 +62,11 @@ bool Operations::isPositiveIntNumber(const QString &number)
 	return match.exactMatch(number);
 }
 
+bool Operations::isNumber(const QString &number)
+{
+	return isIntNumber(number) || isFloatNumber(number);
+}
+
 bool Operations::isOperand(const QString &operand, const QVector<Index> &vars, const QVector<Array> &arrs)
 {
 	return isIntNumber(operand) || isFloatNumber(operand) || isDefiniteVariable(operand, vars) || isDefiniteArray(operand, arrs);
