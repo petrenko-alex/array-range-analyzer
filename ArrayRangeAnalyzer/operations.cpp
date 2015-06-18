@@ -3,7 +3,6 @@
 
 Operations::Operations()
 {
-
 	/*! Заполняем контейнер QMap операциями и их арностью */
 	for (int i = 0; i < opsCount; ++i)
 	{
@@ -65,9 +64,7 @@ bool Operations::isPositiveIntNumber(const QString &number)
 
 bool Operations::isOperand(const QString &operand, const QVector<Index> &vars, const QVector<Array> &arrs)
 {
-	// Добавить целые числа??????????????????????????????????????????????????????????
-
-	return isFloatNumber(operand) || isDefiniteVariable(operand, vars) || isDefiniteArray(operand, arrs);
+	return isIntNumber(operand) || isFloatNumber(operand) || isDefiniteVariable(operand, vars) || isDefiniteArray(operand, arrs);
 }
 
 bool Operations::isDefiniteArray(const QString &arr, const QVector<Array> &arrs)
