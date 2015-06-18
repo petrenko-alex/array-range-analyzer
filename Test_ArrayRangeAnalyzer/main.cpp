@@ -5,17 +5,12 @@
 
 int main(int argc, char *argv[])
 {	
-	/*!
-	 * ПРИМЕЧАНИЕ!!!!!!
-	 * Установлен аргумент командной строки -o TESTSOUTPUT.txt
-	 * Для вывода результатов тестирования в файл
-	 */
 
-	/*! Вызов тестирующих функций */
-	QTest::qExec(&Test_input(),	   argc,argv);
+	/*! Запуск тестов */
+	QTest::qExec(&Test_input(), argc, argv);
 	printf("\n\n\n");
 	QTest::qExec(&Test_analyzer(), argc, argv);
-
+	
 	getchar();
 	return 0;
 }
