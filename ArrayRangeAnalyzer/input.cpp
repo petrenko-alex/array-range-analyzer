@@ -39,3 +39,13 @@ void Input::readExpression(const QString fileName, QStringList &expr, const QVec
 {
 
 }
+
+void Input::checkNonExecutableCycle(QVector<Index> &vars) throw(QString&)
+{
+
+}
+
+void Input::removeUnusedVarsAndArrs(QVector<Array> &arrs, QVector<Index> &vars, QStringList &expr)
+{
+
+}

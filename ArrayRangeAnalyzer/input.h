@@ -15,7 +15,7 @@
 #include <QtXml >
 #include "array.h"
 #include "index.h"
-//#include "operations.h"
+#include "operations.h"
 
 
 /*!
@@ -27,15 +27,17 @@
 class Input
 {
 public:
+	/*! Конструктор по-умолчанию */
 	Input();
+	/*! Деструктор */
 	~Input();
 
 	/*!
 	 * Считывает входные данные программы
 	 *\param[in]  inputFileNames	имена входных файлов
-	 *\param[out] vars				вектор объектов класса \ref index – информация о переменных
+	 *\param[out] vars				вектор объектов класса \ref Index – информация о переменных
 	 *\param[out] arrs				вектор объектов класса \ref Array - информация о массивах
-	 *\param[out] expr				выражение в виже списка строк
+	 *\param[out] expr				выражение в виде списка строк
 	 *\return						признак успешности считывания
 	 */
 	bool readData(const QStringList &inputFileNames, QVector <Index> &vars, QVector <Array> &arrs, QStringList &expr);
@@ -44,14 +46,14 @@ public:
 	/*!
 	 * Считывает входной файл с информацией об использующихся в выражении переменных
 	 *\param[in]  fileName      имя файла входных данных с информацией о переменных
-	 *\param[out] vars          вектор объектов класса \ref index – информация о переменных
+	 *\param[out] vars          вектор объектов класса \ref Index – информация о переменных
 	 *\exception  errorString   строка с информацией о возникшем исключении
 	 */
 	void readVarInfo(const QString fileName, QVector <Index> &vars) throw(QString&);
 
 	/*!
 	 * Считывает значения аттрибутов тега variable в файле входных данных с информацией о переменных
-	 *\param[out] var          объект класса \ref index , в который происходит считывание данных
+	 *\param[out] var          объект класса \ref Index , в который происходит считывание данных
 	 *\param[in]  atrs         аттрибуты тега variable
 	 *\param[in]  i            номер тега variable в файле
 	 *\exception  errorString  строка с информацией о возникшем исключении
@@ -84,6 +86,24 @@ public:
 	 *\exception  errorString   строка с информацией о возникшем исключении
 	 */
 	void readExpression(const QString fileName, QStringList  &expr, const QVector<Index> &vars, const QVector<Array> &arrs) throw(QString&);
+
+	/*!
+	 * Проверяет считанные переменные на корректность границ и шага
+	 * Отсеивает случаи когда цикл выполняться не будет
+	 *\param[in] vars вектор объектов класса \ref Index – информация о переменных
+	 *\exception errorString строка с информацией о возникшем исключении
+	 */
+	void checkNonExecutableCycle(QVector<Index> &vars) throw(QString&);
+
+	/*!
+	 * Удаляет не использующиеся в выражении переменные и массивы
+	 * из векторов vars и arrs соответственно
+	 *\param[in|out] vars вектор объектов класса \ref Index – информация о переменных
+	 *\param[in|out] arrs вектор объектов класса \ref Array - информация о массивах
+	 *\param[in]     expr выражение в виде списка строк
+	 */
+	void removeUnusedVarsAndArrs(QVector<Array> &arrs, QVector<Index> &vars, QStringList &expr);
+
 };
 
 #endif // INPUT_H
