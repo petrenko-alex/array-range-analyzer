@@ -15,6 +15,7 @@
 #include <QtXml >
 #include "array.h"
 #include "index.h"
+#include "output.h"
 #include "operations.h"
 
 

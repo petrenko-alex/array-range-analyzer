@@ -45,7 +45,6 @@ bool Operations::isDefiniteVariable(const QString &var, const QVector<Index> &va
 
 bool Operations::isFloatNumber(const QString &number)
 {
-	// ^[-+]?[0-9]*\.?[0-9]+$ - problems with b2 #2 +-2, 2,21 , but 2b is OK
 	QRegExp match("^[-+]?[0-9]*\.?[0-9]+$");
 	return match.exactMatch(number);
 }
