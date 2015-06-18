@@ -12,20 +12,20 @@ class Test_analyzer : public QObject
 
 private slots:
 
-	/*! Подготавливает данные для тестирования analyzeExpression */
+	/*! РџРѕРґРіРѕС‚Р°РІР»РёРІР°РµС‚ РґР°РЅРЅС‹Рµ РґР»СЏ С‚РµСЃС‚РёСЂРѕРІР°РЅРёСЏ analyzeExpression */
 	void analyzeExpression_data();
 
-	/*! Подготавливает данные для тестирования checkExpression */
+	/*! РџРѕРґРіРѕС‚Р°РІР»РёРІР°РµС‚ РґР°РЅРЅС‹Рµ РґР»СЏ С‚РµСЃС‚РёСЂРѕРІР°РЅРёСЏ checkExpression */
 	void checkExpression_data();
 
-	/*! Тестирует функцию analyzeExpression */
+	/*! РўРµСЃС‚РёСЂСѓРµС‚ С„СѓРЅРєС†РёСЋ analyzeExpression */
 	void analyzeExpression();
 
-	/*! Тестирует функцию checkExpression */
+	/*! РўРµСЃС‚РёСЂСѓРµС‚ С„СѓРЅРєС†РёСЋ checkExpression */
 	void checkExpression();
 
 private:
-	/*! Очищает содержимое контейнеров класса */
+	/*! РћС‡РёС‰Р°РµС‚ СЃРѕРґРµСЂР¶РёРјРѕРµ РєРѕРЅС‚РµР№РЅРµСЂРѕРІ РєР»Р°СЃСЃР° */
 	void clearData();
 
 	QVector<Index>     vars;

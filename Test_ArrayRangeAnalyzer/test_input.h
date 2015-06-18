@@ -12,28 +12,28 @@ class Test_input : public QObject
 	Q_OBJECT
 
 private slots:
-	/*! Подготавливает данные для тестирования readVarInfo */
+	/*! РџРѕРґРіРѕС‚Р°РІР»РёРІР°РµС‚ РґР°РЅРЅС‹Рµ РґР»СЏ С‚РµСЃС‚РёСЂРѕРІР°РЅРёСЏ readVarInfo */
 	void readVarInfo_data();
 
-	/*! Подготавливает данные для тестирования readArrInfo */
+	/*! РџРѕРґРіРѕС‚Р°РІР»РёРІР°РµС‚ РґР°РЅРЅС‹Рµ РґР»СЏ С‚РµСЃС‚РёСЂРѕРІР°РЅРёСЏ readArrInfo */
 	void readArrInfo_data();
 
-	/*! Подготавливает данные для тестирования readExpression */
+	/*! РџРѕРґРіРѕС‚Р°РІР»РёРІР°РµС‚ РґР°РЅРЅС‹Рµ РґР»СЏ С‚РµСЃС‚РёСЂРѕРІР°РЅРёСЏ readExpression */
 	void readExpression_data();
 
-	/*! Подготавливает данные для тестирования readData */
+	/*! РџРѕРґРіРѕС‚Р°РІР»РёРІР°РµС‚ РґР°РЅРЅС‹Рµ РґР»СЏ С‚РµСЃС‚РёСЂРѕРІР°РЅРёСЏ readData */
 	void readData_data();
 
-	/*! Тестирует функцию readVarInfo */
+	/*! РўРµСЃС‚РёСЂСѓРµС‚ С„СѓРЅРєС†РёСЋ readVarInfo */
 	void readVarInfo();
 
-	/*! Тестирует функцию readArrInfo*/
+	/*! РўРµСЃС‚РёСЂСѓРµС‚ С„СѓРЅРєС†РёСЋ readArrInfo*/
 	void readArrInfo();
 
-	/*! Тестирует функцию readExpression*/
+	/*! РўРµСЃС‚РёСЂСѓРµС‚ С„СѓРЅРєС†РёСЋ readExpression*/
 	void readExpression();
 
-	/*! Тестирует функцию readData*/
+	/*! РўРµСЃС‚РёСЂСѓРµС‚ С„СѓРЅРєС†РёСЋ readData*/
  	void readData();
 };
 
