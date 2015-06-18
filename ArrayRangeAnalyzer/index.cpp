@@ -9,6 +9,7 @@ Index::Index()
 	this->prevValue = 0;
 	this->step		= 0;
 	this->looped	= 10;
+	this->usedInExpression = false;
 }
 
 Index::Index(QString name, int from, int to, int step, int looped /*= 10*/)
