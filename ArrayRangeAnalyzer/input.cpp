@@ -456,7 +456,21 @@ void Input::readExpression(const QString fileName, QStringList &expr, const QVec
 
 void Input::checkNonExecutableCycle(QVector<Index> &vars) throw(QString&)
 {
-
+	for (auto &var : vars)
+	{
+		/*! Если цикл возрастающий, а шаг меньше нуля - отрицательный */
+		if (var.from < var.to && var.step < 0)
+		{
+			QString errorString = "Wrong cycle ranges for variable \"" + var.name + "\". Cycle wouldn't execute";
+			throw errorString;
+		}
+		/*! Если цикл убывающий, а шаг больше нуля - положительный */
+		else if (var.from > var.to && var.step > 0)
+		{
+			QString errorString = "Wrong cycle ranges for variable \"" + var.name + "\". Cycle wouldn't execute";
+			throw errorString;
+		}
+	}
 }
 
 void Input::removeUnusedVarsAndArrs(QVector<Array> &arrs, QVector<Index> &vars, QStringList &expr)
