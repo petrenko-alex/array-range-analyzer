@@ -1,5 +1,7 @@
 #include "output.h"
 
+static bool isError = false;
+
 Output::Output()
 {
 	this->errorFileName = "ArrayRangeAnalyzer-Errors.txt";
@@ -13,7 +15,17 @@ Output::~Output()
 
 void Output::writeError(QString &errorString)
 {
-
+	QString intro("*******************************************Array Range Analyzer*******************************************");
+	isError = true;
+	QFile file(errorFileName);
+	/*! Записываем полученную строку в файл */
+	if (file.open(QIODevice::Append))
+	{
+		QTextStream out(&file);
+		out << intro << endl << endl;
+		out << errorString << endl << endl;
+		file.close();
+	}
 }
 
 void Output::makeOutputFile(QVector<Exceeding> &exceedings, const QVector<Array> &arrs, const QStringList &inputFileNames)
