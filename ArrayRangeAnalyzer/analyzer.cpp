@@ -908,5 +908,19 @@ void Analyzer::nextIteration(QVector<Index>::iterator &varIt, QVector<Index> &va
 
 void Analyzer::checkEndlessLoop(QVector<Index>::iterator &var, QVector<Index> &vars, int *loop) throw(QString&)
 {
+	int index = ops.findVar((*var).name, vars);
 
+	/*! ≈сли текущее значение переменной(после перехода на новую итерацию) равно предыдущему */
+	if ((*var).curValue == (*var).prevValue)
+	{
+		/*! ”величиваем счетчик повторных значений дл€ данной переменной */
+		++loop[index];
+	}
+
+	/*! ≈сли счетчик повторных значений достиг максимального значени€ */
+	if (loop[index] > (*var).looped)
+	{
+		QString errorString = "Variable \"" + (*var).name + "\" is got caught in an endless loop";
+		throw errorString;
+	}
 }
