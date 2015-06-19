@@ -717,5 +717,19 @@ void Analyzer::disableUsedInExpressionFlags(QVector<Index> &vars)
 
 void Analyzer::unaryMinusOrTypeConversion(stackElement &element, double &value, int op /*= 0*/)
 {
+	/*! Если установлен флаг negative */
+	if (element.negative && (op == 0 || op == 1))
+	{
+		/*! Делаем значение value отрицательным и обнуляем флаг negative */
+		value = -value;
+		element.negative = false;
+	}
 
+	/*! Если установлен флаг intNeeded */
+	if (element.intNeeded && (op == 0 || op == 2))
+	{
+		/*! Приводим value к int и обнуляем флаг intNeeded */
+		value = (int)value;
+		element.intNeeded = false;
+	}
 }
