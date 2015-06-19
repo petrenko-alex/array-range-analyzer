@@ -68,7 +68,7 @@ void Test_analyzer::analyzeExpression_data()
 		inp.readData(fileNames, vars, arrs, expr);
 		vars[0].curValue	= 5;
 		arrs[0].isExceeding[0] = true;
-	QTest::newRow("7.Operation With Undefined Element") << vars << arrs << expr << exceedings << "Operation with undefined element is detected on the 9 position during the 1 iteration";
+	QTest::newRow("7.Operation With Undefined Element") << vars << arrs << expr << exceedings << "Critical operation with undefined element is detected on the 9 position during the 1 iteration";
 
 /*! Префиксная инкрементация, приводящая к выходу */
 		fileNames[2] = "../../Tests/analyzeExpression/8.txt";
