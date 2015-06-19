@@ -99,8 +99,8 @@ public:
 	/*!
 	 * Удаляет не использующиеся в выражении переменные и массивы
 	 * из векторов vars и arrs соответственно
-	 *\param[in|out] vars вектор объектов класса \ref Index – информация о переменных
-	 *\param[in|out] arrs вектор объектов класса \ref Array - информация о массивах
+	 *\param[in,out] vars вектор объектов класса \ref Index – информация о переменных
+	 *\param[in,out] arrs вектор объектов класса \ref Array - информация о массивах
 	 *\param[in]     expr выражение в виде списка строк
 	 */
 	void removeUnusedVarsAndArrs(QVector<Array> &arrs, QVector<Index> &vars, QStringList &expr);
