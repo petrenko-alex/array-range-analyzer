@@ -13,7 +13,7 @@ bool Input::readData(const QStringList &inputFileNames, QVector <Index> &vars, Q
 	bool isSuccess = true;
 	Output out;
 
-	/*! Читаем информацию о переменных */
+	/*! Р§РёС‚Р°РµРј РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ РїРµСЂРµРјРµРЅРЅС‹С… */
 	try
 	{
 		readVarInfo(inputFileNames[0], vars);
@@ -26,7 +26,7 @@ bool Input::readData(const QStringList &inputFileNames, QVector <Index> &vars, Q
 		out.writeError(errorString);
 	}
 
-	/*! Читаем информацию о массивах, если чтение переменных произошло успешно */
+	/*! Р§РёС‚Р°РµРј РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ РјР°СЃСЃРёРІР°С…, РµСЃР»Рё С‡С‚РµРЅРёРµ РїРµСЂРµРјРµРЅРЅС‹С… РїСЂРѕРёР·РѕС€Р»Рѕ СѓСЃРїРµС€РЅРѕ */
 	if (isSuccess)
 	{
 		try
@@ -42,7 +42,7 @@ bool Input::readData(const QStringList &inputFileNames, QVector <Index> &vars, Q
 		}
 	}
 
-	/*! Читаем выражение, если чтение переменных и массивов произошло успешно */
+	/*! Р§РёС‚Р°РµРј РІС‹СЂР°Р¶РµРЅРёРµ, РµСЃР»Рё С‡С‚РµРЅРёРµ РїРµСЂРµРјРµРЅРЅС‹С… Рё РјР°СЃСЃРёРІРѕРІ РїСЂРѕРёР·РѕС€Р»Рѕ СѓСЃРїРµС€РЅРѕ */
 	if (isSuccess)
 	{
 		try
@@ -58,7 +58,7 @@ bool Input::readData(const QStringList &inputFileNames, QVector <Index> &vars, Q
 		}
 	}
 	
-	/*! Освобождаем вектора переменных и массивов от неиспользующихся в выражении переменных и массивов */
+	/*! РћСЃРІРѕР±РѕР¶РґР°РµРј РІРµРєС‚РѕСЂР° РїРµСЂРµРјРµРЅРЅС‹С… Рё РјР°СЃСЃРёРІРѕРІ РѕС‚ РЅРµРёСЃРїРѕР»СЊР·СѓСЋС‰РёС…СЃСЏ РІ РІС‹СЂР°Р¶РµРЅРёРё РїРµСЂРµРјРµРЅРЅС‹С… Рё РјР°СЃСЃРёРІРѕРІ */
 	if (isSuccess)
 		removeUnusedVarsAndArrs(arrs, vars, expr);
 
@@ -78,23 +78,23 @@ void Input::readVarInfo(const QString fileName, QVector <Index> &vars) throw(QSt
 		{	
 			QXmlStreamReader::TokenType token = reader.readNext();
 
-			/*! Если встретился открывающий тег variable */
+			/*! Р•СЃР»Рё РІСЃС‚СЂРµС‚РёР»СЃСЏ РѕС‚РєСЂС‹РІР°СЋС‰РёР№ С‚РµРі variable */
 			if (token == QXmlStreamReader::StartElement && reader.name() == "variable")
 			{	
 				Index var;
-				/*! Нельзя задать более 3 переменных */
+				/*! РќРµР»СЊР·СЏ Р·Р°РґР°С‚СЊ Р±РѕР»РµРµ 3 РїРµСЂРµРјРµРЅРЅС‹С… */
 				if (i > 3)
 				{
 					QString errorString = "You can't use more than 3 variables in " + fileName + " file";
 					throw errorString;
 				}
 
-				/*! Получаем атрибуты тега variable */
+				/*! РџРѕР»СѓС‡Р°РµРј Р°С‚СЂРёР±СѓС‚С‹ С‚РµРіР° variable */
 				QXmlStreamAttributes atrs = reader.attributes();
 
 				try
 				{
-					/*! Читаем значения атрибутов тега variable */
+					/*! Р§РёС‚Р°РµРј Р·РЅР°С‡РµРЅРёСЏ Р°С‚СЂРёР±СѓС‚РѕРІ С‚РµРіР° variable */
 					readVarAttributes(var, atrs, i);
 				}
 				catch (...)
@@ -102,13 +102,13 @@ void Input::readVarInfo(const QString fileName, QVector <Index> &vars) throw(QSt
 					file.close();
 					throw;
 				}
-				/*! Сохраняем считанную переменную в вектор */
+				/*! РЎРѕС…СЂР°РЅСЏРµРј СЃС‡РёС‚Р°РЅРЅСѓСЋ РїРµСЂРµРјРµРЅРЅСѓСЋ РІ РІРµРєС‚РѕСЂ */
 				vars << var;
 			}
-			/*! Если встретился закрывающий тег variable */
+			/*! Р•СЃР»Рё РІСЃС‚СЂРµС‚РёР»СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰РёР№ С‚РµРі variable */
 			else if (token == QXmlStreamReader::EndElement && reader.name() == "variable")
 				++i;
-			/*! Если встретился неизвестный тег */
+			/*! Р•СЃР»Рё РІСЃС‚СЂРµС‚РёР»СЃСЏ РЅРµРёР·РІРµСЃС‚РЅС‹Р№ С‚РµРі */
 			else if (token == QXmlStreamReader::StartElement && reader.name() != "arrayRanges")
 			{
 				file.close();
@@ -119,20 +119,20 @@ void Input::readVarInfo(const QString fileName, QVector <Index> &vars) throw(QSt
 
 		file.close();
 
-		/*! Ошибки в структуре xml файла */
+		/*! РћС€РёР±РєРё РІ СЃС‚СЂСѓРєС‚СѓСЂРµ xml С„Р°Р№Р»Р° */
 		if (reader.hasError())
 		{
 			QString errorString = "File structure error in the file " + fileName + " containing the variable's info";
 			throw errorString;
 		}
 
-		/*! В файле не заданы переменные */
+		/*! Р’ С„Р°Р№Р»Рµ РЅРµ Р·Р°РґР°РЅС‹ РїРµСЂРµРјРµРЅРЅС‹Рµ */
 		if (vars.isEmpty())
 		{
 			QString errorString = "There is no variables info in " + fileName + " file";
 			throw errorString;
 		}
-		/*! Проверка на невыполняющиеся циклы */
+		/*! РџСЂРѕРІРµСЂРєР° РЅР° РЅРµРІС‹РїРѕР»РЅСЏСЋС‰РёРµСЃСЏ С†РёРєР»С‹ */
 		checkNonExecutableCycle(vars);
 	}
 	else
@@ -147,7 +147,7 @@ void Input::readVarAttributes(Index &var, QXmlStreamAttributes &atrs, int i) thr
 	QString tmpString;
 	Operations ops;
 
-	/*! Чтение значения аттрибута name в теге variable */
+	/*! Р§С‚РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ Р°С‚С‚СЂРёР±СѓС‚Р° name РІ С‚РµРіРµ variable */
 	if (atrs.hasAttribute("name"))
 	{
 		tmpString = atrs.value("name").toString();
@@ -165,7 +165,7 @@ void Input::readVarAttributes(Index &var, QXmlStreamAttributes &atrs, int i) thr
 		throw errorString;
 	}
 
-	/*! Чтение значения аттрибута from в теге variable */
+	/*! Р§С‚РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ Р°С‚С‚СЂРёР±СѓС‚Р° from РІ С‚РµРіРµ variable */
 	if (atrs.hasAttribute("from"))
 	{
 		tmpString = atrs.value("from").toString();
@@ -191,7 +191,7 @@ void Input::readVarAttributes(Index &var, QXmlStreamAttributes &atrs, int i) thr
 		throw errorString;
 	}
 
-	/*! Чтение значения аттрибута to в теге variable */
+	/*! Р§С‚РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ Р°С‚С‚СЂРёР±СѓС‚Р° to РІ С‚РµРіРµ variable */
 	if (atrs.hasAttribute("to"))
 	{
 		tmpString = atrs.value("to").toString();
@@ -214,7 +214,7 @@ void Input::readVarAttributes(Index &var, QXmlStreamAttributes &atrs, int i) thr
 		throw errorString;
 	}
 
-	/*! Чтение значения аттрибута step в теге variable */
+	/*! Р§С‚РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ Р°С‚С‚СЂРёР±СѓС‚Р° step РІ С‚РµРіРµ variable */
 	if (atrs.hasAttribute("step"))
 	{
 		tmpString = atrs.value("step").toString();
@@ -255,15 +255,15 @@ void Input::readArrInfo(const QString fileName, QVector <Array> &arrs) throw(QSt
 		while (!reader.atEnd() && !reader.hasError())
 		{
 			QXmlStreamReader::TokenType token = reader.readNext();
-			/*! Если встретился открывающий тег array */
+			/*! Р•СЃР»Рё РІСЃС‚СЂРµС‚РёР»СЃСЏ РѕС‚РєСЂС‹РІР°СЋС‰РёР№ С‚РµРі array */
 			if (token == QXmlStreamReader::StartElement && reader.name() == "array")
 			{
 				Array arr;
-				/*! Получаем атрибуты тега array */
+				/*! РџРѕР»СѓС‡Р°РµРј Р°С‚СЂРёР±СѓС‚С‹ С‚РµРіР° array */
 				QXmlStreamAttributes atrs = reader.attributes();
 				try
 				{
-					/*! Читаем значения атрибутов тега array */
+					/*! Р§РёС‚Р°РµРј Р·РЅР°С‡РµРЅРёСЏ Р°С‚СЂРёР±СѓС‚РѕРІ С‚РµРіР° array */
 					readArrAttributes(arr, atrs, i);
 				}
 				catch (...)
@@ -271,13 +271,13 @@ void Input::readArrInfo(const QString fileName, QVector <Array> &arrs) throw(QSt
 					file.close();
 					throw;
 				}
-				/*! Сохраняем считанный массив в вектор */
+				/*! РЎРѕС…СЂР°РЅСЏРµРј СЃС‡РёС‚Р°РЅРЅС‹Р№ РјР°СЃСЃРёРІ РІ РІРµРєС‚РѕСЂ */
 				arrs << arr;
 			}
-			/*! Если встретился закрывающий тег array */
+			/*! Р•СЃР»Рё РІСЃС‚СЂРµС‚РёР»СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰РёР№ С‚РµРі array */
 			else if (token == QXmlStreamReader::EndElement && reader.name() == "array")
 				++i;
-			/*! Если встретился неизвестный тег */
+			/*! Р•СЃР»Рё РІСЃС‚СЂРµС‚РёР»СЃСЏ РЅРµРёР·РІРµСЃС‚РЅС‹Р№ С‚РµРі */
 			else if (token == QXmlStreamReader::StartElement && reader.name() != "arrayInfo")
 			{
 				QString errorString = "Unknown tag \"" + reader.name().toString() + "\"";
@@ -287,14 +287,14 @@ void Input::readArrInfo(const QString fileName, QVector <Array> &arrs) throw(QSt
 
 		file.close();
 
-		/*! Ошибки в структуре xml файла */
+		/*! РћС€РёР±РєРё РІ СЃС‚СЂСѓРєС‚СѓСЂРµ xml С„Р°Р№Р»Р° */
 		if (reader.hasError())
 		{
 			QString errorString = "File structure error in the file " + fileName + " containing the array's info";
 			throw errorString;
 		}
 
-		/*! В файле не заданы массивы */
+		/*! Р’ С„Р°Р№Р»Рµ РЅРµ Р·Р°РґР°РЅС‹ РјР°СЃСЃРёРІС‹ */
 		if (arrs.isEmpty())
 		{
 			QString errorString = "There no arrays info in " + fileName + " file";
@@ -318,7 +318,7 @@ void Input::readArrAttributes(Array &arr, QXmlStreamAttributes &atrs, int i) thr
 	int dimNum = 1;
 	QString dimSize = "dim" + QString::number(dimNum) + "size";
 
-	/*! Проверка наличия аттрибутов */
+	/*! РџСЂРѕРІРµСЂРєР° РЅР°Р»РёС‡РёСЏ Р°С‚С‚СЂРёР±СѓС‚РѕРІ */
 	if (!atrs.hasAttribute("name"))
 	{
 		QString errorString = "Missed attribute \"name\" in the " + QString::number(i) + " \"array\" tag";
@@ -335,10 +335,10 @@ void Input::readArrAttributes(Array &arr, QXmlStreamAttributes &atrs, int i) thr
 		throw errorString;
 	}
 
-	/*! Чтение значений атрибутов тега array */
+	/*! Р§С‚РµРЅРёРµ Р·РЅР°С‡РµРЅРёР№ Р°С‚СЂРёР±СѓС‚РѕРІ С‚РµРіР° array */
 	for (it; it != itEnd; ++it)
 	{
-		/*! Чтение атрибута name */
+		/*! Р§С‚РµРЅРёРµ Р°С‚СЂРёР±СѓС‚Р° name */
 		if ((*it).name() == "name")
 		{
 			tmpString = (*it).value().toString();
@@ -350,7 +350,7 @@ void Input::readArrAttributes(Array &arr, QXmlStreamAttributes &atrs, int i) thr
 			else
 				arr.name = tmpString;
 		}
-		/*! Чтение атрибута elements */
+		/*! Р§С‚РµРЅРёРµ Р°С‚СЂРёР±СѓС‚Р° elements */
 		else if ((*it).name() == "elements")
 		{
 			QString elementsString = (*it).value().toString();
@@ -371,7 +371,7 @@ void Input::readArrAttributes(Array &arr, QXmlStreamAttributes &atrs, int i) thr
 			}
 
 		}
-		/*! Чтение атрибута dimSize */
+		/*! Р§С‚РµРЅРёРµ Р°С‚СЂРёР±СѓС‚Р° dimSize */
 		else if ((*it).name() == dimSize)
 		{
 			tmpString = (*it).value().toString();
@@ -415,38 +415,38 @@ void Input::readExpression(const QString fileName, QStringList &expr, const QVec
 		bool varUsed = false;
 		Operations ops;
 
-		/*! Читаем из файла выражение */
+		/*! Р§РёС‚Р°РµРј РёР· С„Р°Р№Р»Р° РІС‹СЂР°Р¶РµРЅРёРµ */
 		QString exprString(file.readAll());
 		if (!exprString.size())
 		{
 			QString errorString = "File " + fileName + " is empty";
 			throw errorString;
 		}
-		/*! Заносим выражение по-элементно в массив строк */
+		/*! Р—Р°РЅРѕСЃРёРј РІС‹СЂР°Р¶РµРЅРёРµ РїРѕ-СЌР»РµРјРµРЅС‚РЅРѕ РІ РјР°СЃСЃРёРІ СЃС‚СЂРѕРє */
 		expr = exprString.split(" ");
 		int size = expr.size();
 
-		/*! Проверка корректности выражения(допустимые элементы,количество операндов для операции и т.п.) */
+		/*! РџСЂРѕРІРµСЂРєР° РєРѕСЂСЂРµРєС‚РЅРѕСЃС‚Рё РІС‹СЂР°Р¶РµРЅРёСЏ(РґРѕРїСѓСЃС‚РёРјС‹Рµ СЌР»РµРјРµРЅС‚С‹,РєРѕР»РёС‡РµСЃС‚РІРѕ РѕРїРµСЂР°РЅРґРѕРІ РґР»СЏ РѕРїРµСЂР°С†РёРё Рё С‚.Рї.) */
 		for (int i = 0; i < size; ++i)
 		{
-			/*! Если встретилось имя массива */
+			/*! Р•СЃР»Рё РІСЃС‚СЂРµС‚РёР»РѕСЃСЊ РёРјСЏ РјР°СЃСЃРёРІР° */
 			if (ops.isDefiniteArray(expr[i], arrs))
 			{
 				arrayUsed = true;
 				int arr = ops.findArr(expr[i], arrs);
 				arrCounter += arrs[arr].size.size();
 			}
-			/*! Если встретилось имя переменной */
+			/*! Р•СЃР»Рё РІСЃС‚СЂРµС‚РёР»РѕСЃСЊ РёРјСЏ РїРµСЂРµРјРµРЅРЅРѕР№ */
 			else if (ops.isDefiniteVariable(expr[i], vars))
 				varUsed = true;
 
-			/*! Если встретился операнд, но не имя массива */
+			/*! Р•СЃР»Рё РІСЃС‚СЂРµС‚РёР»СЃСЏ РѕРїРµСЂР°РЅРґ, РЅРѕ РЅРµ РёРјСЏ РјР°СЃСЃРёРІР° */
 			if (ops.isOperand(expr[i], vars, arrs) && !ops.isDefiniteArray(expr[i], arrs))
 			{
 				++operandsCount;
 				++operandsCounter;
 			}
-			/*! Если встретилась операция и для нее достаточно операндов */
+			/*! Р•СЃР»Рё РІСЃС‚СЂРµС‚РёР»Р°СЃСЊ РѕРїРµСЂР°С†РёСЏ Рё РґР»СЏ РЅРµРµ РґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РѕРїРµСЂР°РЅРґРѕРІ */
 			else if (ops.isDefiniteOperation(expr[i]) && operandsCounter >= ops.getArity(expr[i]))
 			{
 				++operationsCount;
@@ -456,14 +456,14 @@ void Input::readExpression(const QString fileName, QStringList &expr, const QVec
 					--arrCounter;
 				}
 			}
-			/*! Если встретилась операция и для нее не достаточно операндов */
+			/*! Р•СЃР»Рё РІСЃС‚СЂРµС‚РёР»Р°СЃСЊ РѕРїРµСЂР°С†РёСЏ Рё РґР»СЏ РЅРµРµ РЅРµ РґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РѕРїРµСЂР°РЅРґРѕРІ */
 			else if (ops.isDefiniteOperation(expr[i]) && operandsCounter < ops.getArity(expr[i]))
 			{
 				QString errorString = "Wrong expression. Not enough operands to calculate \"" + expr[i] + "\" on the " + QString::number(i + 1) + " position";
 				throw errorString;
 
 			}
-			/*! Если встретился неизвестный элемент */
+			/*! Р•СЃР»Рё РІСЃС‚СЂРµС‚РёР»СЃСЏ РЅРµРёР·РІРµСЃС‚РЅС‹Р№ СЌР»РµРјРµРЅС‚ */
 			else if (!ops.isDefiniteElement(expr[i], arrs, vars))
 			{
 				QString errorString = "Wrong expression. Undefined element \"" + expr[i] + "\" on the " + QString::number(i + 1) + " position";
@@ -472,7 +472,7 @@ void Input::readExpression(const QString fileName, QStringList &expr, const QVec
 		}
 
 
-		/*! Проверка соответствия количества операндов и операций */
+		/*! РџСЂРѕРІРµСЂРєР° СЃРѕРѕС‚РІРµС‚СЃС‚РІРёСЏ РєРѕР»РёС‡РµСЃС‚РІР° РѕРїРµСЂР°РЅРґРѕРІ Рё РѕРїРµСЂР°С†РёР№ */
 		int difference = operandsCount - operationsCount;
 		if (difference > 1)
 		{
@@ -485,7 +485,7 @@ void Input::readExpression(const QString fileName, QStringList &expr, const QVec
 			throw errorString;
 		}
 
-		/*! Проверка наличия заданных переменнных и массивов в выражении */
+		/*! РџСЂРѕРІРµСЂРєР° РЅР°Р»РёС‡РёСЏ Р·Р°РґР°РЅРЅС‹С… РїРµСЂРµРјРµРЅРЅРЅС‹С… Рё РјР°СЃСЃРёРІРѕРІ РІ РІС‹СЂР°Р¶РµРЅРёРё */
 		if (!arrayUsed)
 		{
 			QString errorString = "Wrong expression. Definite arrays are not used in the expression. Please, check the expression";
@@ -508,13 +508,13 @@ void Input::checkNonExecutableCycle(QVector<Index> &vars) throw(QString&)
 {
 	for (auto &var : vars)
 	{
-		/*! Если цикл возрастающий, а шаг меньше нуля - отрицательный */
+		/*! Р•СЃР»Рё С†РёРєР» РІРѕР·СЂР°СЃС‚Р°СЋС‰РёР№, Р° С€Р°Рі РјРµРЅСЊС€Рµ РЅСѓР»СЏ - РѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Р№ */
 		if (var.from < var.to && var.step < 0)
 		{
 			QString errorString = "Wrong cycle ranges for variable \"" + var.name + "\". Cycle wouldn't execute";
 			throw errorString;
 		}
-		/*! Если цикл убывающий, а шаг больше нуля - положительный */
+		/*! Р•СЃР»Рё С†РёРєР» СѓР±С‹РІР°СЋС‰РёР№, Р° С€Р°Рі Р±РѕР»СЊС€Рµ РЅСѓР»СЏ - РїРѕР»РѕР¶РёС‚РµР»СЊРЅС‹Р№ */
 		else if (var.from > var.to && var.step > 0)
 		{
 			QString errorString = "Wrong cycle ranges for variable \"" + var.name + "\". Cycle wouldn't execute";
@@ -528,16 +528,16 @@ void Input::removeUnusedVarsAndArrs(QVector<Array> &arrs, QVector<Index> &vars, 
 	Operations ops;
 	int exprSize = expr.size();
 
-	/*! Анализируем, какие переменные и массивы используются в выражении */
+	/*! РђРЅР°Р»РёР·РёСЂСѓРµРј, РєР°РєРёРµ РїРµСЂРµРјРµРЅРЅС‹Рµ Рё РјР°СЃСЃРёРІС‹ РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ РІ РІС‹СЂР°Р¶РµРЅРёРё */
 	for (int i = 0; i < exprSize; ++i)
 	{
-		/*! Если встретилось имя переменной */
+		/*! Р•СЃР»Рё РІСЃС‚СЂРµС‚РёР»РѕСЃСЊ РёРјСЏ РїРµСЂРµРјРµРЅРЅРѕР№ */
 		if (ops.isDefiniteVariable(expr[i], vars))
 		{
 			int var = ops.findVar(expr[i], vars);
 			vars[var].usedInExpression = true;
 		}
-		/*! Если встретилось имя массива */
+		/*! Р•СЃР»Рё РІСЃС‚СЂРµС‚РёР»РѕСЃСЊ РёРјСЏ РјР°СЃСЃРёРІР° */
 		else if (ops.isDefiniteArray(expr[i], arrs))
 		{
 			int arr = ops.findArr(expr[i], arrs);
@@ -545,7 +545,7 @@ void Input::removeUnusedVarsAndArrs(QVector<Array> &arrs, QVector<Index> &vars, 
 		}
 	}
 
-	/*! Удаляем из vars неиспользующиеся переменные */
+	/*! РЈРґР°Р»СЏРµРј РёР· vars РЅРµРёСЃРїРѕР»СЊР·СѓСЋС‰РёРµСЃСЏ РїРµСЂРµРјРµРЅРЅС‹Рµ */
 	for (auto &var : vars)
 	{
 		if (!var.usedInExpression)
@@ -557,7 +557,7 @@ void Input::removeUnusedVarsAndArrs(QVector<Array> &arrs, QVector<Index> &vars, 
 			var.usedInExpression = false;
 	}
 
-	/*! Удаляем из arrs неиспользующиеся массивы */
+	/*! РЈРґР°Р»СЏРµРј РёР· arrs РЅРµРёСЃРїРѕР»СЊР·СѓСЋС‰РёРµСЃСЏ РјР°СЃСЃРёРІС‹ */
 	for (auto &arr : arrs)
 	{
 		if (!arr.usedInExpression)

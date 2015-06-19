@@ -19,36 +19,36 @@ void Analyzer::analyzeExpression(QVector<Index> &vars, QVector<Array> &arrs, con
 	int exprSize = expr.size();
 	QStack<stackElement> operands;
 
-	/*! Проход по выражению слева на право */
+	/* РџСЂРѕС…РѕРґ РїРѕ РІС‹СЂР°Р¶РµРЅРёСЋ СЃР»РµРІР° РЅР° РїСЂР°РІРѕ */
 	for (exprPos = 0; exprPos < exprSize; ++exprPos)
 	{
-		/*! Если встретилась константа */
+		/* Р•СЃР»Рё РІСЃС‚СЂРµС‚РёР»Р°СЃСЊ РєРѕРЅСЃС‚Р°РЅС‚Р° */
 		if (ops.isNumber(expr[exprPos]))						 
 		{
-			/*! Помещаем в стек как константу */
+			/* РџРѕРјРµС‰Р°РµРј РІ СЃС‚РµРє РєР°Рє РєРѕРЅСЃС‚Р°РЅС‚Сѓ */
 			stackElement element(constant, expr[exprPos]);
 			operands.push(element);
 		}
-		/*! Если встеретилась переменная */
+		/* Р•СЃР»Рё РІСЃС‚РµСЂРµС‚РёР»Р°СЃСЊ РїРµСЂРµРјРµРЅРЅР°СЏ */
 		else if (ops.isDefiniteVariable(expr[exprPos], vars))	 
 		{
-			/*! Помещаем в стек как переменную и устанавливаем флаг usedInExpression */
+			/* РџРѕРјРµС‰Р°РµРј РІ СЃС‚РµРє РєР°Рє РїРµСЂРµРјРµРЅРЅСѓСЋ Рё СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј С„Р»Р°Рі usedInExpression */
 			stackElement element(variable, expr[exprPos]);
 			operands.push(element);
 			int var = ops.findVar(expr[exprPos], vars);
 			vars[var].usedInExpression = true;
 		}
-		/*! Если встретился массив */
+		/* Р•СЃР»Рё РІСЃС‚СЂРµС‚РёР»СЃСЏ РјР°СЃСЃРёРІ */
 		else if (ops.isDefiniteArray(expr[exprPos], arrs))		
 		{
-			/*! Устанавливаем как текущий в структуре curArr */
+			/* РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РєР°Рє С‚РµРєСѓС‰РёР№ РІ СЃС‚СЂСѓРєС‚СѓСЂРµ curArr */
 			curArr.name = expr[exprPos];
 			curArr.dimension = 0;
 		}
-		/*! Если встретилась операция*/
+		/* Р•СЃР»Рё РІСЃС‚СЂРµС‚РёР»Р°СЃСЊ РѕРїРµСЂР°С†РёСЏ*/
 		else if (ops.isDefiniteOperation(expr[exprPos]))		
 		{
-			/*! Выбираем функцию по операции */
+			/* Р’С‹Р±РёСЂР°РµРј С„СѓРЅРєС†РёСЋ РїРѕ РѕРїРµСЂР°С†РёРё */
 			if (expr[exprPos] == "+")
 			{
 				addition(operands, vars, arrs);
@@ -137,7 +137,7 @@ void Analyzer::analyzeExpression(QVector<Index> &vars, QVector<Array> &arrs, con
 			{
 				typeConversionToInt(operands, vars, arrs);
 			}
-			/*! Встретился неопределенный символ */
+			/* Р’СЃС‚СЂРµС‚РёР»СЃСЏ РЅРµРѕРїСЂРµРґРµР»РµРЅРЅС‹Р№ СЃРёРјРІРѕР» */
 			else
 			{
 				QString errorString = "Undefined operation is detected on the " + QString::number(exprPos + 1) + " position";
@@ -156,16 +156,16 @@ void Analyzer::checkExpression(QVector<Index> &vars, QVector<Array> &arrs, const
 	auto curVar = vars.end() - 1;
 	int loop[3] = {};
 
-	/*! Пока не установлен флаг окончания проверки */
+	/* РџРѕРєР° РЅРµ СѓСЃС‚Р°РЅРѕРІР»РµРЅ С„Р»Р°Рі РѕРєРѕРЅС‡Р°РЅРёСЏ РїСЂРѕРІРµСЂРєРё */
 	while (!stop)
 	{
-		/*! Сохраняем текущие значения переменных как предыдущие */
+		/* РЎРѕС…СЂР°РЅСЏРµРј С‚РµРєСѓС‰РёРµ Р·РЅР°С‡РµРЅРёСЏ РїРµСЂРµРјРµРЅРЅС‹С… РєР°Рє РїСЂРµРґС‹РґСѓС‰РёРµ */
 		for (auto &var : vars)
 		{
 			var.prevValue = var.curValue;
 		}
 
-		/*! Проверяем выражение при текущих значениях переменных */
+		/* РџСЂРѕРІРµСЂСЏРµРј РІС‹СЂР°Р¶РµРЅРёРµ РїСЂРё С‚РµРєСѓС‰РёС… Р·РЅР°С‡РµРЅРёСЏС… РїРµСЂРµРјРµРЅРЅС‹С… */
 		try
 		{
 			analyzeExpression(vars, arrs, expr, exceedings);
@@ -177,7 +177,7 @@ void Analyzer::checkExpression(QVector<Index> &vars, QVector<Array> &arrs, const
 		}
 
 
-		/*! Переходим к следующей итерации цикла */
+		/* РџРµСЂРµС…РѕРґРёРј Рє СЃР»РµРґСѓСЋС‰РµР№ РёС‚РµСЂР°С†РёРё С†РёРєР»Р° */
 		try
 		{
 			nextIteration(curVar, vars, loop, stop);
@@ -185,11 +185,11 @@ void Analyzer::checkExpression(QVector<Index> &vars, QVector<Array> &arrs, const
 		catch (QString &errorString)
 		{
 			stop = true;
-			/*! При тестировании бросаем исключение вверх тестирующей функции */
+			/* РџСЂРё С‚РµСЃС‚РёСЂРѕРІР°РЅРёРё Р±СЂРѕСЃР°РµРј РёСЃРєР»СЋС‡РµРЅРёРµ РІРІРµСЂС… С‚РµСЃС‚РёСЂСѓСЋС‰РµР№ С„СѓРЅРєС†РёРё */
 			#ifdef TEST
 				throw errorString;
 			#endif
-			/*! При обычном выполнении записываем в файл ошибок */
+			/* РџСЂРё РѕР±С‹С‡РЅРѕРј РІС‹РїРѕР»РЅРµРЅРёРё Р·Р°РїРёСЃС‹РІР°РµРј РІ С„Р°Р№Р» РѕС€РёР±РѕРє */
 			out.writeError(errorString);
 		}
 	}
@@ -197,27 +197,27 @@ void Analyzer::checkExpression(QVector<Index> &vars, QVector<Array> &arrs, const
 
 void Analyzer::addition(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs)
 {
-	/*! Берем операнды из стека */
+	/* Р‘РµСЂРµРј РѕРїРµСЂР°РЅРґС‹ РёР· СЃС‚РµРєР° */
 	stackElement rightElement = operands.pop();
 	stackElement leftElement = operands.pop();
 
-	/*! Если они не являются неопределенными элементами */
+	/* Р•СЃР»Рё РѕРЅРё РЅРµ СЏРІР»СЏСЋС‚СЃСЏ РЅРµРѕРїСЂРµРґРµР»РµРЅРЅС‹РјРё СЌР»РµРјРµРЅС‚Р°РјРё */
 	if (rightElement.type != undefined && leftElement.type != undefined)
 	{
-		/*! Получаем численное значение правого операнда */
+		/* РџРѕР»СѓС‡Р°РµРј С‡РёСЃР»РµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РїСЂР°РІРѕРіРѕ РѕРїРµСЂР°РЅРґР° */
 		rightOpS = rightElement.element;
 		rightOpD = ops.stringOpToDoubleOp(rightOpS, vars);
 		unaryMinusOrTypeConversion(rightElement, rightOpD);
-		/*! Получаем численное значение левого операнда */
+		/* РџРѕР»СѓС‡Р°РµРј С‡РёСЃР»РµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ Р»РµРІРѕРіРѕ РѕРїРµСЂР°РЅРґР° */
 		leftOpS = leftElement.element;
 		leftOpD = ops.stringOpToDoubleOp(leftOpS, vars);
 		unaryMinusOrTypeConversion(leftElement, leftOpD);
-		/*! Производим расчет */
+		/* РџСЂРѕРёР·РІРѕРґРёРј СЂР°СЃС‡РµС‚ */
 		resultD = leftOpD + rightOpD;
-		/*! Результат в стек */
+		/* Р РµР·СѓР»СЊС‚Р°С‚ РІ СЃС‚РµРє */
 		stackElement element(constant, QString::number(resultD, 'f'));
 		operands.push(element);
-		/*! Проверяем необходимость инкрем/декрем */
+		/* РџСЂРѕРІРµСЂСЏРµРј РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚СЊ РёРЅРєСЂРµРј/РґРµРєСЂРµРј */
 		postIncDec(rightElement, vars, arrs);
 		postIncDec(leftElement, vars, arrs);
 	}
@@ -230,27 +230,27 @@ void Analyzer::addition(QStack<stackElement> &operands, QVector<Index> &vars, QV
 
 void Analyzer::substraction(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs)
 {
-	/*! Берем операнды из стека */
+	/* Р‘РµСЂРµРј РѕРїРµСЂР°РЅРґС‹ РёР· СЃС‚РµРєР° */
 	stackElement rightElement = operands.pop();
 	stackElement leftElement = operands.pop();
 
-	/*! Если они не являются неопределенными элементами */
+	/* Р•СЃР»Рё РѕРЅРё РЅРµ СЏРІР»СЏСЋС‚СЃСЏ РЅРµРѕРїСЂРµРґРµР»РµРЅРЅС‹РјРё СЌР»РµРјРµРЅС‚Р°РјРё */
 	if (rightElement.type != undefined && leftElement.type != undefined)
 	{
-		/*! Получаем численное значение правого операнда */
+		/* РџРѕР»СѓС‡Р°РµРј С‡РёСЃР»РµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РїСЂР°РІРѕРіРѕ РѕРїРµСЂР°РЅРґР° */
 		rightOpS = rightElement.element;
 		rightOpD = ops.stringOpToDoubleOp(rightOpS, vars);
 		unaryMinusOrTypeConversion(rightElement, rightOpD);
-		/*! Получаем численное значение левого операнда */
+		/* РџРѕР»СѓС‡Р°РµРј С‡РёСЃР»РµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ Р»РµРІРѕРіРѕ РѕРїРµСЂР°РЅРґР° */
 		leftOpS = leftElement.element;
 		leftOpD = ops.stringOpToDoubleOp(leftOpS, vars);
 		unaryMinusOrTypeConversion(leftElement, leftOpD);
-		/*! Производим расчет */
+		/* РџСЂРѕРёР·РІРѕРґРёРј СЂР°СЃС‡РµС‚ */
 		resultD = leftOpD - rightOpD;
-		/*! Результат в стек */
+		/* Р РµР·СѓР»СЊС‚Р°С‚ РІ СЃС‚РµРє */
 		stackElement element(constant, QString::number(resultD, 'f'));
 		operands.push(element);
-		/*! Проверяем необходимость инкрем/декрем */
+		/* РџСЂРѕРІРµСЂСЏРµРј РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚СЊ РёРЅРєСЂРµРј/РґРµРєСЂРµРј */
 		postIncDec(rightElement, vars, arrs);
 		postIncDec(leftElement, vars, arrs);
 	}
@@ -263,33 +263,33 @@ void Analyzer::substraction(QStack<stackElement> &operands, QVector<Index> &vars
 
 void Analyzer::division(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs) throw(QString&)
 {
-	/*! Берем операнды из стека */
+	/* Р‘РµСЂРµРј РѕРїРµСЂР°РЅРґС‹ РёР· СЃС‚РµРєР° */
 	stackElement rightElement = operands.pop();
 	stackElement leftElement = operands.pop();
 
-	/*! Если они не являются неопределенными элементами */
+	/* Р•СЃР»Рё РѕРЅРё РЅРµ СЏРІР»СЏСЋС‚СЃСЏ РЅРµРѕРїСЂРµРґРµР»РµРЅРЅС‹РјРё СЌР»РµРјРµРЅС‚Р°РјРё */
 	if (rightElement.type != undefined && leftElement.type != undefined)
 	{
-		/*! Получаем численное значение правого операнда */
+		/* РџРѕР»СѓС‡Р°РµРј С‡РёСЃР»РµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РїСЂР°РІРѕРіРѕ РѕРїРµСЂР°РЅРґР° */
 		rightOpS = rightElement.element;
 		rightOpD = ops.stringOpToDoubleOp(rightOpS, vars);
 		unaryMinusOrTypeConversion(rightElement, rightOpD);
-		/*! Проверка ситуации деления на нуль*/
+		/* РџСЂРѕРІРµСЂРєР° СЃРёС‚СѓР°С†РёРё РґРµР»РµРЅРёСЏ РЅР° РЅСѓР»СЊ*/
 		if (rightOpD == 0)
 		{ 
 			QString errorString = "Division by zero is detected on the " + QString::number(exprPos + 1) + " position during the " + QString::number(iteration) + " iteration";
 			throw errorString;
 		}
-		/*! Получаем численное значение левого операнда */
+		/* РџРѕР»СѓС‡Р°РµРј С‡РёСЃР»РµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ Р»РµРІРѕРіРѕ РѕРїРµСЂР°РЅРґР° */
 		leftOpS = leftElement.element;
 		leftOpD = ops.stringOpToDoubleOp(leftOpS, vars);
 		unaryMinusOrTypeConversion(leftElement, leftOpD);
-		/*! Производим расчет */
+		/* РџСЂРѕРёР·РІРѕРґРёРј СЂР°СЃС‡РµС‚ */
 		resultD = leftOpD / rightOpD;
-		/*! Результат в стек */
+		/* Р РµР·СѓР»СЊС‚Р°С‚ РІ СЃС‚РµРє */
 		stackElement element(constant, QString::number(resultD, 'f'));
 		operands.push(element);
-		/*! Проверяем необходимость инкрем/декрем */
+		/* РџСЂРѕРІРµСЂСЏРµРј РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚СЊ РёРЅРєСЂРµРј/РґРµРєСЂРµРј */
 		postIncDec(rightElement, vars, arrs);
 		postIncDec(leftElement, vars, arrs);
 	}
@@ -302,27 +302,27 @@ void Analyzer::division(QStack<stackElement> &operands, QVector<Index> &vars, QV
 
 void Analyzer::multiplication(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs)
 {
-	/*! Берем операнды из стека */
+	/* Р‘РµСЂРµРј РѕРїРµСЂР°РЅРґС‹ РёР· СЃС‚РµРєР° */
 	stackElement rightElement = operands.pop();
 	stackElement leftElement = operands.pop();
 
-	/*! Если они не являются неопределенными элементами */
+	/* Р•СЃР»Рё РѕРЅРё РЅРµ СЏРІР»СЏСЋС‚СЃСЏ РЅРµРѕРїСЂРµРґРµР»РµРЅРЅС‹РјРё СЌР»РµРјРµРЅС‚Р°РјРё */
 	if (rightElement.type != undefined && leftElement.type != undefined)
 	{
-		/*! Получаем численное значение правого операнда */
+		/* РџРѕР»СѓС‡Р°РµРј С‡РёСЃР»РµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РїСЂР°РІРѕРіРѕ РѕРїРµСЂР°РЅРґР° */
 		rightOpS = rightElement.element;
 		rightOpD = ops.stringOpToDoubleOp(rightOpS, vars);
 		unaryMinusOrTypeConversion(rightElement, rightOpD);
-		/*! Получаем численное значение левого операнда */
+		/* РџРѕР»СѓС‡Р°РµРј С‡РёСЃР»РµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ Р»РµРІРѕРіРѕ РѕРїРµСЂР°РЅРґР° */
 		leftOpS = leftElement.element;
 		leftOpD = ops.stringOpToDoubleOp(leftOpS, vars);
 		unaryMinusOrTypeConversion(leftElement, leftOpD);
-		/*! Производим расчет */
+		/* РџСЂРѕРёР·РІРѕРґРёРј СЂР°СЃС‡РµС‚ */
 		resultD = leftOpD * rightOpD;
-		/*! Результат в стек */
+		/* Р РµР·СѓР»СЊС‚Р°С‚ РІ СЃС‚РµРє */
 		stackElement element(constant, QString::number(resultD, 'f'));
 		operands.push(element);
-		/*! Проверяем необходимость инкрем/декрем */
+		/* РџСЂРѕРІРµСЂСЏРµРј РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚СЊ РёРЅРєСЂРµРј/РґРµРєСЂРµРј */
 		postIncDec(rightElement, vars, arrs);
 		postIncDec(leftElement, vars, arrs);
 	}
@@ -335,33 +335,33 @@ void Analyzer::multiplication(QStack<stackElement> &operands, QVector<Index> &va
 
 void Analyzer::modulo(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs) throw(QString&)
 {
-	/*! Берем операнды из стека */
+	/* Р‘РµСЂРµРј РѕРїРµСЂР°РЅРґС‹ РёР· СЃС‚РµРєР° */
 	stackElement rightElement = operands.pop();
 	stackElement leftElement = operands.pop();
 
-	/*! Если они не являются неопределенными элементами */
+	/* Р•СЃР»Рё РѕРЅРё РЅРµ СЏРІР»СЏСЋС‚СЃСЏ РЅРµРѕРїСЂРµРґРµР»РµРЅРЅС‹РјРё СЌР»РµРјРµРЅС‚Р°РјРё */
 	if (rightElement.type != undefined && leftElement.type != undefined)
 	{
-		/*! Получаем численное значение правого операнда */
+		/* РџРѕР»СѓС‡Р°РµРј С‡РёСЃР»РµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РїСЂР°РІРѕРіРѕ РѕРїРµСЂР°РЅРґР° */
 		rightOpS = rightElement.element;
 		rightOpD = ops.stringOpToDoubleOp(rightOpS, vars);
 		unaryMinusOrTypeConversion(rightElement, rightOpD);
-		/*! Проверка ситуации деления на нуль */
+		/* РџСЂРѕРІРµСЂРєР° СЃРёС‚СѓР°С†РёРё РґРµР»РµРЅРёСЏ РЅР° РЅСѓР»СЊ */
 		if (rightOpD == 0)
 		{
 			QString errorString = "Division by zero is detected on the " + QString::number(exprPos + 1) + " position during the " + QString::number(iteration) + " iteration";
 			throw errorString;
 		}
-		/*! Получаем численное значение левого операнда */
+		/* РџРѕР»СѓС‡Р°РµРј С‡РёСЃР»РµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ Р»РµРІРѕРіРѕ РѕРїРµСЂР°РЅРґР° */
 		leftOpS = leftElement.element;
 		leftOpD = ops.stringOpToDoubleOp(leftOpS, vars);
 		unaryMinusOrTypeConversion(leftElement, leftOpD);
-		/*! Производим расчет */
+		/* РџСЂРѕРёР·РІРѕРґРёРј СЂР°СЃС‡РµС‚ */
 		resultD = (int)leftOpD % (int)rightOpD;
-		/*! Результат в стек */
+		/* Р РµР·СѓР»СЊС‚Р°С‚ РІ СЃС‚РµРє */
 		stackElement element(constant, QString::number(resultD, 'f'));
 		operands.push(element);
-		/*! Проверяем необходимость инкрем/декрем */
+		/* РџСЂРѕРІРµСЂСЏРµРј РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚СЊ РёРЅРєСЂРµРј/РґРµРєСЂРµРј */
 		postIncDec(rightElement, vars, arrs);
 		postIncDec(leftElement, vars, arrs);
 	}
@@ -375,24 +375,24 @@ void Analyzer::modulo(QStack<stackElement> &operands, QVector<Index> &vars, QVec
 void Analyzer::subscript(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs, QVector<Exceeding> &exceedings)
 {
 	int varsSize = vars.size();
-	/*! Извлекаем индекс элемента массива - операнд из стека*/
+	/* РР·РІР»РµРєР°РµРј РёРЅРґРµРєСЃ СЌР»РµРјРµРЅС‚Р° РјР°СЃСЃРёРІР° - РѕРїРµСЂР°РЅРґ РёР· СЃС‚РµРєР°*/
 	stackElement rightElement = operands.pop();
 	rightOpS = rightElement.element;
 	rightOpD = ops.stringOpToDoubleOp(rightOpS, vars);
 	unaryMinusOrTypeConversion(rightElement, rightOpD);
-	/*! Проверка наличия выхода для массива */
+	/* РџСЂРѕРІРµСЂРєР° РЅР°Р»РёС‡РёСЏ РІС‹С…РѕРґР° РґР»СЏ РјР°СЃСЃРёРІР° */
 	int arr = ops.findArr(curArr.name, arrs);
 	int exceedingsSize = arrs[arr].isExceeding.size();
-	/*! Если для текущего измерения массива еще нет выхода */
+	/* Р•СЃР»Рё РґР»СЏ С‚РµРєСѓС‰РµРіРѕ РёР·РјРµСЂРµРЅРёСЏ РјР°СЃСЃРёРІР° РµС‰Рµ РЅРµС‚ РІС‹С…РѕРґР° */
 	if (!arrs[arr].isExceeding[curArr.dimension])
 	{ 
-		/*! Если происходит выход - индекс больше размера или меньше 0 */
+		/* Р•СЃР»Рё РїСЂРѕРёСЃС…РѕРґРёС‚ РІС‹С…РѕРґ - РёРЅРґРµРєСЃ Р±РѕР»СЊС€Рµ СЂР°Р·РјРµСЂР° РёР»Рё РјРµРЅСЊС€Рµ 0 */
 		if (rightOpD >= arrs[arr].size[curArr.dimension] || rightOpD < 0)
 		{
-			/*! Создаем исключение */
+			/* РЎРѕР·РґР°РµРј РёСЃРєР»СЋС‡РµРЅРёРµ */
 			QStringList indexNames;
 			QVector<double> indexValues;
-			/*! Заполнение векторов indexNames и indexValues */
+			/* Р—Р°РїРѕР»РЅРµРЅРёРµ РІРµРєС‚РѕСЂРѕРІ indexNames Рё indexValues */
 			for (int i = 0; i < varsSize; ++i)
 			{
 				if (vars[i].usedInExpression)
@@ -404,18 +404,18 @@ void Analyzer::subscript(QStack<stackElement> &operands, QVector<Index> &vars, Q
 			}
 			exceedings << Exceeding(curArr.name, indexNames, indexValues, rightOpD, (curArr.dimension + 1));
 			arrs[arr].isExceeding[curArr.dimension] = true;
-			/*! В стек помещаем неопределенный элемент */
+			/* Р’ СЃС‚РµРє РїРѕРјРµС‰Р°РµРј РЅРµРѕРїСЂРµРґРµР»РµРЅРЅС‹Р№ СЌР»РµРјРµРЅС‚ */
 			stackElement element(undefined);
 			operands.push(element);
 		}
-		/*! Если выхода не происходит*/
+		/* Р•СЃР»Рё РІС‹С…РѕРґР° РЅРµ РїСЂРѕРёСЃС…РѕРґРёС‚*/
 		else
 		{ 
-			/*! Обращаемся к элементу массива по индексу и значение кладем в стек */
+			/* РћР±СЂР°С‰Р°РµРјСЃСЏ Рє СЌР»РµРјРµРЅС‚Сѓ РјР°СЃСЃРёРІР° РїРѕ РёРЅРґРµРєСЃСѓ Рё Р·РЅР°С‡РµРЅРёРµ РєР»Р°РґРµРј РІ СЃС‚РµРє */
 			int index = 0;
 			if (arrs[arr].elements.size() - 1 < (int)rightOpD)
 			{ 
-				/*! Вычисление индекса */
+				/* Р’С‹С‡РёСЃР»РµРЅРёРµ РёРЅРґРµРєСЃР° */
 				for (int i = 0; i < (int)rightOpD; ++i)
 				{
 					if (++index == arrs[arr].elements.size())
@@ -428,10 +428,10 @@ void Analyzer::subscript(QStack<stackElement> &operands, QVector<Index> &vars, Q
 			else
 				resultD = arrs[arr].elements[rightOpD];
 
-			/*! В стек помещаем элемент массива */
+			/* Р’ СЃС‚РµРє РїРѕРјРµС‰Р°РµРј СЌР»РµРјРµРЅС‚ РјР°СЃСЃРёРІР° */
 			stackElement element(arrayElement, QString::number(resultD, 'f'), arr, index);
 			operands.push(element);
-			/*! Проверяем необходимость инкрем/декрем */
+			/* РџСЂРѕРІРµСЂСЏРµРј РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚СЊ РёРЅРєСЂРµРј/РґРµРєСЂРµРј */
 			postIncDec(rightElement, vars, arrs);
 		}
 	}
@@ -446,41 +446,41 @@ void Analyzer::subscript(QStack<stackElement> &operands, QVector<Index> &vars, Q
 
 void Analyzer::incL(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs) throw(QString&)
 {
-	/*! Берем правый операнд */
+	/* Р‘РµСЂРµРј РїСЂР°РІС‹Р№ РѕРїРµСЂР°РЅРґ */
 	stackElement rightElement = operands.pop();
-	/*! Если операнд - переменная */
+	/* Р•СЃР»Рё РѕРїРµСЂР°РЅРґ - РїРµСЂРµРјРµРЅРЅР°СЏ */
 	if (rightElement.type == variable)
 	{ 
-		/*! Инкрементируем значение переменной */
+		/* РРЅРєСЂРµРјРµРЅС‚РёСЂСѓРµРј Р·РЅР°С‡РµРЅРёРµ РїРµСЂРµРјРµРЅРЅРѕР№ */
 		rightOpS = rightElement.element;
 		int var = ops.findVar(rightOpS, vars);
 		rightOpD = vars[var].curValue;
 		++rightOpD;
 		unaryMinusOrTypeConversion(rightElement, rightOpD);
 		vars[var].curValue = rightOpD;
-		/*! Результат в стек */
+		/* Р РµР·СѓР»СЊС‚Р°С‚ РІ СЃС‚РµРє */
 		stackElement element(variable, QString::number(vars[var].curValue, 'f'));
 		operands.push(element);
 	}
-	/*! Если операнд - элемент массива */
+	/* Р•СЃР»Рё РѕРїРµСЂР°РЅРґ - СЌР»РµРјРµРЅС‚ РјР°СЃСЃРёРІР° */
 	else if (rightElement.type == arrayElement)
 	{ 
-		/*! Инкрементируем элемент массива */
+		/* РРЅРєСЂРµРјРµРЅС‚РёСЂСѓРµРј СЌР»РµРјРµРЅС‚ РјР°СЃСЃРёРІР° */
 		rightOpD = arrs[rightElement.arrayIndex].elements[rightElement.elementIndex];
 		++rightOpD;
 		unaryMinusOrTypeConversion(rightElement, rightOpD);
 		arrs[rightElement.arrayIndex].elements[rightElement.elementIndex] = rightOpD;
-		/*! Результат в стек */
+		/* Р РµР·СѓР»СЊС‚Р°С‚ РІ СЃС‚РµРє */
 		stackElement element(arrayElement, QString::number(resultD, 'f'), rightElement.arrayIndex, rightElement.elementIndex);
 		operands.push(element);
 	}
-	/*! Если операнд - неопределенный элемент */
+	/* Р•СЃР»Рё РѕРїРµСЂР°РЅРґ - РЅРµРѕРїСЂРµРґРµР»РµРЅРЅС‹Р№ СЌР»РµРјРµРЅС‚ */
 	else if (rightElement.type == undefined)
 	{
 		QString errorString = "Critical operation with undefined element is detected on the " + QString::number(exprPos + 1) + " position during the " + QString::number(iteration) + " iteration";
 		throw errorString;
 	}
-	/*! Если операнд - не левостороннее значение */
+	/* Р•СЃР»Рё РѕРїРµСЂР°РЅРґ - РЅРµ Р»РµРІРѕСЃС‚РѕСЂРѕРЅРЅРµРµ Р·РЅР°С‡РµРЅРёРµ */
 	else if (rightElement.type == constant)
 	{
 		QString errorString = "L-value is required for \"++\" operation on the " + QString::number(exprPos + 1) + " position";
@@ -490,41 +490,41 @@ void Analyzer::incL(QStack<stackElement> &operands, QVector<Index> &vars, QVecto
 
 void Analyzer::decL(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs) throw(QString&)
 {
-	/*! Берем правый операнд */
+	/* Р‘РµСЂРµРј РїСЂР°РІС‹Р№ РѕРїРµСЂР°РЅРґ */
 	stackElement rightElement = operands.pop();
-	/*! Если операнд - переменная */
+	/* Р•СЃР»Рё РѕРїРµСЂР°РЅРґ - РїРµСЂРµРјРµРЅРЅР°СЏ */
 	if (rightElement.type == variable)
 	{ 
-		/*! Декрементируем значение переменной */
+		/* Р”РµРєСЂРµРјРµРЅС‚РёСЂСѓРµРј Р·РЅР°С‡РµРЅРёРµ РїРµСЂРµРјРµРЅРЅРѕР№ */
 		rightOpS = rightElement.element;
 		int var = ops.findVar(rightOpS, vars);
 		rightOpD = vars[var].curValue;
 		--rightOpD;
 		unaryMinusOrTypeConversion(rightElement, rightOpD, 2);
 		vars[var].curValue = rightOpD;
-		/*! Результат в стек */
+		/* Р РµР·СѓР»СЊС‚Р°С‚ РІ СЃС‚РµРє */
 		stackElement element(variable, QString::number(vars[var].curValue, 'f'));
 		operands.push(element);
 	}
-	/*! Если операнд - элемент массива */
+	/* Р•СЃР»Рё РѕРїРµСЂР°РЅРґ - СЌР»РµРјРµРЅС‚ РјР°СЃСЃРёРІР° */
 	else if (rightElement.type == arrayElement)
 	{ 
-		/*! Декрементируем элемент массива */
+		/* Р”РµРєСЂРµРјРµРЅС‚РёСЂСѓРµРј СЌР»РµРјРµРЅС‚ РјР°СЃСЃРёРІР° */
 		rightOpD = arrs[rightElement.arrayIndex].elements[rightElement.elementIndex];
 		--rightOpD;
 		unaryMinusOrTypeConversion(rightElement, rightOpD, 2);
 		arrs[rightElement.arrayIndex].elements[rightElement.elementIndex] = rightOpD;
-		/*! Результат в стек */
+		/* Р РµР·СѓР»СЊС‚Р°С‚ РІ СЃС‚РµРє */
 		stackElement element(arrayElement, QString::number(resultD, 'f'), rightElement.arrayIndex, rightElement.elementIndex);
 		operands.push(element);
 	}
-	/*! Если операнд - неопределенный элемент */
+	/* Р•СЃР»Рё РѕРїРµСЂР°РЅРґ - РЅРµРѕРїСЂРµРґРµР»РµРЅРЅС‹Р№ СЌР»РµРјРµРЅС‚ */
 	else if (rightElement.type == undefined)
 	{
 		QString errorString = "Critical operation with undefined element is detected on the " + QString::number(exprPos + 1) + " position during the " + QString::number(iteration) + " iteration";
 		throw errorString;
 	}
-	/*! Если операнд - не левостороннее значение */
+	/* Р•СЃР»Рё РѕРїРµСЂР°РЅРґ - РЅРµ Р»РµРІРѕСЃС‚РѕСЂРѕРЅРЅРµРµ Р·РЅР°С‡РµРЅРёРµ */
 	else if (rightElement.type == constant)
 	{
 		QString errorString = "L-value is required for \"--\" operation on the " + QString::number(exprPos + 1) + " position";
@@ -534,23 +534,23 @@ void Analyzer::decL(QStack<stackElement> &operands, QVector<Index> &vars, QVecto
 
 void Analyzer::incR(QStack<stackElement> &operands) throw(QString&)
 {
-	/*! Берем операнд из стека */
+	/* Р‘РµСЂРµРј РѕРїРµСЂР°РЅРґ РёР· СЃС‚РµРєР° */
 	stackElement rightElement = operands.pop();
-	/*! Если операнд - переменная или элемент массива */
+	/* Р•СЃР»Рё РѕРїРµСЂР°РЅРґ - РїРµСЂРµРјРµРЅРЅР°СЏ РёР»Рё СЌР»РµРјРµРЅС‚ РјР°СЃСЃРёРІР° */
 	if (rightElement.type == variable || rightElement.type == arrayElement)
 	{
-		/*! Устанавливаем флаг инкремента */
+		/* РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј С„Р»Р°Рі РёРЅРєСЂРµРјРµРЅС‚Р° */
 		rightElement.incNeeded = true;
-		/*! Результат в стек */
+		/* Р РµР·СѓР»СЊС‚Р°С‚ РІ СЃС‚РµРє */
 		operands.push(rightElement);
 	}
-	/*! Если операнд - неопределенный элемент */
+	/* Р•СЃР»Рё РѕРїРµСЂР°РЅРґ - РЅРµРѕРїСЂРµРґРµР»РµРЅРЅС‹Р№ СЌР»РµРјРµРЅС‚ */
 	else if (rightElement.type == undefined)
 	{
 		QString errorString = "Critical operation with undefined element is detected on the " + QString::number(exprPos + 1) + " position during the " + QString::number(iteration) + " iteration";
 		throw errorString;
 	}
-	/*! Если операнд - константа */
+	/* Р•СЃР»Рё РѕРїРµСЂР°РЅРґ - РєРѕРЅСЃС‚Р°РЅС‚Р° */
 	else if (rightElement.type == constant)
 	{
 		QString errorString = "L-value is required for \"++\" operation on the " + QString::number(exprPos + 1) + " position";
@@ -560,23 +560,23 @@ void Analyzer::incR(QStack<stackElement> &operands) throw(QString&)
 
 void Analyzer::decR(QStack<stackElement> &operands) throw(QString&)
 {
-	/*! Берем операнд из стека */
+	/* Р‘РµСЂРµРј РѕРїРµСЂР°РЅРґ РёР· СЃС‚РµРєР° */
 	stackElement rightElement = operands.pop();
-	/*! Если операнд - переменная или элемент массива */
+	/* Р•СЃР»Рё РѕРїРµСЂР°РЅРґ - РїРµСЂРµРјРµРЅРЅР°СЏ РёР»Рё СЌР»РµРјРµРЅС‚ РјР°СЃСЃРёРІР° */
 	if (rightElement.type == variable || rightElement.type == arrayElement)
 	{
-		/*! Устанавливаем флаг декремента */
+		/* РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј С„Р»Р°Рі РґРµРєСЂРµРјРµРЅС‚Р° */
 		rightElement.decNeeded = true;
-		/*! Результат в стек */
+		/* Р РµР·СѓР»СЊС‚Р°С‚ РІ СЃС‚РµРє */
 		operands.push(rightElement);
 	}
-	/*! Если операнд - неопределенный элемент */
+	/* Р•СЃР»Рё РѕРїРµСЂР°РЅРґ - РЅРµРѕРїСЂРµРґРµР»РµРЅРЅС‹Р№ СЌР»РµРјРµРЅС‚ */
 	else if (rightElement.type == undefined)
 	{
 		QString errorString = "Critical operation with undefined element is detected on the " + QString::number(exprPos + 1) + " position during the " + QString::number(iteration) + " iteration";
 		throw errorString;
 	}
-	/*! Если операнд - константа */
+	/* Р•СЃР»Рё РѕРїРµСЂР°РЅРґ - РєРѕРЅСЃС‚Р°РЅС‚Р° */
 	else if (rightElement.type == constant)
 	{
 		QString errorString = "L-value is required for \"--\" operation on the " + QString::number(exprPos + 1) + " position";
@@ -586,42 +586,42 @@ void Analyzer::decR(QStack<stackElement> &operands) throw(QString&)
 
 void Analyzer::unaryMinus(QStack<stackElement> &operands)
 {
-	/*! Берем правый операнд */
+	/* Р‘РµСЂРµРј РїСЂР°РІС‹Р№ РѕРїРµСЂР°РЅРґ */
 	stackElement rightElement = operands.pop();
-	/*! Если операнд - неопределенный элемент */
+	/* Р•СЃР»Рё РѕРїРµСЂР°РЅРґ - РЅРµРѕРїСЂРµРґРµР»РµРЅРЅС‹Р№ СЌР»РµРјРµРЅС‚ */
 	if (rightElement.type == undefined)
 	{
 		stackElement element(undefined);
 		operands.push(element);
 	}
-	/*! Если операнд - переменная, константа или элемент массива */
+	/* Р•СЃР»Рё РѕРїРµСЂР°РЅРґ - РїРµСЂРµРјРµРЅРЅР°СЏ, РєРѕРЅСЃС‚Р°РЅС‚Р° РёР»Рё СЌР»РµРјРµРЅС‚ РјР°СЃСЃРёРІР° */
 	else
 	{
-		/*! Устанавливаем флагот отрицательного значения */
+		/* РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј С„Р»Р°РіРѕС‚ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ */
 		rightElement.negative = true;
-		/*! Результат в стек */
+		/* Р РµР·СѓР»СЊС‚Р°С‚ РІ СЃС‚РµРє */
 		operands.push(rightElement);
 	}
 }
 
 void Analyzer::absF(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs)
 {
-	/*! Берем правый операнд */
+	/* Р‘РµСЂРµРј РїСЂР°РІС‹Р№ РѕРїРµСЂР°РЅРґ */
 	stackElement rightElement = operands.pop();
 
-	/*! Если он не является неопределенным элементом */
+	/* Р•СЃР»Рё РѕРЅ РЅРµ СЏРІР»СЏРµС‚СЃСЏ РЅРµРѕРїСЂРµРґРµР»РµРЅРЅС‹Рј СЌР»РµРјРµРЅС‚РѕРј */
 	if (rightElement.type != undefined)
 	{
-		/*! Получаем численное значение операнда */
+		/* РџРѕР»СѓС‡Р°РµРј С‡РёСЃР»РµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РѕРїРµСЂР°РЅРґР° */
 		rightOpS = rightElement.element;
 		rightOpD = ops.stringOpToDoubleOp(rightOpS, vars);
 		unaryMinusOrTypeConversion(rightElement, rightOpD);
-		/*! Производим расчет */
+		/* РџСЂРѕРёР·РІРѕРґРёРј СЂР°СЃС‡РµС‚ */
 		resultD = abs(rightOpD);
-		/*! Результат в стек */
+		/* Р РµР·СѓР»СЊС‚Р°С‚ РІ СЃС‚РµРє */
 		stackElement element(constant, QString::number(resultD, 'f'));
 		operands.push(element);
-		/*! Проверяем необходимость инкрем/декрем */
+		/* РџСЂРѕРІРµСЂСЏРµРј РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚СЊ РёРЅРєСЂРµРј/РґРµРєСЂРµРј */
 		postIncDec(rightElement, vars, arrs);
 	}
 	else
@@ -633,22 +633,22 @@ void Analyzer::absF(QStack<stackElement> &operands, QVector<Index> &vars, QVecto
 
 void Analyzer::ceilF(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs)
 {
-	/*! Берем правый операнд */
+	/* Р‘РµСЂРµРј РїСЂР°РІС‹Р№ РѕРїРµСЂР°РЅРґ */
 	stackElement rightElement = operands.pop();
 
-	/*! Если он не является неопределенным элементом */
+	/* Р•СЃР»Рё РѕРЅ РЅРµ СЏРІР»СЏРµС‚СЃСЏ РЅРµРѕРїСЂРµРґРµР»РµРЅРЅС‹Рј СЌР»РµРјРµРЅС‚РѕРј */
 	if (rightElement.type != undefined)
 	{
-		/*! Получаем численное значение операнда */
+		/* РџРѕР»СѓС‡Р°РµРј С‡РёСЃР»РµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РѕРїРµСЂР°РЅРґР° */
 		rightOpS = rightElement.element;
 		rightOpD = ops.stringOpToDoubleOp(rightOpS, vars);
 		unaryMinusOrTypeConversion(rightElement, rightOpD);
-		/*! Производим расчет */
+		/* РџСЂРѕРёР·РІРѕРґРёРј СЂР°СЃС‡РµС‚ */
 		resultD = ceil(rightOpD);
-		/*! Результат в стек */
+		/* Р РµР·СѓР»СЊС‚Р°С‚ РІ СЃС‚РµРє */
 		stackElement element(constant, QString::number(resultD, 'f'));
 		operands.push(element);
-		/*! Проверяем необходимость инкрем/декрем */
+		/* РџСЂРѕРІРµСЂСЏРµРј РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚СЊ РёРЅРєСЂРµРј/РґРµРєСЂРµРј */
 		postIncDec(rightElement, vars, arrs);
 	}
 	else
@@ -660,21 +660,21 @@ void Analyzer::ceilF(QStack<stackElement> &operands, QVector<Index> &vars, QVect
 
 void Analyzer::fabsF(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs)
 {
-	/*! Берем правый операнд */
+	/* Р‘РµСЂРµРј РїСЂР°РІС‹Р№ РѕРїРµСЂР°РЅРґ */
 	stackElement rightElement = operands.pop();
-	/*! Если он не является неопределенным элементом */
+	/* Р•СЃР»Рё РѕРЅ РЅРµ СЏРІР»СЏРµС‚СЃСЏ РЅРµРѕРїСЂРµРґРµР»РµРЅРЅС‹Рј СЌР»РµРјРµРЅС‚РѕРј */
 	if (rightElement.type != undefined)
 	{
-		/*! Получаем численное значение операнда */
+		/* РџРѕР»СѓС‡Р°РµРј С‡РёСЃР»РµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РѕРїРµСЂР°РЅРґР° */
 		rightOpS = rightElement.element;
 		rightOpD = ops.stringOpToDoubleOp(rightOpS, vars);
 		unaryMinusOrTypeConversion(rightElement, rightOpD);
-		/*! Производим расчет */
+		/* РџСЂРѕРёР·РІРѕРґРёРј СЂР°СЃС‡РµС‚ */
 		resultD = fabs(rightOpD);
-		/*! Результат в стек */
+		/* Р РµР·СѓР»СЊС‚Р°С‚ РІ СЃС‚РµРє */
 		stackElement element(constant, QString::number(resultD, 'f'));
 		operands.push(element);
-		/*! Проверяем необходимость инкрем/декрем */
+		/* РџСЂРѕРІРµСЂСЏРµРј РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚СЊ РёРЅРєСЂРµРј/РґРµРєСЂРµРј */
 		postIncDec(rightElement, vars, arrs);
 	}
 	else
@@ -686,21 +686,21 @@ void Analyzer::fabsF(QStack<stackElement> &operands, QVector<Index> &vars, QVect
 
 void Analyzer::floorF(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs)
 {
-	/*! Берем правый операнд */
+	/* Р‘РµСЂРµРј РїСЂР°РІС‹Р№ РѕРїРµСЂР°РЅРґ */
 	stackElement rightElement = operands.pop();
-	/*! Если он не является неопределенным элементом */
+	/* Р•СЃР»Рё РѕРЅ РЅРµ СЏРІР»СЏРµС‚СЃСЏ РЅРµРѕРїСЂРµРґРµР»РµРЅРЅС‹Рј СЌР»РµРјРµРЅС‚РѕРј */
 	if (rightElement.type != undefined)
 	{
-		/*! Получаем численное значение операнда */
+		/* РџРѕР»СѓС‡Р°РµРј С‡РёСЃР»РµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РѕРїРµСЂР°РЅРґР° */
 		rightOpS = rightElement.element;
 		rightOpD = ops.stringOpToDoubleOp(rightOpS, vars);
 		unaryMinusOrTypeConversion(rightElement, rightOpD);
-		/*! Производим расчет */
+		/* РџСЂРѕРёР·РІРѕРґРёРј СЂР°СЃС‡РµС‚ */
 		resultD = floor(rightOpD);
-		/*! Результат в стек */
+		/* Р РµР·СѓР»СЊС‚Р°С‚ РІ СЃС‚РµРє */
 		stackElement element(constant, QString::number(resultD, 'f'));
 		operands.push(element);
-		/*! Проверяем необходимость инкрем/декрем */
+		/* РџСЂРѕРІРµСЂСЏРµРј РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚СЊ РёРЅРєСЂРµРј/РґРµРєСЂРµРј */
 		postIncDec(rightElement, vars, arrs);
 	}
 	else
@@ -712,27 +712,27 @@ void Analyzer::floorF(QStack<stackElement> &operands, QVector<Index> &vars, QVec
 
 void Analyzer::powF(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs)
 {
-	/*! Берем операнды из стека */
+	/* Р‘РµСЂРµРј РѕРїРµСЂР°РЅРґС‹ РёР· СЃС‚РµРєР° */
 	stackElement rightElement = operands.pop();
 	stackElement leftElement = operands.pop();
 
-	/*! Если они не являются неопределенными элементами */
+	/* Р•СЃР»Рё РѕРЅРё РЅРµ СЏРІР»СЏСЋС‚СЃСЏ РЅРµРѕРїСЂРµРґРµР»РµРЅРЅС‹РјРё СЌР»РµРјРµРЅС‚Р°РјРё */
 	if (rightElement.type != undefined && leftElement.type != undefined)
 	{
-		/*! Получаем численное значение правого операнда */
+		/* РџРѕР»СѓС‡Р°РµРј С‡РёСЃР»РµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РїСЂР°РІРѕРіРѕ РѕРїРµСЂР°РЅРґР° */
 		rightOpS = rightElement.element;
 		rightOpD = ops.stringOpToDoubleOp(rightOpS, vars);
 		unaryMinusOrTypeConversion(rightElement, rightOpD);
-		/*! Получаем численное значение левого операнда */
+		/* РџРѕР»СѓС‡Р°РµРј С‡РёСЃР»РµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ Р»РµРІРѕРіРѕ РѕРїРµСЂР°РЅРґР° */
 		leftOpS = leftElement.element;
 		leftOpD = ops.stringOpToDoubleOp(leftOpS, vars);
 		unaryMinusOrTypeConversion(leftElement, leftOpD);
-		/*! Производим расчет */
+		/* РџСЂРѕРёР·РІРѕРґРёРј СЂР°СЃС‡РµС‚ */
 		resultD = pow(leftOpD, rightOpD);
-		/*! Результат в стек */
+		/* Р РµР·СѓР»СЊС‚Р°С‚ РІ СЃС‚РµРє */
 		stackElement element(constant, QString::number(resultD, 'f'));
 		operands.push(element);
-		/*! Проверяем необходимость инкрем/декрем */
+		/* РџСЂРѕРІРµСЂСЏРµРј РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚СЊ РёРЅРєСЂРµРј/РґРµРєСЂРµРј */
 		postIncDec(rightElement, vars, arrs);
 		postIncDec(leftElement, vars, arrs);
 	}
@@ -745,25 +745,25 @@ void Analyzer::powF(QStack<stackElement> &operands, QVector<Index> &vars, QVecto
 
 void Analyzer::assignment(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs, QString &type) throw(QString&)
 {
-	/*! Берем операнды из стека */
+	/* Р‘РµСЂРµРј РѕРїРµСЂР°РЅРґС‹ РёР· СЃС‚РµРєР° */
 	stackElement rightElement = operands.pop();
 	stackElement leftElement = operands.pop();
 
-	/*! Если они не являются неопределенными элементами */
+	/* Р•СЃР»Рё РѕРЅРё РЅРµ СЏРІР»СЏСЋС‚СЃСЏ РЅРµРѕРїСЂРµРґРµР»РµРЅРЅС‹РјРё СЌР»РµРјРµРЅС‚Р°РјРё */
 	if (rightElement.type != undefined && leftElement.type != undefined)
 	{
-		/*! Получаем численное значение правого операнда */
+		/* РџРѕР»СѓС‡Р°РµРј С‡РёСЃР»РµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РїСЂР°РІРѕРіРѕ РѕРїРµСЂР°РЅРґР° */
 		rightOpS = rightElement.element;
 		rightOpD = ops.stringOpToDoubleOp(rightOpS, vars);
 		unaryMinusOrTypeConversion(rightElement, rightOpD);
-		/*! Если операнд - переменная - присвоение переменной */
+		/* Р•СЃР»Рё РѕРїРµСЂР°РЅРґ - РїРµСЂРµРјРµРЅРЅР°СЏ - РїСЂРёСЃРІРѕРµРЅРёРµ РїРµСЂРµРјРµРЅРЅРѕР№ */
 		if (leftElement.type == variable)
 		{ 
-			/*! Получаем численное значение левого операнда */
+			/* РџРѕР»СѓС‡Р°РµРј С‡РёСЃР»РµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ Р»РµРІРѕРіРѕ РѕРїРµСЂР°РЅРґР° */
 			leftOpS = leftElement.element;
 			int var = ops.findVar(leftOpS, vars);
 
-			/*! Выполняем присваивание переменной в зависимости от значения type */
+			/* Р’С‹РїРѕР»РЅСЏРµРј РїСЂРёСЃРІР°РёРІР°РЅРёРµ РїРµСЂРµРјРµРЅРЅРѕР№ РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ Р·РЅР°С‡РµРЅРёСЏ type */
 			if (type == "=")
 				vars[var].curValue = rightOpD;
 			else if (type == "+=")
@@ -775,13 +775,13 @@ void Analyzer::assignment(QStack<stackElement> &operands, QVector<Index> &vars, 
 			else if (type == "/=")
 				vars[var].curValue /= rightOpD;
 
-			/*! Результат в стек */
+			/* Р РµР·СѓР»СЊС‚Р°С‚ РІ СЃС‚РµРє */
 			stackElement element(variable, vars[var].name);
 			operands.push(element);
 		}
 		else if (leftElement.type == arrayElement)
 		{
-			/*! Выполняем присваивание элементу массива в зависимости от значения type */
+			/* Р’С‹РїРѕР»РЅСЏРµРј РїСЂРёСЃРІР°РёРІР°РЅРёРµ СЌР»РµРјРµРЅС‚Сѓ РјР°СЃСЃРёРІР° РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ Р·РЅР°С‡РµРЅРёСЏ type */
 			if (type == "=")
 				arrs[leftElement.arrayIndex].elements[leftElement.elementIndex] = rightOpD;
 			else if (type == "+=")
@@ -793,21 +793,21 @@ void Analyzer::assignment(QStack<stackElement> &operands, QVector<Index> &vars, 
 			else if (type == "/=")
 				arrs[leftElement.arrayIndex].elements[leftElement.elementIndex] /= rightOpD;
 
-			/*! Результат в стек */
+			/* Р РµР·СѓР»СЊС‚Р°С‚ РІ СЃС‚РµРє */
 			stackElement element(arrayElement, QString::number(rightOpD, 'f'), leftElement.arrayIndex, leftElement.elementIndex);
 			operands.push(element);
 		}
-		/*! Если операнд - константа */
+		/* Р•СЃР»Рё РѕРїРµСЂР°РЅРґ - РєРѕРЅСЃС‚Р°РЅС‚Р° */
 		else if (leftElement.type == constant)
 		{
 			QString errorString = "L-value is required for \"" + type + "\" operation on the " + QString::number(exprPos + 1) + " position";
 			throw errorString;
 		}
-		/*! Проверяем необходимость инкрем/декрем */
+		/* РџСЂРѕРІРµСЂСЏРµРј РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚СЊ РёРЅРєСЂРµРј/РґРµРєСЂРµРј */
 		postIncDec(rightElement, vars, arrs);
 		postIncDec(leftElement, vars, arrs);
 	}
-	/*! Если операнд - неопределенный элемент */
+	/* Р•СЃР»Рё РѕРїРµСЂР°РЅРґ - РЅРµРѕРїСЂРµРґРµР»РµРЅРЅС‹Р№ СЌР»РµРјРµРЅС‚ */
 	else
 	{
 		QString errorString = "Critical operation with undefined element is detected on the " + QString::number(exprPos + 1) + " position during the " + QString::number(iteration) + " iteration";
@@ -817,65 +817,65 @@ void Analyzer::assignment(QStack<stackElement> &operands, QVector<Index> &vars, 
 
 void Analyzer::typeConversionToInt(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs)
 {
-	/*! Берем правый операнд */
+	/* Р‘РµСЂРµРј РїСЂР°РІС‹Р№ РѕРїРµСЂР°РЅРґ */
 	stackElement rightElement = operands.pop();
 
-	/*! Если операнд - неопределенный элемент */
+	/* Р•СЃР»Рё РѕРїРµСЂР°РЅРґ - РЅРµРѕРїСЂРµРґРµР»РµРЅРЅС‹Р№ СЌР»РµРјРµРЅС‚ */
 	if (rightElement.type == undefined)
 	{
 
 		stackElement element(undefined);
 		operands.push(element);
 	}
-	/*! Если он не является неопределенным элементом */
+	/* Р•СЃР»Рё РѕРЅ РЅРµ СЏРІР»СЏРµС‚СЃСЏ РЅРµРѕРїСЂРµРґРµР»РµРЅРЅС‹Рј СЌР»РµРјРµРЅС‚РѕРј */
 	else
 	{
-		/*! Устанавливаем флаг intNeeded */
+		/* РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј С„Р»Р°Рі intNeeded */
 		rightElement.intNeeded = true;
-		/*! Результат в стек */
+		/* Р РµР·СѓР»СЊС‚Р°С‚ РІ СЃС‚РµРє */
 		operands.push(rightElement);
-		/*! Проверяем необходимость инкрем/декрем */
+		/* РџСЂРѕРІРµСЂСЏРµРј РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚СЊ РёРЅРєСЂРµРј/РґРµРєСЂРµРј */
 		postIncDec(rightElement, vars, arrs);
 	}
 }
 
 void Analyzer::postIncDec(stackElement &element, QVector<Index> &vars, QVector<Array> &arrs)
 {
-	/*! Если установлен флаг постфиксного инкремента */
+	/* Р•СЃР»Рё СѓСЃС‚Р°РЅРѕРІР»РµРЅ С„Р»Р°Рі РїРѕСЃС‚С„РёРєСЃРЅРѕРіРѕ РёРЅРєСЂРµРјРµРЅС‚Р° */
 	if (element.incNeeded)
 	{
-		/*! Если элемент - переменная */
+		/* Р•СЃР»Рё СЌР»РµРјРµРЅС‚ - РїРµСЂРµРјРµРЅРЅР°СЏ */
 		if (element.type == variable)
 		{
-			/*! Инкрементируем ее значение и обнуляем флаг incNeeded */
+			/* РРЅРєСЂРµРјРµРЅС‚РёСЂСѓРµРј РµРµ Р·РЅР°С‡РµРЅРёРµ Рё РѕР±РЅСѓР»СЏРµРј С„Р»Р°Рі incNeeded */
 			int varIndex = ops.findVar(element.element, vars);
 			++vars[varIndex].curValue;
 			element.incNeeded = false;
 		}
-		/*! Если элемент - элемент массива */
+		/* Р•СЃР»Рё СЌР»РµРјРµРЅС‚ - СЌР»РµРјРµРЅС‚ РјР°СЃСЃРёРІР° */
 		else if (element.type == arrayElement)
 		{
-			/*! Инкрементируем его значение и обнуляем флаг incNeeded */
+			/* РРЅРєСЂРµРјРµРЅС‚РёСЂСѓРµРј РµРіРѕ Р·РЅР°С‡РµРЅРёРµ Рё РѕР±РЅСѓР»СЏРµРј С„Р»Р°Рі incNeeded */
 			++arrs[element.arrayIndex].elements[element.elementIndex];
 			element.incNeeded = false;
 		}
 	}
 
-	/*! Если установлен флаг постфиксного декремента */
+	/* Р•СЃР»Рё СѓСЃС‚Р°РЅРѕРІР»РµРЅ С„Р»Р°Рі РїРѕСЃС‚С„РёРєСЃРЅРѕРіРѕ РґРµРєСЂРµРјРµРЅС‚Р° */
 	if (element.decNeeded)
 	{
-		/*! Если элемент - переменная */
+		/* Р•СЃР»Рё СЌР»РµРјРµРЅС‚ - РїРµСЂРµРјРµРЅРЅР°СЏ */
 		if (element.type == variable)
 		{
-			/*! Декрементируем ее значение и обнуляем флаг decNeeded */
+			/* Р”РµРєСЂРµРјРµРЅС‚РёСЂСѓРµРј РµРµ Р·РЅР°С‡РµРЅРёРµ Рё РѕР±РЅСѓР»СЏРµРј С„Р»Р°Рі decNeeded */
 			int varIndex = ops.findVar(element.element, vars);
 			--vars[varIndex].curValue;
 			element.decNeeded = false;
 		}
-		/*! Если элемент - элемент массива */
+		/* Р•СЃР»Рё СЌР»РµРјРµРЅС‚ - СЌР»РµРјРµРЅС‚ РјР°СЃСЃРёРІР° */
 		else if (element.type == arrayElement)
 		{
-			/*! Декрементируем его значение и обнуляем флаг decNeeded */
+			/* Р”РµРєСЂРµРјРµРЅС‚РёСЂСѓРµРј РµРіРѕ Р·РЅР°С‡РµРЅРёРµ Рё РѕР±РЅСѓР»СЏРµРј С„Р»Р°Рі decNeeded */
 			--arrs[element.arrayIndex].elements[element.elementIndex];
 			element.decNeeded = false;
 		}
@@ -892,18 +892,18 @@ void Analyzer::disableUsedInExpressionFlags(QVector<Index> &vars)
 
 void Analyzer::unaryMinusOrTypeConversion(stackElement &element, double &value, int op /*= 0*/)
 {
-	/*! Если установлен флаг negative */
+	/* Р•СЃР»Рё СѓСЃС‚Р°РЅРѕРІР»РµРЅ С„Р»Р°Рі negative */
 	if (element.negative && (op == 0 || op == 1))
 	{
-		/*! Делаем значение value отрицательным и обнуляем флаг negative */
+		/* Р”РµР»Р°РµРј Р·РЅР°С‡РµРЅРёРµ value РѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Рј Рё РѕР±РЅСѓР»СЏРµРј С„Р»Р°Рі negative */
 		value = -value;
 		element.negative = false;
 	}
 
-	/*! Если установлен флаг intNeeded */
+	/* Р•СЃР»Рё СѓСЃС‚Р°РЅРѕРІР»РµРЅ С„Р»Р°Рі intNeeded */
 	if (element.intNeeded && (op == 0 || op == 2))
 	{
-		/*! Приводим value к int и обнуляем флаг intNeeded */
+		/* РџСЂРёРІРѕРґРёРј value Рє int Рё РѕР±РЅСѓР»СЏРµРј С„Р»Р°Рі intNeeded */
 		value = (int)value;
 		element.intNeeded = false;
 	}
@@ -912,37 +912,37 @@ void Analyzer::unaryMinusOrTypeConversion(stackElement &element, double &value, 
 void Analyzer::nextIteration(QVector<Index>::iterator &varIt, QVector<Index> &vars, int *loop, bool &stopCheck)
 {
 	bool resume = true;
-	/*! Пока установлен флаг продолжения */
+	/* РџРѕРєР° СѓСЃС‚Р°РЅРѕРІР»РµРЅ С„Р»Р°Рі РїСЂРѕРґРѕР»Р¶РµРЅРёСЏ */
 	while (resume)
 	{
-		/*! Условия, при которых можно увеличивать текущую переменную на шаг - правая граница не достигнута */
+		/* РЈСЃР»РѕРІРёСЏ, РїСЂРё РєРѕС‚РѕСЂС‹С… РјРѕР¶РЅРѕ СѓРІРµР»РёС‡РёРІР°С‚СЊ С‚РµРєСѓС‰СѓСЋ РїРµСЂРµРјРµРЅРЅСѓСЋ РЅР° С€Р°Рі - РїСЂР°РІР°СЏ РіСЂР°РЅРёС†Р° РЅРµ РґРѕСЃС‚РёРіРЅСѓС‚Р° */
 		bool positiveStepResume = (*varIt).step > 0 && (*varIt).curValue + (*varIt).step <= (*varIt).to;
 		bool negativeStepResume = (*varIt).step < 0 && (*varIt).curValue + (*varIt).step >= (*varIt).to;
 
-		/*! Если условия выполняются */
+		/* Р•СЃР»Рё СѓСЃР»РѕРІРёСЏ РІС‹РїРѕР»РЅСЏСЋС‚СЃСЏ */
 		if (positiveStepResume || negativeStepResume)
 		{
-			/*! Увеличиваем значение текущей переменной */
+			/* РЈРІРµР»РёС‡РёРІР°РµРј Р·РЅР°С‡РµРЅРёРµ С‚РµРєСѓС‰РµР№ РїРµСЂРµРјРµРЅРЅРѕР№ */
 			(*varIt).curValue += (*varIt).step;
-			/*! Проверяем на зацикленность */
+			/* РџСЂРѕРІРµСЂСЏРµРј РЅР° Р·Р°С†РёРєР»РµРЅРЅРѕСЃС‚СЊ */
 			checkEndlessLoop(varIt, vars, loop);
 			varIt = vars.end() - 1;
-			/*! Переход на следующую итерацию выполнен */
+			/* РџРµСЂРµС…РѕРґ РЅР° СЃР»РµРґСѓСЋС‰СѓСЋ РёС‚РµСЂР°С†РёСЋ РІС‹РїРѕР»РЅРµРЅ */
 			resume = false;
 		}
-		/*! Если текущая переменная достигла своего максимального значения */
+		/* Р•СЃР»Рё С‚РµРєСѓС‰Р°СЏ РїРµСЂРµРјРµРЅРЅР°СЏ РґРѕСЃС‚РёРіР»Р° СЃРІРѕРµРіРѕ РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ */
 		else
 		{
-			/*! Переходим к предыдущей переменной */
+			/* РџРµСЂРµС…РѕРґРёРј Рє РїСЂРµРґС‹РґСѓС‰РµР№ РїРµСЂРµРјРµРЅРЅРѕР№ */
 			(*varIt).curValue = (*varIt).from;
 			--varIt;
-			/*! Продолжаем переход к следующей итерации */
+			/* РџСЂРѕРґРѕР»Р¶Р°РµРј РїРµСЂРµС…РѕРґ Рє СЃР»РµРґСѓСЋС‰РµР№ РёС‚РµСЂР°С†РёРё */
 			resume = true;
 
-			/*! Если достигли конца */
+			/* Р•СЃР»Рё РґРѕСЃС‚РёРіР»Рё РєРѕРЅС†Р° */
 			if (varIt < vars.begin())
 			{
-				/*! Устанавливаем флаг окончания проверки выражения */
+				/* РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј С„Р»Р°Рі РѕРєРѕРЅС‡Р°РЅРёСЏ РїСЂРѕРІРµСЂРєРё РІС‹СЂР°Р¶РµРЅРёСЏ */
 				resume = false;
 				stopCheck = true;
 			}
@@ -954,14 +954,14 @@ void Analyzer::checkEndlessLoop(QVector<Index>::iterator &var, QVector<Index> &v
 {
 	int index = ops.findVar((*var).name, vars);
 
-	/*! Если текущее значение переменной(после перехода на новую итерацию) равно предыдущему */
+	/* Р•СЃР»Рё С‚РµРєСѓС‰РµРµ Р·РЅР°С‡РµРЅРёРµ РїРµСЂРµРјРµРЅРЅРѕР№(РїРѕСЃР»Рµ РїРµСЂРµС…РѕРґР° РЅР° РЅРѕРІСѓСЋ РёС‚РµСЂР°С†РёСЋ) СЂР°РІРЅРѕ РїСЂРµРґС‹РґСѓС‰РµРјСѓ */
 	if ((*var).curValue == (*var).prevValue)
 	{
-		/*! Увеличиваем счетчик повторных значений для данной переменной */
+		/* РЈРІРµР»РёС‡РёРІР°РµРј СЃС‡РµС‚С‡РёРє РїРѕРІС‚РѕСЂРЅС‹С… Р·РЅР°С‡РµРЅРёР№ РґР»СЏ РґР°РЅРЅРѕР№ РїРµСЂРµРјРµРЅРЅРѕР№ */
 		++loop[index];
 	}
 
-	/*! Если счетчик повторных значений достиг максимального значения */
+	/* Р•СЃР»Рё СЃС‡РµС‚С‡РёРє РїРѕРІС‚РѕСЂРЅС‹С… Р·РЅР°С‡РµРЅРёР№ РґРѕСЃС‚РёРі РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ */
 	if (loop[index] > (*var).looped)
 	{
 		QString errorString = "Variable \"" + (*var).name + "\" is got caught in an endless loop";
