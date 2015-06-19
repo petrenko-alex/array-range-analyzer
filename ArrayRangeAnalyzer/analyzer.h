@@ -63,7 +63,12 @@ private:
 	double  leftOpD, rightOpD, resultD;		///< Операнды для вычислений в виде числа
 	int exprPos;							///< Позиция в выражении при обходе
 	
-	enum stackElementType { constant, variable, arrayElement, undefined };	///< Тип элемента стека
+	enum stackElementType					///< Тип элемента стека
+	{ constant,								///< Элемент в стеке - константа
+	  variable,								///< Элемент в стеке - переменная
+	  arrayElement,							///< Элемент в стеке - элемент массива
+	  undefined								///< Элемент в стеке - неопределенный элемент
+	};	
 
 	/*! Cтруктура элемента стека */
 	struct stackElement						///< Структура элемента стека
