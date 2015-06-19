@@ -10,6 +10,7 @@
 #define ANALYZER_H
 
 #include <QObject>
+#include <QStack>
 #include "index.h"
 #include "array.h"
 #include "exceeding.h"
@@ -281,6 +282,32 @@ private:
 	 *\param[in] arrs			вектор массивов
 	 */
 	void typeConversionToInt(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs);
+
+	/*!
+	 * Функция выполняет инкрементацию и/или декрементацию для элемента в стеке
+	 * в зависимости от значений флагов incNeeded и decNeeded(флаги устанавливаются
+	 * при операциях постфиксной инкрементации/декрементации)
+	 *\param[in|out] operands	стек 
+	 *\param[in|out] vars		вектор переменных
+	 *\param[in|out] arrs		вектор массивов
+	 */
+	void postIncDec(stackElement &element, QVector<Index> &vars, QVector<Array> &arrs);
+
+	/*!
+	 * Функция выставляет значение false для флагов usedInExpression переменных в векторе vars 
+	 *\param[in|out] vars		вектор переменных
+ 	 */
+	void disableUsedInExpressionFlags(QVector<Index> &vars);
+
+	/*!
+	 * Функция  меняет передаваемое ей значение на отрицательное и/или приводит к int
+	 * в зависимости от значений флагов negative и intNeeded(флаги устанавливаются
+	 * при операциях приведения типа к int и унарного минуса)
+	 *\param[in]	 operands	стек
+	 *\param[in|out] value		изменяемое значение
+	 *\param[in]	 op			0 елси анализировать оба флага, 1 - только negetive, 2 - только intNeeded
+	 */
+	void unaryMinusOrTypeConversion(stackElement &element, double &value, int op = 0);
 };
 
 #endif // ANALYZER_H
