@@ -1,4 +1,4 @@
-#include "input.h"
+﻿#include "input.h"
 
 Input::Input()
 {
@@ -13,7 +13,7 @@ bool Input::readData(const QStringList &inputFileNames, QVector <Index> &vars, Q
 	bool isSuccess = true;
 	Output out;
 
-	/*! Читаем информацию о переменных */
+	/* Читаем информацию о переменных */
 	try
 	{
 		readVarInfo(inputFileNames[0], vars);
@@ -26,7 +26,7 @@ bool Input::readData(const QStringList &inputFileNames, QVector <Index> &vars, Q
 		out.writeError(errorString);
 	}
 
-	/*! Читаем информацию о массивах, если чтение переменных произошло успешно */
+	/* Читаем информацию о массивах, если чтение переменных произошло успешно */
 	if (isSuccess)
 	{
 		try
@@ -42,7 +42,7 @@ bool Input::readData(const QStringList &inputFileNames, QVector <Index> &vars, Q
 		}
 	}
 
-	/*! Читаем выражение, если чтение переменных и массивов произошло успешно */
+	/* Читаем выражение, если чтение переменных и массивов произошло успешно */
 	if (isSuccess)
 	{
 		try
@@ -58,7 +58,7 @@ bool Input::readData(const QStringList &inputFileNames, QVector <Index> &vars, Q
 		}
 	}
 	
-	/*! Освобождаем вектора переменных и массивов от неиспользующихся в выражении переменных и массивов */
+	/* Освобождаем вектора переменных и массивов от неиспользующихся в выражении переменных и массивов */
 	if (isSuccess)
 		removeUnusedVarsAndArrs(arrs, vars, expr);
 
@@ -78,23 +78,23 @@ void Input::readVarInfo(const QString fileName, QVector <Index> &vars) throw(QSt
 		{	
 			QXmlStreamReader::TokenType token = reader.readNext();
 
-			/*! Если встретился открывающий тег variable */
+			/* Если встретился открывающий тег variable */
 			if (token == QXmlStreamReader::StartElement && reader.name() == "variable")
 			{	
 				Index var;
-				/*! Нельзя задать более 3 переменных */
+				/* Нельзя задать более 3 переменных */
 				if (i > 3)
 				{
 					QString errorString = "You can't use more than 3 variables in " + fileName + " file";
 					throw errorString;
 				}
 
-				/*! Получаем атрибуты тега variable */
+				/* Получаем атрибуты тега variable */
 				QXmlStreamAttributes atrs = reader.attributes();
 
 				try
 				{
-					/*! Читаем значения атрибутов тега variable */
+					/* Читаем значения атрибутов тега variable */
 					readVarAttributes(var, atrs, i);
 				}
 				catch (...)
@@ -102,13 +102,13 @@ void Input::readVarInfo(const QString fileName, QVector <Index> &vars) throw(QSt
 					file.close();
 					throw;
 				}
-				/*! Сохраняем считанную переменную в вектор */
+				/* Сохраняем считанную переменную в вектор */
 				vars << var;
 			}
-			/*! Если встретился закрывающий тег variable */
+			/* Если встретился закрывающий тег variable */
 			else if (token == QXmlStreamReader::EndElement && reader.name() == "variable")
 				++i;
-			/*! Если встретился неизвестный тег */
+			/* Если встретился неизвестный тег */
 			else if (token == QXmlStreamReader::StartElement && reader.name() != "arrayRanges")
 			{
 				file.close();
@@ -119,20 +119,20 @@ void Input::readVarInfo(const QString fileName, QVector <Index> &vars) throw(QSt
 
 		file.close();
 
-		/*! Ошибки в структуре xml файла */
+		/* Ошибки в структуре xml файла */
 		if (reader.hasError())
 		{
 			QString errorString = "File structure error in the file " + fileName + " containing the variable's info";
 			throw errorString;
 		}
 
-		/*! В файле не заданы переменные */
+		/* В файле не заданы переменные */
 		if (vars.isEmpty())
 		{
 			QString errorString = "There is no variables info in " + fileName + " file";
 			throw errorString;
 		}
-		/*! Проверка на невыполняющиеся циклы */
+		/* Проверка на невыполняющиеся циклы */
 		checkNonExecutableCycle(vars);
 	}
 	else
@@ -147,7 +147,7 @@ void Input::readVarAttributes(Index &var, QXmlStreamAttributes &atrs, int i) thr
 	QString tmpString;
 	Operations ops;
 
-	/*! Чтение значения аттрибута name в теге variable */
+	/* Чтение значения аттрибута name в теге variable */
 	if (atrs.hasAttribute("name"))
 	{
 		tmpString = atrs.value("name").toString();
@@ -165,7 +165,7 @@ void Input::readVarAttributes(Index &var, QXmlStreamAttributes &atrs, int i) thr
 		throw errorString;
 	}
 
-	/*! Чтение значения аттрибута from в теге variable */
+	/* Чтение значения аттрибута from в теге variable */
 	if (atrs.hasAttribute("from"))
 	{
 		tmpString = atrs.value("from").toString();
@@ -191,7 +191,7 @@ void Input::readVarAttributes(Index &var, QXmlStreamAttributes &atrs, int i) thr
 		throw errorString;
 	}
 
-	/*! Чтение значения аттрибута to в теге variable */
+	/* Чтение значения аттрибута to в теге variable */
 	if (atrs.hasAttribute("to"))
 	{
 		tmpString = atrs.value("to").toString();
@@ -214,7 +214,7 @@ void Input::readVarAttributes(Index &var, QXmlStreamAttributes &atrs, int i) thr
 		throw errorString;
 	}
 
-	/*! Чтение значения аттрибута step в теге variable */
+	/* Чтение значения аттрибута step в теге variable */
 	if (atrs.hasAttribute("step"))
 	{
 		tmpString = atrs.value("step").toString();
@@ -255,15 +255,15 @@ void Input::readArrInfo(const QString fileName, QVector <Array> &arrs) throw(QSt
 		while (!reader.atEnd() && !reader.hasError())
 		{
 			QXmlStreamReader::TokenType token = reader.readNext();
-			/*! Если встретился открывающий тег array */
+			/* Если встретился открывающий тег array */
 			if (token == QXmlStreamReader::StartElement && reader.name() == "array")
 			{
 				Array arr;
-				/*! Получаем атрибуты тега array */
+				/* Получаем атрибуты тега array */
 				QXmlStreamAttributes atrs = reader.attributes();
 				try
 				{
-					/*! Читаем значения атрибутов тега array */
+					/* Читаем значения атрибутов тега array */
 					readArrAttributes(arr, atrs, i);
 				}
 				catch (...)
@@ -271,13 +271,13 @@ void Input::readArrInfo(const QString fileName, QVector <Array> &arrs) throw(QSt
 					file.close();
 					throw;
 				}
-				/*! Сохраняем считанный массив в вектор */
+				/* Сохраняем считанный массив в вектор */
 				arrs << arr;
 			}
-			/*! Если встретился закрывающий тег array */
+			/* Если встретился закрывающий тег array */
 			else if (token == QXmlStreamReader::EndElement && reader.name() == "array")
 				++i;
-			/*! Если встретился неизвестный тег */
+			/* Если встретился неизвестный тег */
 			else if (token == QXmlStreamReader::StartElement && reader.name() != "arrayInfo")
 			{
 				QString errorString = "Unknown tag \"" + reader.name().toString() + "\"";
@@ -287,14 +287,14 @@ void Input::readArrInfo(const QString fileName, QVector <Array> &arrs) throw(QSt
 
 		file.close();
 
-		/*! Ошибки в структуре xml файла */
+		/* Ошибки в структуре xml файла */
 		if (reader.hasError())
 		{
 			QString errorString = "File structure error in the file " + fileName + " containing the array's info";
 			throw errorString;
 		}
 
-		/*! В файле не заданы массивы */
+		/* В файле не заданы массивы */
 		if (arrs.isEmpty())
 		{
 			QString errorString = "There no arrays info in " + fileName + " file";
@@ -318,7 +318,7 @@ void Input::readArrAttributes(Array &arr, QXmlStreamAttributes &atrs, int i) thr
 	int dimNum = 1;
 	QString dimSize = "dim" + QString::number(dimNum) + "size";
 
-	/*! Проверка наличия аттрибутов */
+	/* Проверка наличия аттрибутов */
 	if (!atrs.hasAttribute("name"))
 	{
 		QString errorString = "Missed attribute \"name\" in the " + QString::number(i) + " \"array\" tag";
@@ -335,10 +335,10 @@ void Input::readArrAttributes(Array &arr, QXmlStreamAttributes &atrs, int i) thr
 		throw errorString;
 	}
 
-	/*! Чтение значений атрибутов тега array */
+	/* Чтение значений атрибутов тега array */
 	for (it; it != itEnd; ++it)
 	{
-		/*! Чтение атрибута name */
+		/* Чтение атрибута name */
 		if ((*it).name() == "name")
 		{
 			tmpString = (*it).value().toString();
@@ -350,7 +350,7 @@ void Input::readArrAttributes(Array &arr, QXmlStreamAttributes &atrs, int i) thr
 			else
 				arr.name = tmpString;
 		}
-		/*! Чтение атрибута elements */
+		/* Чтение атрибута elements */
 		else if ((*it).name() == "elements")
 		{
 			QString elementsString = (*it).value().toString();
@@ -371,7 +371,7 @@ void Input::readArrAttributes(Array &arr, QXmlStreamAttributes &atrs, int i) thr
 			}
 
 		}
-		/*! Чтение атрибута dimSize */
+		/* Чтение атрибута dimSize */
 		else if ((*it).name() == dimSize)
 		{
 			tmpString = (*it).value().toString();
@@ -415,38 +415,38 @@ void Input::readExpression(const QString fileName, QStringList &expr, const QVec
 		bool varUsed = false;
 		Operations ops;
 
-		/*! Читаем из файла выражение */
+		/* Читаем из файла выражение */
 		QString exprString(file.readAll());
 		if (!exprString.size())
 		{
 			QString errorString = "File " + fileName + " is empty";
 			throw errorString;
 		}
-		/*! Заносим выражение по-элементно в массив строк */
+		/* Заносим выражение по-элементно в массив строк */
 		expr = exprString.split(" ");
 		int size = expr.size();
 
-		/*! Проверка корректности выражения(допустимые элементы,количество операндов для операции и т.п.) */
+		/* Проверка корректности выражения(допустимые элементы,количество операндов для операции и т.п.) */
 		for (int i = 0; i < size; ++i)
 		{
-			/*! Если встретилось имя массива */
+			/* Если встретилось имя массива */
 			if (ops.isDefiniteArray(expr[i], arrs))
 			{
 				arrayUsed = true;
 				int arr = ops.findArr(expr[i], arrs);
 				arrCounter += arrs[arr].size.size();
 			}
-			/*! Если встретилось имя переменной */
+			/* Если встретилось имя переменной */
 			else if (ops.isDefiniteVariable(expr[i], vars))
 				varUsed = true;
 
-			/*! Если встретился операнд, но не имя массива */
+			/* Если встретился операнд, но не имя массива */
 			if (ops.isOperand(expr[i], vars, arrs) && !ops.isDefiniteArray(expr[i], arrs))
 			{
 				++operandsCount;
 				++operandsCounter;
 			}
-			/*! Если встретилась операция и для нее достаточно операндов */
+			/* Если встретилась операция и для нее достаточно операндов */
 			else if (ops.isDefiniteOperation(expr[i]) && operandsCounter >= ops.getArity(expr[i]))
 			{
 				++operationsCount;
@@ -456,14 +456,14 @@ void Input::readExpression(const QString fileName, QStringList &expr, const QVec
 					--arrCounter;
 				}
 			}
-			/*! Если встретилась операция и для нее не достаточно операндов */
+			/* Если встретилась операция и для нее не достаточно операндов */
 			else if (ops.isDefiniteOperation(expr[i]) && operandsCounter < ops.getArity(expr[i]))
 			{
 				QString errorString = "Wrong expression. Not enough operands to calculate \"" + expr[i] + "\" on the " + QString::number(i + 1) + " position";
 				throw errorString;
 
 			}
-			/*! Если встретился неизвестный элемент */
+			/* Если встретился неизвестный элемент */
 			else if (!ops.isDefiniteElement(expr[i], arrs, vars))
 			{
 				QString errorString = "Wrong expression. Undefined element \"" + expr[i] + "\" on the " + QString::number(i + 1) + " position";
@@ -472,7 +472,7 @@ void Input::readExpression(const QString fileName, QStringList &expr, const QVec
 		}
 
 
-		/*! Проверка соответствия количества операндов и операций */
+		/* Проверка соответствия количества операндов и операций */
 		int difference = operandsCount - operationsCount;
 		if (difference > 1)
 		{
@@ -485,7 +485,7 @@ void Input::readExpression(const QString fileName, QStringList &expr, const QVec
 			throw errorString;
 		}
 
-		/*! Проверка наличия заданных переменнных и массивов в выражении */
+		/* Проверка наличия заданных переменнных и массивов в выражении */
 		if (!arrayUsed)
 		{
 			QString errorString = "Wrong expression. Definite arrays are not used in the expression. Please, check the expression";
@@ -508,13 +508,13 @@ void Input::checkNonExecutableCycle(QVector<Index> &vars) throw(QString&)
 {
 	for (auto &var : vars)
 	{
-		/*! Если цикл возрастающий, а шаг меньше нуля - отрицательный */
+		/* Если цикл возрастающий, а шаг меньше нуля - отрицательный */
 		if (var.from < var.to && var.step < 0)
 		{
 			QString errorString = "Wrong cycle ranges for variable \"" + var.name + "\". Cycle wouldn't execute";
 			throw errorString;
 		}
-		/*! Если цикл убывающий, а шаг больше нуля - положительный */
+		/* Если цикл убывающий, а шаг больше нуля - положительный */
 		else if (var.from > var.to && var.step > 0)
 		{
 			QString errorString = "Wrong cycle ranges for variable \"" + var.name + "\". Cycle wouldn't execute";
@@ -528,16 +528,16 @@ void Input::removeUnusedVarsAndArrs(QVector<Array> &arrs, QVector<Index> &vars, 
 	Operations ops;
 	int exprSize = expr.size();
 
-	/*! Анализируем, какие переменные и массивы используются в выражении */
+	/* Анализируем, какие переменные и массивы используются в выражении */
 	for (int i = 0; i < exprSize; ++i)
 	{
-		/*! Если встретилось имя переменной */
+		/* Если встретилось имя переменной */
 		if (ops.isDefiniteVariable(expr[i], vars))
 		{
 			int var = ops.findVar(expr[i], vars);
 			vars[var].usedInExpression = true;
 		}
-		/*! Если встретилось имя массива */
+		/* Если встретилось имя массива */
 		else if (ops.isDefiniteArray(expr[i], arrs))
 		{
 			int arr = ops.findArr(expr[i], arrs);
@@ -545,7 +545,7 @@ void Input::removeUnusedVarsAndArrs(QVector<Array> &arrs, QVector<Index> &vars, 
 		}
 	}
 
-	/*! Удаляем из vars неиспользующиеся переменные */
+	/* Удаляем из vars неиспользующиеся переменные */
 	for (auto &var : vars)
 	{
 		if (!var.usedInExpression)
@@ -557,7 +557,7 @@ void Input::removeUnusedVarsAndArrs(QVector<Array> &arrs, QVector<Index> &vars, 
 			var.usedInExpression = false;
 	}
 
-	/*! Удаляем из arrs неиспользующиеся массивы */
+	/* Удаляем из arrs неиспользующиеся массивы */
 	for (auto &arr : arrs)
 	{
 		if (!arr.usedInExpression)
