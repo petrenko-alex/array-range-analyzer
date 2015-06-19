@@ -54,7 +54,7 @@ public:
 	/*!
 	 * Определяет, является ли элемент поддерживаемой операцией
 	 *\param[in] op проверяемый элемент
-	 *\retrun       логическое значение true - если является, false - если нет 
+	 *\return       логическое значение true - если является, false - если нет 
 	 */
 	bool isDefiniteOperation(const QString &op);
 
@@ -62,28 +62,28 @@ public:
 	 * Определяет, является ли элемент заданной переменной
 	 *\param[in] var  проверяемый элемент
 	 *\param[in] vars вектор заданных переменных
-	 *\retrun         логическое значение true - если является, false - если нет
+	 *\return         логическое значение true - если является, false - если нет
 	 */
 	bool isDefiniteVariable(const QString &var, const QVector<Index> &vars);
 
 	/*!
 	 * Определяет, является ли символ вещественным числом
 	 *\param[in] number проверяемый элемент
-	 *\retrun           логическое значение true - если является, false - если нет
+	 *\return           логическое значение true - если является, false - если нет
 	 */
 	bool isFloatNumber(const QString &number);
 
 	/*!
 	 * Определяет, является ли элемент целым числом
 	 *\param[in] number проверяемый элемент
-	 *\retrun           логическое значение true - если является, false - если нет
+	 *\return           логическое значение true - если является, false - если нет
 	 */
 	bool isIntNumber(const QString &number);
 
 	/*!
 	 * Определяет, является ли элемент положительным целым числом
 	 *\param[in] number проверяемый элемент
-	 *\retrun           логическое значение true - если является, false - если нет
+	 *\return           логическое значение true - если является, false - если нет
 	 */
 	bool isPositiveIntNumber(const QString &number);
 
@@ -96,10 +96,10 @@ public:
 
 	/*!
 	 * Определяет, является ли элемент операндом(числом, переменной или массивом)
-	 *\param[in] number проверяемый элемент
-	 *\param[in] vars   вектор заданных переменных
-	 *\param[in] arrs   вектор заданных массивов
-	 *\retrun           логическое значение true - если является, false - если нет
+	 *\param[in] operand проверяемый элемент
+	 *\param[in] vars    вектор заданных переменных
+	 *\param[in] arrs    вектор заданных массивов
+	 *\return            логическое значение true - если является, false - если нет
 	 */
 	bool isOperand(const QString &operand, const QVector<Index> &vars, const QVector<Array> &arrs);
 
@@ -107,7 +107,7 @@ public:
 	 * Определяет, является ли элемент заданным массивом
 	 *\param[in] arr  проверяемый элемент
 	 *\param[in] arrs вектор заданных массивов
-	 *\retrun         логическое значение true - если является, false - если нет
+	 *\return         логическое значение true - если является, false - если нет
 	 */
 	bool isDefiniteArray(const QString &arr, const QVector<Array> &arrs);
 
@@ -116,7 +116,7 @@ public:
 	 *\param[in] element проверяемый символ
 	 *\param[in] arrs    вектор заданных массивов
 	 *\param[in] vars    вектор заданных переменных
-	 *\retrun            логическое значение true - если является, false - если нет
+	 *\return            логическое значение true - если является, false - если нет
 	 */
 	bool isDefiniteElement(const QString &element, const QVector <Array> &arrs, const QVector<Index> &vars);
 
@@ -141,6 +141,7 @@ public:
 	 * Обрабатывает имена переменных
 	 *\param[in] operand имя переменной или число в виде строки
 	 *\param[in] vars    вектор переменных
+	 *\return			 вещественное значение 
 	 */
 	double stringOpToDoubleOp(QString operand, const QVector<Index> &vars);
 

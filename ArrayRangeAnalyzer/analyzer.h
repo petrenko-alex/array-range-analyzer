@@ -35,11 +35,11 @@ public:
 	 *\brief Проверяет наличие выходов за пределы массивов в выражении при текущих значениях переменных
 	 *\details Проходит по выражению слева на право, вычисляя его, и сравнивает индексы массивов с их размерами
 	 *
-	 *\param[in]  vars		  вектор объектов класса \ref index – информация о переменных
+	 *\param[in]  vars		  вектор объектов класса \ref Index – информация о переменных
 	 *\param[in]  arrs		  вектор объектов класса \ref Array - информация о массивах
 	 *\param[in]  expr		  выражение в виже списка строк
-	 *\param[out] exceedings   вектор объектов класса \ref exceeding - информация о выходах за пределы
-	 *\exception errorString  строка с информацией о возникшем исключении
+	 *\param[out] exceedings   вектор объектов класса \ref Exceeding - информация о выходах за пределы
+	 *\exception  errorString  строка с информацией о возникшем исключении
 	 */
 	void analyzeExpression(QVector<Index> &vars, QVector<Array> &arrs, const QStringList &expr, QVector<Exceeding> &exceedings) throw(QString&);
 
@@ -48,10 +48,10 @@ public:
 	 *\brief Проверяет наличие выходов за пределы массивов в выражении на всем диапазоне заданных переменных
 	 *\details При нескольких переменных цикла, циклы считаються вложенными 
 	 *
-	 *\param[in]  vars		  вектор объектов класса \ref index – информация о переменных
+	 *\param[in]  vars		  вектор объектов класса \ref Index – информация о переменных
 	 *\param[in]  arrs		  вектор объектов класса \ref Array - информация о массивах
 	 *\param[in]  expr		  выражение в виже списка строк
-	 *\param[out] exceedings   вектор объектов класса \ref exceeding - информация о выходах за пределы
+	 *\param[out] exceedings   вектор объектов класса \ref Exceeding - информация о выходах за пределы
 	 *\exception errorString  строка с информацией о возникшем исключении
 	 */
 	void checkExpression(QVector<Index> &vars, QVector<Array> &arrs, const QStringList &expr, QVector<Exceeding> &exceedings) throw(QString&);
@@ -149,7 +149,7 @@ private:
 	 *\param[in|out] operands		стек
 	 *\param[in]     vars			вектор переменных
 	 *\param[in]     arrs			вектор массивов
-	 *\exception     errorString		строка с информацией о возникшем исключении(деление на нуль)
+	 *\exception     errorString	строка с информацией о возникшем исключении(деление на нуль)
 	 */
 	void division(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs)  throw(QString&);
 
@@ -205,7 +205,7 @@ private:
 	/*!
 	 * Функция операции постфиксной инкрементации.
 	 * Выполняется, когда в выражении встречается знак операции постфиксной инкрементации "\+"
-	 *\param[in|out] operands стек
+	 *\param[in|out] operands		стек
 	 *\exception     errorString	строка с информацией о возникшем исключении(инкрементация не l-value,операция с неопределенным элементом)
 	 */
 	void incR(QStack<stackElement> &operands) throw(QString&);
@@ -305,9 +305,9 @@ private:
 	 * Функция  меняет передаваемое ей значение на отрицательное и/или приводит к int
 	 * в зависимости от значений флагов negative и intNeeded(флаги устанавливаются
 	 * при операциях приведения типа к int и унарного минуса)
-	 *\param[in]	 operands	стек
+	 *\param[in]	 element	стек
 	 *\param[in|out] value		изменяемое значение
-	 *\param[in]	 op			0 елси анализировать оба флага, 1 - только negetive, 2 - только intNeeded
+	 *\param[in]	 op			0 если анализировать оба флага, 1 - только negetive, 2 - только intNeeded
 	 */
 	void unaryMinusOrTypeConversion(stackElement &element, double &value, int op = 0);
 
@@ -315,22 +315,20 @@ private:
 	 *\brief Функция перехода на следующую итерацию цикла(проверки).
 	 *\details Увеличивает значения переменных в векторе на шаг, пока самая первая переменная не достигнет своей правой границы.
 	 *\details При нескольких переменных циклы являются вложенными.
-	 *
 	 *\param[in]	 varIt		итератор на вектор переменных
 	 *\param[in|out] vars		вектор переменных
-	 *\param[in|out] loop		массив повторяющихся значений, для отлавливания ситуации зацикливания переменных
-	 *\param[in|out] stopCheck	флаг окончания проверки
-	 */
+	 *\param[in|out] loop		массив повторяющихся значений для отлавливания ситуации зацикливания
+	 *\param[in|out] stopCheck  флаг окончания проверки
+	 */ 
 	void nextIteration(QVector<Index>::iterator &varIt, QVector<Index> &vars, int *loop, bool &stopCheck);
 
 	/*!
 	 *\brief   Функция проверки переменных на зацикливание.
 	 *\details Сравнивает текущие значения переменных и предыдущие.
 	 *\details Увеличивает счётчик зацикливания если равны. При достижении максимального значения счетчика, выбрасывается исключение
-	 *\
 	 *\param[in]	 var			итератор на вектор переменных
 	 *\param[in]	 vars			вектор переменных
-	 *\param[in|out] loop			массив повторяющихся значений
+	 *\param[in|out]  loop			массив повторяющихся значений
 	 *\exception     errorString	строка с информацией о возникшем исключении(зацикливание переменной)
 	 */
 	void checkEndlessLoop(QVector<Index>::iterator &var, QVector<Index> &vars, int *loop) throw(QString&);
