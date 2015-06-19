@@ -2,7 +2,9 @@
 
 Analyzer::Analyzer()
 {
-
+	iteration	= 1;
+	exprPos		= 0;
+	leftOpD		= rightOpD = resultD = 0;
 }
 
 Analyzer::~Analyzer()
