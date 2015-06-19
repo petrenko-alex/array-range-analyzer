@@ -383,6 +383,32 @@ void Analyzer::incR(QStack<stackElement> &operands) throw(QString&)
 	}
 }
 
+void Analyzer::decR(QStack<stackElement> &operands) throw(QString&)
+{
+	/*! Берем операнд из стека */
+	stackElement rightElement = operands.pop();
+	/*! Если операнд - переменная или элемент массива */
+	if (rightElement.type == variable || rightElement.type == arrayElement)
+	{
+		/*! Устанавливаем флаг декремента */
+		rightElement.decNeeded = true;
+		/*! Результат в стек */
+		operands.push(rightElement);
+	}
+	/*! Если операнд - неопределенный элемент */
+	else if (rightElement.type == undefined)
+	{
+		QString errorString = "Critical operation with undefined element is detected on the " + QString::number(exprPos + 1) + " position during the " + QString::number(iteration) + " iteration";
+		throw errorString;
+	}
+	/*! Если операнд - константа */
+	else if (rightElement.type == constant)
+	{
+		QString errorString = "L-value is required for \"--\" operation on the " + QString::number(exprPos + 1) + " position";
+		throw errorString;
+	}
+}
+
 void Analyzer::postIncDec(stackElement &element, QVector<Index> &vars, QVector<Array> &arrs)
 {
 
