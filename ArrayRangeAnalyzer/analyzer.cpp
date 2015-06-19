@@ -640,6 +640,30 @@ void Analyzer::assignment(QStack<stackElement> &operands, QVector<Index> &vars, 
 	}
 }
 
+void Analyzer::typeConversionToInt(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs)
+{
+	/*! Берем правый операнд */
+	stackElement rightElement = operands.pop();
+
+	/*! Если операнд - неопределенный элемент */
+	if (rightElement.type == undefined)
+	{
+
+		stackElement element(undefined);
+		operands.push(element);
+	}
+	/*! Если он не является неопределенным элементом */
+	else
+	{
+		/*! Устанавливаем флаг intNeeded */
+		rightElement.intNeeded = true;
+		/*! Результат в стек */
+		operands.push(rightElement);
+		/*! Проверяем необходимость инкрем/декрем */
+		postIncDec(rightElement, vars, arrs);
+	}
+}
+
 void Analyzer::postIncDec(stackElement &element, QVector<Index> &vars, QVector<Array> &arrs)
 {
 
