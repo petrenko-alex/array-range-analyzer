@@ -867,7 +867,43 @@ void Analyzer::unaryMinusOrTypeConversion(stackElement &element, double &value, 
 
 void Analyzer::nextIteration(QVector<Index>::iterator &varIt, QVector<Index> &vars, int *loop, bool &stopCheck)
 {
+	bool resume = true;
+	/*! Пока установлен флаг продолжения */
+	while (resume)
+	{
+		/*! Условия, при которых можно увеличивать текущую переменную на шаг - правая граница не достигнута */
+		bool positiveStepResume = (*varIt).step > 0 && (*varIt).curValue + (*varIt).step <= (*varIt).to;
+		bool negativeStepResume = (*varIt).step < 0 && (*varIt).curValue + (*varIt).step >= (*varIt).to;
 
+		/*! Если условия выполняются */
+		if (positiveStepResume || negativeStepResume)
+		{
+			/*! Увеличиваем значение текущей переменной */
+			(*varIt).curValue += (*varIt).step;
+			/*! Проверяем на зацикленность */
+			checkEndlessLoop(varIt, vars, loop);
+			varIt = vars.end() - 1;
+			/*! Переход на следующую итерацию выполнен */
+			resume = false;
+		}
+		/*! Если текущая переменная достигла своего максимального значения */
+		else
+		{
+			/*! Переходим к предыдущей переменной */
+			(*varIt).curValue = (*varIt).from;
+			--varIt;
+			/*! Продолжаем переход к следующей итерации */
+			resume = true;
+
+			/*! Если достигли конца */
+			if (varIt < vars.begin())
+			{
+				/*! Устанавливаем флаг окончания проверки выражения */
+				resume = false;
+				stopCheck = true;
+			}
+		}
+	}
 }
 
 void Analyzer::checkEndlessLoop(QVector<Index>::iterator &var, QVector<Index> &vars, int *loop) throw(QString&)
