@@ -483,6 +483,32 @@ void Analyzer::ceilF(QStack<stackElement> &operands, QVector<Index> &vars, QVect
 	}
 }
 
+void Analyzer::fabsF(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs)
+{
+	/*! Берем правый операнд */
+	stackElement rightElement = operands.pop();
+	/*! Если он не является неопределенным элементом */
+	if (rightElement.type != undefined)
+	{
+		/*! Получаем численное значение операнда */
+		rightOpS = rightElement.element;
+		rightOpD = ops.stringOpToDoubleOp(rightOpS, vars);
+		unaryMinusOrTypeConversion(rightElement, rightOpD);
+		/*! Производим расчет */
+		resultD = fabs(rightOpD);
+		/*! Результат в стек */
+		stackElement element(constant, QString::number(resultD, 'f'));
+		operands.push(element);
+		/*! Проверяем необходимость инкрем/декрем */
+		postIncDec(rightElement, vars, arrs);
+	}
+	else
+	{
+		stackElement element(undefined);
+		operands.push(element);
+	}
+}
+
 void Analyzer::postIncDec(stackElement &element, QVector<Index> &vars, QVector<Array> &arrs)
 {
 
