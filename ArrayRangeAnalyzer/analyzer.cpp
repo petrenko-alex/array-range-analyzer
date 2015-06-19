@@ -409,6 +409,26 @@ void Analyzer::decR(QStack<stackElement> &operands) throw(QString&)
 	}
 }
 
+void Analyzer::unaryMinus(QStack<stackElement> &operands)
+{
+	/*! Берем правый операнд */
+	stackElement rightElement = operands.pop();
+	/*! Если операнд - неопределенный элемент */
+	if (rightElement.type == undefined)
+	{
+		stackElement element(undefined);
+		operands.push(element);
+	}
+	/*! Если операнд - переменная, константа или элемент массива */
+	else
+	{
+		/*! Устанавливаем флагот отрицательного значения */
+		rightElement.negative = true;
+		/*! Результат в стек */
+		operands.push(rightElement);
+	}
+}
+
 void Analyzer::postIncDec(stackElement &element, QVector<Index> &vars, QVector<Array> &arrs)
 {
 
