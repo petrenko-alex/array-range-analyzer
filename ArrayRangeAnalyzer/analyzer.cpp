@@ -666,7 +666,45 @@ void Analyzer::typeConversionToInt(QStack<stackElement> &operands, QVector<Index
 
 void Analyzer::postIncDec(stackElement &element, QVector<Index> &vars, QVector<Array> &arrs)
 {
+	/*! Если установлен флаг постфиксного инкремента */
+	if (element.incNeeded)
+	{
+		/*! Если элемент - переменная */
+		if (element.type == variable)
+		{
+			/*! Инкрементируем ее значение и обнуляем флаг incNeeded */
+			int varIndex = ops.findVar(element.element, vars);
+			++vars[varIndex].curValue;
+			element.incNeeded = false;
+		}
+		/*! Если элемент - элемент массива */
+		else if (element.type == arrayElement)
+		{
+			/*! Инкрементируем его значение и обнуляем флаг incNeeded */
+			++arrs[element.arrayIndex].elements[element.elementIndex];
+			element.incNeeded = false;
+		}
+	}
 
+	/*! Если установлен флаг постфиксного декремента */
+	if (element.decNeeded)
+	{
+		/*! Если элемент - переменная */
+		if (element.type == variable)
+		{
+			/*! Декрементируем ее значение и обнуляем флаг decNeeded */
+			int varIndex = ops.findVar(element.element, vars);
+			--vars[varIndex].curValue;
+			element.decNeeded = false;
+		}
+		/*! Если элемент - элемент массива */
+		else if (element.type == arrayElement)
+		{
+			/*! Декрементируем его значение и обнуляем флаг decNeeded */
+			--arrs[element.arrayIndex].elements[element.elementIndex];
+			element.decNeeded = false;
+		}
+	}
 }
 
 void Analyzer::disableUsedInExpressionFlags(QVector<Index> &vars)
