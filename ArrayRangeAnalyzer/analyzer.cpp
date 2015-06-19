@@ -313,6 +313,50 @@ void Analyzer::incL(QStack<stackElement> &operands, QVector<Index> &vars, QVecto
 	}
 }
 
+void Analyzer::decL(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs) throw(QString&)
+{
+	/*! Берем правый операнд */
+	stackElement rightElement = operands.pop();
+	/*! Если операнд - переменная */
+	if (rightElement.type == variable)
+	{ 
+		/*! Декрементируем значение переменной */
+		rightOpS = rightElement.element;
+		int var = ops.findVar(rightOpS, vars);
+		rightOpD = vars[var].curValue;
+		--rightOpD;
+		unaryMinusOrTypeConversion(rightElement, rightOpD, 2);
+		vars[var].curValue = rightOpD;
+		/*! Результат в стек */
+		stackElement element(variable, QString::number(vars[var].curValue, 'f'));
+		operands.push(element);
+	}
+	/*! Если операнд - элемент массива */
+	else if (rightElement.type == arrayElement)
+	{ 
+		/*! Декрементируем элемент массива */
+		rightOpD = arrs[rightElement.arrayIndex].elements[rightElement.elementIndex];
+		--rightOpD;
+		unaryMinusOrTypeConversion(rightElement, rightOpD, 2);
+		arrs[rightElement.arrayIndex].elements[rightElement.elementIndex] = rightOpD;
+		/*! Результат в стек */
+		stackElement element(arrayElement, QString::number(resultD, 'f'), rightElement.arrayIndex, rightElement.elementIndex);
+		operands.push(element);
+	}
+	/*! Если операнд - неопределенный элемент */
+	else if (rightElement.type == undefined)
+	{
+		QString errorString = "Critical operation with undefined element is detected on the " + QString::number(exprPos + 1) + " position during the " + QString::number(iteration) + " iteration";
+		throw errorString;
+	}
+	/*! Если операнд - не левостороннее значение */
+	else if (rightElement.type == constant)
+	{
+		QString errorString = "L-value is required for \"--\" operation on the " + QString::number(exprPos + 1) + " position";
+		throw errorString;
+	}
+}
+
 void Analyzer::postIncDec(stackElement &element, QVector<Index> &vars, QVector<Array> &arrs)
 {
 
