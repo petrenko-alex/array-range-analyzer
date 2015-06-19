@@ -2,7 +2,8 @@
 
 Output::Output()
 {
-
+	this->errorFileName = "ArrayRangeAnalyzer-Errors.txt";
+	this->resultFileName = "ArrayRangeAnalyzer-Results.txt";
 }
 
 Output::~Output()
