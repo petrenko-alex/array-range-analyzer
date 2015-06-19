@@ -3,7 +3,7 @@
 
 Operations::Operations()
 {
-	/*! Заполняем контейнер QMap операциями и их арностью */
+	/* Заполняем контейнер QMap операциями и их арностью */
 	for (int i = 0; i < opsCount; ++i)
 	{
 		operations[QString(*ops[i])] = opsArity[i];

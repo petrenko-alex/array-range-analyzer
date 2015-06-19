@@ -18,7 +18,7 @@ void Output::writeError(QString &errorString)
 	QString intro("*******************************************Array Range Analyzer*******************************************");
 	isError = true;
 	QFile file(errorFileName);
-	/*! Записываем полученную строку в файл */
+	/* Записываем полученную строку в файл */
 	if (file.open(QIODevice::Append))
 	{
 		QTextStream out(&file);
@@ -42,28 +42,28 @@ void Output::makeOutputFile(QVector<Exceeding> &exceedings, const QVector<Array>
 
 	if (file.open(QIODevice::WriteOnly))
 	{
-		/*! Заносим в файл имена файлов входных данных */
+		/* Заносим в файл имена файлов входных данных */
 		QTextStream out(&file);
 		out << intro << endl << endl;
 		out << "File with variables:  " << inputFileNames[0] << endl;
 		out << "File with arrays:     " << inputFileNames[1] << endl;
 		out << "File with expression: " << inputFileNames[2] << endl << endl;
 
-		/*! Формирование и вывод информации в массив */
-		/*! По всем используемым в выражении массивам */
+		/* Формирование и вывод информации в массив */
+		/* По всем используемым в выражении массивам */
 		for (int i = 0; i < arrsNumber; ++i)
 		{
-			/*! Формирование имени массива и размеров */
+			/* Формирование имени массива и размеров */
 			arrName = "Array " + arrs[i].name;
 			int dimensionsNumber = arrs[i].size.size();
 			for (int j = 0; j < dimensionsNumber; ++j)
 			{
 				arrName += leftSqBracket + QString::number(arrs[i].size[j]) + rightSqBracket;
 			}
-			/*! Вывод имени массива в файл */
+			/* Вывод имени массива в файл */
 			out << arrName << endl;
 
-			/*! Проверка наличия выхода для массива */
+			/* Проверка наличия выхода для массива */
 			int k = 0;
 			for (auto &exc : exceedings)
 			{
@@ -76,10 +76,10 @@ void Output::makeOutputFile(QVector<Exceeding> &exceedings, const QVector<Array>
 				++k;
 			}
 
-			/*! Если для текущего массива выход произошел */
+			/* Если для текущего массива выход произошел */
 			if (exceedingForCurrentArray)
 			{
-				/*! Формирования информации о выходе */
+				/* Формирования информации о выходе */
 				int indexNumber = exceedings[exceedingNumber].indexName.size();
 				QString indexes("Variables ");
 				for (int j = 0; j < indexNumber; ++j)
@@ -91,16 +91,16 @@ void Output::makeOutputFile(QVector<Exceeding> &exceedings, const QVector<Array>
 				exceedings.remove(exceedingNumber);
 				exceedingNumber = 0;
 
-				/*! Вывод информации о выходе в файл */
+				/* Вывод информации о выходе в файл */
 				out << mainInfo << endl;
 				out << indexes << endl;
 				out << requestedElement << endl << endl;
 				exceedingForCurrentArray = false;
 			}
-			/*! Если выход не произошел для текущего массива */
+			/* Если выход не произошел для текущего массива */
 			else
 			{
-				/*! Выводим информацию об этом */
+				/* Выводим информацию об этом */
 				mainInfo = "No exceedings are detected";
 				out << mainInfo << endl << endl;
 			}
