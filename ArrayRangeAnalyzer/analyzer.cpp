@@ -709,7 +709,10 @@ void Analyzer::postIncDec(stackElement &element, QVector<Index> &vars, QVector<A
 
 void Analyzer::disableUsedInExpressionFlags(QVector<Index> &vars)
 {
-
+	for (auto &var : vars)
+	{
+		var.usedInExpression = false;
+	}
 }
 
 void Analyzer::unaryMinusOrTypeConversion(stackElement &element, double &value, int op /*= 0*/)
