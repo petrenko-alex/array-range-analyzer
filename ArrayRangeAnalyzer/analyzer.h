@@ -35,10 +35,10 @@ public:
 	 *\brief Проверяет наличие выходов за пределы массивов в выражении при текущих значениях переменных
 	 *\details Проходит по выражению слева на право, вычисляя его, и сравнивает индексы массивов с их размерами
 	 *
-	 *param[in]  vars		  вектор объектов класса \ref index – информация о переменных
-	 *param[in]  arrs		  вектор объектов класса \ref Array - информация о массивах
-	 *param[in]  expr		  выражение в виже списка строк
-	 *param[out] exceedings   вектор объектов класса \ref exceeding - информация о выходах за пределы
+	 *\param[in]  vars		  вектор объектов класса \ref index – информация о переменных
+	 *\param[in]  arrs		  вектор объектов класса \ref Array - информация о массивах
+	 *\param[in]  expr		  выражение в виже списка строк
+	 *\param[out] exceedings   вектор объектов класса \ref exceeding - информация о выходах за пределы
 	 *\exception errorString  строка с информацией о возникшем исключении
 	 */
 	void analyzeExpression(QVector<Index> &vars, QVector<Array> &arrs, const QStringList &expr, QVector<Exceeding> &exceedings) throw(QString&);
@@ -48,10 +48,10 @@ public:
 	 *\brief Проверяет наличие выходов за пределы массивов в выражении на всем диапазоне заданных переменных
 	 *\details При нескольких переменных цикла, циклы считаються вложенными 
 	 *
-	 *param[in]  vars		  вектор объектов класса \ref index – информация о переменных
-	 *param[in]  arrs		  вектор объектов класса \ref Array - информация о массивах
-	 *param[in]  expr		  выражение в виже списка строк
-	 *param[out] exceedings   вектор объектов класса \ref exceeding - информация о выходах за пределы
+	 *\param[in]  vars		  вектор объектов класса \ref index – информация о переменных
+	 *\param[in]  arrs		  вектор объектов класса \ref Array - информация о массивах
+	 *\param[in]  expr		  выражение в виже списка строк
+	 *\param[out] exceedings   вектор объектов класса \ref exceeding - информация о выходах за пределы
 	 *\exception errorString  строка с информацией о возникшем исключении
 	 */
 	void checkExpression(QVector<Index> &vars, QVector<Array> &arrs, const QStringList &expr, QVector<Exceeding> &exceedings) throw(QString&);
@@ -65,6 +65,7 @@ private:
 	
 	enum stackElementType { constant, variable, arrayElement, undefined };	///< Тип элемента стека
 
+	/*! Cтруктура элемента стека */
 	struct stackElement						///< Структура элемента стека
 	{
 		stackElementType type;				///< Тип элемента
@@ -120,8 +121,8 @@ private:
 
 	struct curentArray						///< Структура описывающая текущий массив при обходе выражения
 	{
-		unsigned int dimension;
-		QString name;
+		unsigned int dimension;				///< Номер измерения массива
+		QString name;						///< Имя массива
 	}curArr;
 
 	/*!

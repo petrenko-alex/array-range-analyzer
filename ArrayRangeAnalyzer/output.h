@@ -41,7 +41,9 @@ public:
 	/*!
 	 * Генерирует выходной файл программы и заполняет его информацией о результатах
 	 * работы программы - проверки выражения на выходы за пределы массива
-	 *\param[in] exceedings информация о выходах за пределы массива
+	 *\param[in] exceedings		информация о выходах за пределы массива
+	 *\param[in] arrs			вектор массивов
+	 *\param[in] inputFileNames имена входных файлов
 	 */
 	void makeOutputFile(QVector<Exceeding> &exceedings, const QVector<Array> &arrs, const QStringList &inputFileNames);
 

@@ -104,7 +104,6 @@ public:
 	 *\param[in]     expr выражение в виде списка строк
 	 */
 	void removeUnusedVarsAndArrs(QVector<Array> &arrs, QVector<Index> &vars, QStringList &expr);
-
 };
 
 #endif // INPUT_H
