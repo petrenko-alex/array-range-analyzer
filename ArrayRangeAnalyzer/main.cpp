@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 	QStringList expr;
 	bool correctInputData = false;
 
-	/*! Проверка аргументов командной строки */
+	/*! РџСЂРѕРІРµСЂРєР° Р°СЂРіСѓРјРµРЅС‚РѕРІ РєРѕРјР°РЅРґРЅРѕР№ СЃС‚СЂРѕРєРё */
 	if (argc == 1)
 	{
 		out.writeError(QString("Additional arguments of command line are not set.Please, set required arguments."));
@@ -48,10 +48,10 @@ int main(int argc, char *argv[])
 	}
 
 
-	/*! Считывание входных данных */
+	/*! РЎС‡РёС‚С‹РІР°РЅРёРµ РІС…РѕРґРЅС‹С… РґР°РЅРЅС‹С… */
 	correctInputData = input.readData(inputFileNames, vars, arrs, expr);
 
-	/*! Установка счетчика зацикливания по дополнительному аргументу командной строки */
+	/*! РЈСЃС‚Р°РЅРѕРІРєР° СЃС‡РµС‚С‡РёРєР° Р·Р°С†РёРєР»РёРІР°РЅРёСЏ РїРѕ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅРѕРјСѓ Р°СЂРіСѓРјРµРЅС‚Сѓ РєРѕРјР°РЅРґРЅРѕР№ СЃС‚СЂРѕРєРё */
 	if (correctInputData && argc > 4)
 	{
 		QString argument(argv[4]);
@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	/*! Проверка выражения на наличие выходов за пределы массива */
+	/*! РџСЂРѕРІРµСЂРєР° РІС‹СЂР°Р¶РµРЅРёСЏ РЅР° РЅР°Р»РёС‡РёРµ РІС‹С…РѕРґРѕРІ Р·Р° РїСЂРµРґРµР»С‹ РјР°СЃСЃРёРІР° */
 	if (correctInputData)
 	{
 		analyze.checkExpression(vars, arrs, expr, exceedings);
@@ -79,15 +79,15 @@ int main(int argc, char *argv[])
 	}
 
 
-	/*! Вывод результатов работы прогаммы */
+	/*! Р’С‹РІРѕРґ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ СЂР°Р±РѕС‚С‹ РїСЂРѕРіР°РјРјС‹ */
 	out.makeOutputFile(exceedings, arrs, inputFileNames);
 
-	/*! Если в процессе анализа выражения ошибок не произошло */
+	/*! Р•СЃР»Рё РІ РїСЂРѕС†РµСЃСЃРµ Р°РЅР°Р»РёР·Р° РІС‹СЂР°Р¶РµРЅРёСЏ РѕС€РёР±РѕРє РЅРµ РїСЂРѕРёР·РѕС€Р»Рѕ */
 	if (out.isErrorOccured())
 	{
 		printf("\nAnalyzing completed.\nSome errors were detected.\nPlease, check \"ArrayRangeAnalyzer-Errors.txt\" file for errors info\nAnd \"ArrayRangeAnalyzer-Results.txt\" file for results.\n");
 	}
-	/*! Если в процессе анализа выражения произошли ошибки */
+	/*! Р•СЃР»Рё РІ РїСЂРѕС†РµСЃСЃРµ Р°РЅР°Р»РёР·Р° РІС‹СЂР°Р¶РµРЅРёСЏ РїСЂРѕРёР·РѕС€Р»Рё РѕС€РёР±РєРё */
 	else
 	{
 		printf("\nAnalyzing completed.\nNo errors were detected.\nPlease, check \"ArrayRangeAnalyzer-Results.txt\" file for results.\n");

@@ -18,7 +18,7 @@ void Output::writeError(QString &errorString)
 	QString intro("*******************************************Array Range Analyzer*******************************************");
 	isError = true;
 	QFile file(errorFileName);
-	/* Записываем полученную строку в файл */
+	/* Р—Р°РїРёСЃС‹РІР°РµРј РїРѕР»СѓС‡РµРЅРЅСѓСЋ СЃС‚СЂРѕРєСѓ РІ С„Р°Р№Р» */
 	if (file.open(QIODevice::Append))
 	{
 		QTextStream out(&file);
@@ -42,28 +42,28 @@ void Output::makeOutputFile(QVector<Exceeding> &exceedings, const QVector<Array>
 
 	if (file.open(QIODevice::WriteOnly))
 	{
-		/* Заносим в файл имена файлов входных данных */
+		/* Р—Р°РЅРѕСЃРёРј РІ С„Р°Р№Р» РёРјРµРЅР° С„Р°Р№Р»РѕРІ РІС…РѕРґРЅС‹С… РґР°РЅРЅС‹С… */
 		QTextStream out(&file);
 		out << intro << endl << endl;
 		out << "File with variables:  " << inputFileNames[0] << endl;
 		out << "File with arrays:     " << inputFileNames[1] << endl;
 		out << "File with expression: " << inputFileNames[2] << endl << endl;
 
-		/* Формирование и вывод информации в массив */
-		/* По всем используемым в выражении массивам */
+		/* Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ Рё РІС‹РІРѕРґ РёРЅС„РѕСЂРјР°С†РёРё РІ РјР°СЃСЃРёРІ */
+		/* РџРѕ РІСЃРµРј РёСЃРїРѕР»СЊР·СѓРµРјС‹Рј РІ РІС‹СЂР°Р¶РµРЅРёРё РјР°СЃСЃРёРІР°Рј */
 		for (int i = 0; i < arrsNumber; ++i)
 		{
-			/* Формирование имени массива и размеров */
+			/* Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ РёРјРµРЅРё РјР°СЃСЃРёРІР° Рё СЂР°Р·РјРµСЂРѕРІ */
 			arrName = "Array " + arrs[i].name;
 			int dimensionsNumber = arrs[i].size.size();
 			for (int j = 0; j < dimensionsNumber; ++j)
 			{
 				arrName += leftSqBracket + QString::number(arrs[i].size[j]) + rightSqBracket;
 			}
-			/* Вывод имени массива в файл */
+			/* Р’С‹РІРѕРґ РёРјРµРЅРё РјР°СЃСЃРёРІР° РІ С„Р°Р№Р» */
 			out << arrName << endl;
 
-			/* Проверка наличия выхода для массива */
+			/* РџСЂРѕРІРµСЂРєР° РЅР°Р»РёС‡РёСЏ РІС‹С…РѕРґР° РґР»СЏ РјР°СЃСЃРёРІР° */
 			int k = 0;
 			for (auto &exc : exceedings)
 			{
@@ -76,10 +76,10 @@ void Output::makeOutputFile(QVector<Exceeding> &exceedings, const QVector<Array>
 				++k;
 			}
 
-			/* Если для текущего массива выход произошел */
+			/* Р•СЃР»Рё РґР»СЏ С‚РµРєСѓС‰РµРіРѕ РјР°СЃСЃРёРІР° РІС‹С…РѕРґ РїСЂРѕРёР·РѕС€РµР» */
 			if (exceedingForCurrentArray)
 			{
-				/* Формирования информации о выходе */
+				/* Р¤РѕСЂРјРёСЂРѕРІР°РЅРёСЏ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РІС‹С…РѕРґРµ */
 				int indexNumber = exceedings[exceedingNumber].indexName.size();
 				QString indexes("Variables ");
 				for (int j = 0; j < indexNumber; ++j)
@@ -91,16 +91,16 @@ void Output::makeOutputFile(QVector<Exceeding> &exceedings, const QVector<Array>
 				exceedings.remove(exceedingNumber);
 				exceedingNumber = 0;
 
-				/* Вывод информации о выходе в файл */
+				/* Р’С‹РІРѕРґ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РІС‹С…РѕРґРµ РІ С„Р°Р№Р» */
 				out << mainInfo << endl;
 				out << indexes << endl;
 				out << requestedElement << endl << endl;
 				exceedingForCurrentArray = false;
 			}
-			/* Если выход не произошел для текущего массива */
+			/* Р•СЃР»Рё РІС‹С…РѕРґ РЅРµ РїСЂРѕРёР·РѕС€РµР» РґР»СЏ С‚РµРєСѓС‰РµРіРѕ РјР°СЃСЃРёРІР° */
 			else
 			{
-				/* Выводим информацию об этом */
+				/* Р’С‹РІРѕРґРёРј РёРЅС„РѕСЂРјР°С†РёСЋ РѕР± СЌС‚РѕРј */
 				mainInfo = "No exceedings are detected";
 				out << mainInfo << endl << endl;
 			}
