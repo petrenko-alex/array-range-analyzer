@@ -864,3 +864,13 @@ void Analyzer::unaryMinusOrTypeConversion(stackElement &element, double &value, 
 		element.intNeeded = false;
 	}
 }
+
+void Analyzer::nextIteration(QVector<Index>::iterator &varIt, QVector<Index> &vars, int *loop, bool &stopCheck)
+{
+
+}
+
+void Analyzer::checkEndlessLoop(QVector<Index>::iterator &var, QVector<Index> &vars, int *loop) throw(QString&)
+{
+
+}

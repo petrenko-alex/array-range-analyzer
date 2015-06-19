@@ -124,7 +124,7 @@ private:
 	}curArr;
 
 	/*!
-	 * Функция сложения двух операндов
+	 * Функция сложения двух операндов.
 	 * Выполняется, когда в выражении встречается знак операции сложения "+"
 	 *\param[in|out] operands стек
 	 *\param[in]     vars     вектор переменных
@@ -133,7 +133,7 @@ private:
 	void addition(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs);
 
 	/*!
-	 * Функция вычитания двух операндов
+	 * Функция вычитания двух операндов.
 	 * Выполняется, когда в выражении встречается знак операции вычитания "-"
 	 *\param[in|out] operands стек
 	 *\param[in]     vars     вектор переменных
@@ -142,7 +142,7 @@ private:
 	void substraction(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs);
 
 	/*!
-	 * Функция деления двух операндов
+	 * Функция деления двух операндов.
 	 * Выполняется, когда в выражении встречается знак операции деления "/"
 	 *\param[in|out] operands		стек
 	 *\param[in]     vars			вектор переменных
@@ -152,7 +152,7 @@ private:
 	void division(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs)  throw(QString&);
 
 	/*!
-	 * Функция умножения двух операндов
+	 * Функция умножения двух операндов.
 	 * Выполняется, когда в выражении встречается знак операции умножения "*"
 	 *\param[in|out] operands		стек
 	 *\param[in]     vars			вектор переменных
@@ -161,7 +161,7 @@ private:
 	void multiplication(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs);
 
 	/*!
-	 * Функция операции остаток от деления
+	 * Функция операции остаток от деления.
 	 * Выполняется, когда в выражении встречается знак операции остаток от деления "%"
 	 *\param[in|out] operands		стек
 	 *\param[in]     vars			вектор переменных
@@ -171,7 +171,7 @@ private:
 	void modulo(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs)  throw(QString&);
 
 	/*!
-	 * Функция операции обращения к элементу массива
+	 * Функция операции обращения к элементу массива.
 	 * Выполняется, когда в выражении встречается знак операции обращения к элементу массива "[]"
 	 *\param[in|out] operands		стек
 	 *\param[in]     vars			вектор переменных
@@ -181,7 +181,7 @@ private:
 	void subscript(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs, QVector<Exceeding> &exceedings);
 
 	/*!
-	 * Функция операции префиксной инкрементации
+	 * Функция операции префиксной инкрементации.
 	 * Выполняется, когда в выражении встречается знак операции префиксной инкрементации "+\"
 	 *\param[in|out] operands		стек
 	 *\param[in|out] vars			вектор переменных
@@ -191,7 +191,7 @@ private:
 	void incL(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs) throw(QString&);
 
 	/*!
-	 * Функция операции префиксной декрементации
+	 * Функция операции префиксной декрементации.
 	 * Выполняется, когда в выражении встречается знак операции префиксной декрементации "-\"
 	 *\param[in|out] operands		стек
 	 *\param[in|out] vars			вектор переменных
@@ -201,7 +201,7 @@ private:
 	void decL(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs) throw(QString&);
 
 	/*!
-	 * Функция операции постфиксной инкрементации
+	 * Функция операции постфиксной инкрементации.
 	 * Выполняется, когда в выражении встречается знак операции постфиксной инкрементации "\+"
 	 *\param[in|out] operands стек
 	 *\exception     errorString	строка с информацией о возникшем исключении(инкрементация не l-value,операция с неопределенным элементом)
@@ -209,7 +209,7 @@ private:
 	void incR(QStack<stackElement> &operands) throw(QString&);
 
 	/*!
-	 * Функция операции постфиксной декрементации
+	 * Функция операции постфиксной декрементации.
 	 * Выполняется, когда в выражении встречается знак операции постфиксной декрементации "\-"
 	 *\param[in|out] operands		стек
 	 *\exception     errorString	строка с информацией о возникшем исключении(декрементация не l-value,операция с неопределенным элементом)
@@ -217,7 +217,7 @@ private:
 	void decR(QStack<stackElement> &operands) throw(QString&);
 
 	/*!
-	 * Функция операции унарный минус
+	 * Функция операции унарный минус.
 	 * Выполняется, когда в выражении встречается знак операции унарный минус "/-"
 	 *\param[in|out] operands		стек
 	 */
@@ -264,7 +264,7 @@ private:
 	void powF(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs);
 
 	/*!
-	 * Функция операции присваивания
+	 * Функция операции присваивания.
 	 * Выполняется, когда в выражении встречается знак операции присваивания "="
 	 *\param[in|out] operands		стек
 	 *\param[in|out] vars			вектор переменных
@@ -275,7 +275,7 @@ private:
 	void assignment(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs, QString &type) throw(QString&);
 
 	/*!
-	 * Функция операции приведения типа к int
+	 * Функция операции приведения типа к int.
 	 * Выполняется, когда в выражении встречается знак операции приведения типа к int "(int)"
 	 *\param[in|out] operands	стек
 	 *\param[in] vars			вектор переменных
@@ -308,6 +308,30 @@ private:
 	 *\param[in]	 op			0 елси анализировать оба флага, 1 - только negetive, 2 - только intNeeded
 	 */
 	void unaryMinusOrTypeConversion(stackElement &element, double &value, int op = 0);
+
+	/*!
+	 *\brief Функция перехода на следующую итерацию цикла(проверки).
+	 *\details Увеличивает значения переменных в векторе на шаг, пока самая первая переменная не достигнет своей правой границы.
+	 *\details При нескольких переменных циклы являются вложенными.
+	 *
+	 *\param[in]	 varIt		итератор на вектор переменных
+	 *\param[in|out] vars		вектор переменных
+	 *\param[in|out] loop		массив повторяющихся значений, для отлавливания ситуации зацикливания переменных
+	 *\param[in|out] stopCheck	флаг окончания проверки
+	 */
+	void nextIteration(QVector<Index>::iterator &varIt, QVector<Index> &vars, int *loop, bool &stopCheck);
+
+	/*!
+	 *\brief   Функция проверки переменных на зацикливание.
+	 *\details Сравнивает текущие значения переменных и предыдущие.
+	 *\details Увеличивает счётчик зацикливания если равны. При достижении максимального значения счетчика, выбрасывается исключение
+	 *\
+	 *\param[in]	 var			итератор на вектор переменных
+	 *\param[in]	 vars			вектор переменных
+	 *\param[in|out] loop			массив повторяющихся значений
+	 *\exception     errorString	строка с информацией о возникшем исключении(зацикливание переменной)
+	 */
+	void checkEndlessLoop(QVector<Index>::iterator &var, QVector<Index> &vars, int *loop) throw(QString&);
 };
 
 #endif // ANALYZER_H
