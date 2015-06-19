@@ -60,7 +60,7 @@ void Test_analyzer::analyzeExpression_data()
 		clearData();
 		inp.readData(fileNames, vars, arrs, expr);
 		vars[0].curValue = 0;
-	QTest::newRow("6.Division By Zero") << vars << arrs << expr << exceedings << "Division by zero is detected on the 4 position during the 1 interation";
+	QTest::newRow("6.Division By Zero") << vars << arrs << expr << exceedings << "Division by zero is detected on the 4 position during the 1 iteration";
 
 /*! Операция с элементом за пределами массива - проверка исключения */
 		fileNames[2] = "../../Tests/analyzeExpression/7.txt";
