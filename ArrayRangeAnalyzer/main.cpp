@@ -1,4 +1,10 @@
-
+﻿/*!
+ *\file
+ *\brief Файл основной функции программы.
+ *\author Александр Петренко gafk555@gmail.com.
+ *
+ * Данный файл содержит в себе функцию main - осовную функцию, вполняющую программу.
+ */
 #include <QtCore/QCoreApplication>
 #include "input.h"
 #include "analyzer.h"
@@ -22,7 +28,7 @@ int main(int argc, char *argv[])
 	QStringList expr;
 	bool correctInputData = false;
 
-	/*! Проверка аргументов командной строки */
+	/* Проверка аргументов командной строки */
 	if (argc == 1)
 	{
 		out.writeError(QString("Additional arguments of command line are not set.Please, set required arguments."));
@@ -48,10 +54,10 @@ int main(int argc, char *argv[])
 	}
 
 
-	/*! Считывание входных данных */
+	/* Считывание входных данных */
 	correctInputData = input.readData(inputFileNames, vars, arrs, expr);
 
-	/*! Установка счетчика зацикливания по дополнительному аргументу командной строки */
+	/* Установка счетчика зацикливания по дополнительному аргументу командной строки */
 	if (correctInputData && argc > 4)
 	{
 		QString argument(argv[4]);
@@ -67,7 +73,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	/*! Проверка выражения на наличие выходов за пределы массива */
+	/* Проверка выражения на наличие выходов за пределы массива */
 	if (correctInputData)
 	{
 		analyze.checkExpression(vars, arrs, expr, exceedings);
@@ -79,15 +85,15 @@ int main(int argc, char *argv[])
 	}
 
 
-	/*! Вывод результатов работы прогаммы */
+	/* Вывод результатов работы прогаммы */
 	out.makeOutputFile(exceedings, arrs, inputFileNames);
 
-	/*! Если в процессе анализа выражения ошибок не произошло */
+	/* Если в процессе анализа выражения ошибок не произошло */
 	if (out.isErrorOccured())
 	{
 		printf("\nAnalyzing completed.\nSome errors were detected.\nPlease, check \"ArrayRangeAnalyzer-Errors.txt\" file for errors info\nAnd \"ArrayRangeAnalyzer-Results.txt\" file for results.\n");
 	}
-	/*! Если в процессе анализа выражения произошли ошибки */
+	/* Если в процессе анализа выражения произошли ошибки */
 	else
 	{
 		printf("\nAnalyzing completed.\nNo errors were detected.\nPlease, check \"ArrayRangeAnalyzer-Results.txt\" file for results.\n");
