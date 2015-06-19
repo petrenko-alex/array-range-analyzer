@@ -568,6 +568,78 @@ void Analyzer::powF(QStack<stackElement> &operands, QVector<Index> &vars, QVecto
 	}
 }
 
+void Analyzer::assignment(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs, QString &type) throw(QString&)
+{
+	/*! Берем операнды из стека */
+	stackElement rightElement = operands.pop();
+	stackElement leftElement = operands.pop();
+
+	/*! Если они не являются неопределенными элементами */
+	if (rightElement.type != undefined && leftElement.type != undefined)
+	{
+		/*! Получаем численное значение правого операнда */
+		rightOpS = rightElement.element;
+		rightOpD = ops.stringOpToDoubleOp(rightOpS, vars);
+		unaryMinusOrTypeConversion(rightElement, rightOpD);
+		/*! Если операнд - переменная - присвоение переменной */
+		if (leftElement.type == variable)
+		{ 
+			/*! Получаем численное значение левого операнда */
+			leftOpS = leftElement.element;
+			int var = ops.findVar(leftOpS, vars);
+
+			/*! Выполняем присваивание переменной в зависимости от значения type */
+			if (type == "=")
+				vars[var].curValue = rightOpD;
+			else if (type == "+=")
+				vars[var].curValue += rightOpD;
+			else if (type == "-=")
+				vars[var].curValue -= rightOpD;
+			else if (type == "*=")
+				vars[var].curValue *= rightOpD;
+			else if (type == "/=")
+				vars[var].curValue /= rightOpD;
+
+			/*! Результат в стек */
+			stackElement element(variable, vars[var].name);
+			operands.push(element);
+		}
+		else if (leftElement.type == arrayElement)
+		{
+			/*! Выполняем присваивание элементу массива в зависимости от значения type */
+			if (type == "=")
+				arrs[leftElement.arrayIndex].elements[leftElement.elementIndex] = rightOpD;
+			else if (type == "+=")
+				arrs[leftElement.arrayIndex].elements[leftElement.elementIndex] += rightOpD;
+			else if (type == "-=")
+				arrs[leftElement.arrayIndex].elements[leftElement.elementIndex] -= rightOpD;
+			else if (type == "*=")
+				arrs[leftElement.arrayIndex].elements[leftElement.elementIndex] *= rightOpD;
+			else if (type == "/=")
+				arrs[leftElement.arrayIndex].elements[leftElement.elementIndex] /= rightOpD;
+
+			/*! Результат в стек */
+			stackElement element(arrayElement, QString::number(rightOpD, 'f'), leftElement.arrayIndex, leftElement.elementIndex);
+			operands.push(element);
+		}
+		/*! Если операнд - константа */
+		else if (leftElement.type == constant)
+		{
+			QString errorString = "L-value is required for \"" + type + "\" operation on the " + QString::number(exprPos + 1) + " position";
+			throw errorString;
+		}
+		/*! Проверяем необходимость инкрем/декрем */
+		postIncDec(rightElement, vars, arrs);
+		postIncDec(leftElement, vars, arrs);
+	}
+	/*! Если операнд - неопределенный элемент */
+	else
+	{
+		QString errorString = "Critical operation with undefined element is detected on the " + QString::number(exprPos + 1) + " position during the " + QString::number(iteration) + " iteration";
+		throw errorString;
+	}
+}
+
 void Analyzer::postIncDec(stackElement &element, QVector<Index> &vars, QVector<Array> &arrs)
 {
 
