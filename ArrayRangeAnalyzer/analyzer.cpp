@@ -1,4 +1,5 @@
 #include "analyzer.h"
+#define TEST
 
 Analyzer::Analyzer()
 {
