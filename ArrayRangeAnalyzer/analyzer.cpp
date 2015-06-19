@@ -12,7 +12,136 @@ Analyzer::~Analyzer()
 
 void Analyzer::analyzeExpression(QVector<Index> &vars, QVector<Array> &arrs, const QStringList &expr, QVector<Exceeding> &exceedings) throw(QString&)
 {
+	int exprSize = expr.size();
+	QStack<stackElement> operands;
 
+	/*! Проход по выражению слева на право */
+	for (exprPos = 0; exprPos < exprSize; ++exprPos)
+	{
+		/*! Если встретилась константа */
+		if (ops.isNumber(expr[exprPos]))						 
+		{
+			/*! Помещаем в стек как константу */
+			stackElement element(constant, expr[exprPos]);
+			operands.push(element);
+		}
+		/*! Если встеретилась переменная */
+		else if (ops.isDefiniteVariable(expr[exprPos], vars))	 
+		{
+			/*! Помещаем в стек как переменную и устанавливаем флаг usedInExpression */
+			stackElement element(variable, expr[exprPos]);
+			operands.push(element);
+			int var = ops.findVar(expr[exprPos], vars);
+			vars[var].usedInExpression = true;
+		}
+		/*! Если встретился массив */
+		else if (ops.isDefiniteArray(expr[exprPos], arrs))		
+		{
+			/*! Устанавливаем как текущий в структуре curArr */
+			curArr.name = expr[exprPos];
+			curArr.dimension = 0;
+		}
+		/*! Если встретилась операция*/
+		else if (ops.isDefiniteOperation(expr[exprPos]))		
+		{
+			/*! Выбираем функцию по операции */
+			if (expr[exprPos] == "+")
+			{
+				addition(operands, vars, arrs);
+			}
+			else if (expr[exprPos] == "-")
+			{
+				substraction(operands, vars, arrs);
+			}
+			else if (expr[exprPos] == "/")
+			{
+				division(operands, vars, arrs);
+			}
+			else if (expr[exprPos] == "*")
+			{
+				multiplication(operands, vars, arrs);
+			}
+			else if (expr[exprPos] == "%")
+			{
+				modulo(operands, vars, arrs);
+			}
+			else if (expr[exprPos] == "[]")
+			{
+				subscript(operands, vars, arrs, exceedings);
+			}
+			else if (expr[exprPos] == "+\\")
+			{
+				incL(operands, vars, arrs);
+			}
+			else if (expr[exprPos] == "-\\")
+			{
+				decL(operands, vars, arrs);
+			}
+			else if (expr[exprPos] == "\\+")
+			{
+				incR(operands);
+			}
+			else if (expr[exprPos] == "\\-")
+			{
+				decR(operands);
+			}
+			else if (expr[exprPos] == "/-")
+			{
+				unaryMinus(operands);
+			}
+			else if (expr[exprPos] == "abs()")
+			{
+				absF(operands, vars, arrs);
+			}
+			else if (expr[exprPos] == "ceil()")
+			{
+				ceilF(operands, vars, arrs);
+			}
+			else if (expr[exprPos] == "fabs()")
+			{
+				fabsF(operands, vars, arrs);
+			}
+			else if (expr[exprPos] == "floor()")
+			{
+				floorF(operands, vars, arrs);
+			}
+			else if (expr[exprPos] == "pow()")
+			{
+				powF(operands, vars, arrs);
+			}
+			else if (expr[exprPos] == "=")
+			{
+				assignment(operands, vars, arrs, QString("="));
+			}
+			else if (expr[exprPos] == "+=")
+			{
+				assignment(operands, vars, arrs, QString("+="));
+			}
+			else if (expr[exprPos] == "-=")
+			{
+				assignment(operands, vars, arrs, QString("-="));
+			}
+			else if (expr[exprPos] == "*=")
+			{
+				assignment(operands, vars, arrs, QString("*="));
+			}
+			else if (expr[exprPos] == "/=")
+			{
+				assignment(operands, vars, arrs, QString("/="));
+			}
+			else if (expr[exprPos] == "(int)")
+			{
+				typeConversionToInt(operands, vars, arrs);
+			}
+			/*! Встретился неопределенный символ */
+			else
+			{
+				QString errorString = "Undefined operation is detected on the " + QString::number(exprPos + 1) + " position";
+				throw errorString;
+			}
+		}
+	}
+	++iteration;
 }
 
 void Analyzer::checkExpression(QVector<Index> &vars, QVector<Array> &arrs, const QStringList &expr, QVector<Exceeding> &exceedings) throw(QString&)
