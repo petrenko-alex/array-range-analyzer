@@ -15,6 +15,7 @@
 #include "array.h"
 #include "exceeding.h"
 #include "operations.h"
+#include "output.h"
 
 /*!
  *\brief Класс проверки выражения на наличие выходов за пределы массива.

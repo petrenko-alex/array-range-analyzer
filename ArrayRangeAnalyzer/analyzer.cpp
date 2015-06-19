@@ -148,7 +148,49 @@ void Analyzer::analyzeExpression(QVector<Index> &vars, QVector<Array> &arrs, con
 
 void Analyzer::checkExpression(QVector<Index> &vars, QVector<Array> &arrs, const QStringList &expr, QVector<Exceeding> &exceedings) throw(QString&)
 {
+	Output out;
+	bool resume = true;
+	bool stop = false;
+	auto curVar = vars.end() - 1;
+	int loop[3] = {};
 
+	/*! Пока не установлен флаг окончания проверки */
+	while (!stop)
+	{
+		/*! Сохраняем текущие значения переменных как предыдущие */
+		for (auto &var : vars)
+		{
+			var.prevValue = var.curValue;
+		}
+
+		/*! Проверяем выражение при текущих значениях переменных */
+		try
+		{
+			analyzeExpression(vars, arrs, expr, exceedings);
+		}
+		catch (QString &errorString)
+		{
+			stop = true;
+			out.writeError(errorString);
+		}
+
+
+		/*! Переходим к следующей итерации цикла */
+		try
+		{
+			nextIteration(curVar, vars, loop, stop);
+		}
+		catch (QString &errorString)
+		{
+			stop = true;
+			/*! При тестировании бросаем исключение вверх тестирующей функции */
+			#ifdef TEST
+				throw errorString;
+			#endif
+			/*! При обычном выполнении записываем в файл ошибок */
+			out.writeError(errorString);
+		}
+	}
 }
 
 void Analyzer::addition(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs)
