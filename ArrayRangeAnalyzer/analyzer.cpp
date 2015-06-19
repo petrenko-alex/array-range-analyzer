@@ -157,3 +157,42 @@ void Analyzer::multiplication(QStack<stackElement> &operands, QVector<Index> &va
 		operands.push(element);
 	}
 }
+
+void Analyzer::modulo(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs) throw(QString&)
+{
+	/*! Берем операнды из стека */
+	stackElement rightElement = operands.pop();
+	stackElement leftElement = operands.pop();
+
+	/*! Если они не являются неопределенными элементами */
+	if (rightElement.type != undefined && leftElement.type != undefined)
+	{
+		/*! Получаем численное значение правого операнда */
+		rightOpS = rightElement.element;
+		rightOpD = ops.stringOpToDoubleOp(rightOpS, vars);
+		unaryMinusOrTypeConversion(rightElement, rightOpD);
+		/*! Проверка ситуации деления на нуль */
+		if (rightOpD == 0)
+		{
+			QString errorString = "Division by zero is detected on the " + QString::number(exprPos + 1) + " position during the " + QString::number(iteration) + " iteration";
+			throw errorString;
+		}
+		/*! Получаем численное значение левого операнда */
+		leftOpS = leftElement.element;
+		leftOpD = ops.stringOpToDoubleOp(leftOpS, vars);
+		unaryMinusOrTypeConversion(leftElement, leftOpD);
+		/*! Производим расчет */
+		resultD = (int)leftOpD % (int)rightOpD;
+		/*! Результат в стек */
+		stackElement element(constant, QString::number(resultD, 'f'));
+		operands.push(element);
+		/*! Проверяем необходимость инкрем/декрем */
+		postIncDec(rightElement, vars, arrs);
+		postIncDec(leftElement, vars, arrs);
+	}
+	else
+	{
+		stackElement element(undefined);
+		operands.push(element);
+	}
+}
