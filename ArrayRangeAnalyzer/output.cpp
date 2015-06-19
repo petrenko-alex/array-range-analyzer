@@ -112,5 +112,5 @@ void Output::makeOutputFile(QVector<Exceeding> &exceedings, const QVector<Array>
 
 bool Output::isErrorOccured()
 {
-	return false;
+	return isError;
 }
