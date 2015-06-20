@@ -8,6 +8,10 @@ Operations::Operations()
 	{
 		operations[QString(*ops[i])] = opsArity[i];
 	}
+
+	plus  = "+";
+	minus = "-";
+	dot	  = ".";
 }
 
 Operations::~Operations()
@@ -45,20 +49,76 @@ bool Operations::isDefiniteVariable(const QString &var, const QVector<Index> &va
 
 bool Operations::isFloatNumber(const QString &number)
 {
-	QRegExp match("^[-+]?[0-9]*\.?[0-9]+$");
-	return match.exactMatch(number);
+	int strSize = number.size();
+	int dotFlag = false;
+	int i = 0;
+
+	if (strSize == 0)
+		return false;
+
+	if (number[0] == plus || number[0] == minus)
+		i = 1;
+
+	for (; i < strSize; ++i)
+	{
+		if (number[i] == dot)
+		{
+			if (!dotFlag)
+				dotFlag = true;
+			else
+				return false;
+		}
+		
+		if (!number[i].isDigit() && number[i] != dot)
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 bool Operations::isIntNumber(const QString &number)
 {
-	QRegExp match("^[+-]?[0-9]+$");
-	return match.exactMatch(number);
+	int strSize = number.size();
+	int i = 0;
+
+	if (strSize == 0)
+		return false;
+
+	if (number[0] == plus || number[0] == minus)
+		i = 1;
+
+	for (; i < strSize; ++i)
+	{
+		if (!number[i].isDigit())
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 bool Operations::isPositiveIntNumber(const QString &number)
 {
-	QRegExp match("^[+]?[0-9]+$");
-	return match.exactMatch(number);
+	//QRegExp rx("^[+]?[0-9]+$");
+	//return rx.exactMatch(number);
+	int strSize = number.size();
+	int i = 0;
+
+	if (strSize == 0)
+		return false;
+
+	if (number[0] == plus)
+		i = 1;
+
+	for (; i < strSize; ++i)
+	{
+		if (!number[i].isDigit())
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 bool Operations::isNumber(const QString &number)

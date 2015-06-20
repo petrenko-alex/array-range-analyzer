@@ -147,6 +147,9 @@ public:
 
 private:
 	QMap<QString, int> operations;			///< Поддерживаемые в программе операции и их арность
+	QString plus;
+	QString minus;
+	QString dot;
 };
 
 #endif // OPERATIONS_H
