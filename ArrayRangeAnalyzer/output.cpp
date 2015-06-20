@@ -63,7 +63,7 @@ void Output::makeOutputFile(QVector<Exceeding> &exceedings, const QVector<Array>
 			/* Вывод имени массива в файл */
 			out << arrName << endl;
 
-			/*! По всем измерениям массива */
+			/* По всем измерениям массива */
 			int dimsNumber = arrs[i].size.size();
 			for (int l = 0; l < dimsNumber; ++l)
 			{
