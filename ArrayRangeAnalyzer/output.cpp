@@ -63,46 +63,51 @@ void Output::makeOutputFile(QVector<Exceeding> &exceedings, const QVector<Array>
 			/* Вывод имени массива в файл */
 			out << arrName << endl;
 
-			/* Проверка наличия выхода для массива */
-			int k = 0;
-			for (auto &exc : exceedings)
+			/*! По всем измерениям массива */
+			int dimsNumber = arrs[i].size.size();
+			for (int l = 0; l < dimsNumber; ++l)
 			{
-				if (arrs[i].name == exc.arrayName)
+				/* Проверка наличия выхода для массива */
+				int k = 0;
+				for (auto &exc : exceedings)
 				{
-					exceedingForCurrentArray = true;
-					exceedingNumber = k;
-					mainInfo = "Exceeding is detected in " + QString::number(exc.dimension) + QString(" dimension");
+					if (arrs[i].name == exc.arrayName)
+					{
+						exceedingForCurrentArray = true;
+						exceedingNumber = k;
+						mainInfo = "Exceeding is detected in " + QString::number(exc.dimension) + QString(" dimension");
+					}
+					++k;
 				}
-				++k;
-			}
 
-			/* Если для текущего массива выход произошел */
-			if (exceedingForCurrentArray)
-			{
-				/* Формирования информации о выходе */
-				int indexNumber = exceedings[exceedingNumber].indexName.size();
-				QString indexes("Variables ");
-				for (int j = 0; j < indexNumber; ++j)
+				/* Если для текущего массива выход произошел */
+				if (exceedingForCurrentArray)
 				{
-					indexes += exceedings[exceedingNumber].indexName[j] + " = " + QString::number(exceedings[exceedingNumber].indexValue[j]) + "; ";
-				}
-				QString requestedElement("RequestedElement - ");
-				requestedElement += QString::number(exceedings[exceedingNumber].requestedElement);
-				exceedings.remove(exceedingNumber);
-				exceedingNumber = 0;
+					/* Формирования информации о выходе */
+					int indexNumber = exceedings[exceedingNumber].indexName.size();
+					QString indexes("Variables ");
+					for (int j = 0; j < indexNumber; ++j)
+					{
+						indexes += exceedings[exceedingNumber].indexName[j] + " = " + QString::number(exceedings[exceedingNumber].indexValue[j]) + "; ";
+					}
+					QString requestedElement("RequestedElement - ");
+					requestedElement += QString::number(exceedings[exceedingNumber].requestedElement);
+					exceedings.remove(exceedingNumber);
+					exceedingNumber = 0;
 
-				/* Вывод информации о выходе в файл */
-				out << mainInfo << endl;
-				out << indexes << endl;
-				out << requestedElement << endl << endl;
-				exceedingForCurrentArray = false;
-			}
-			/* Если выход не произошел для текущего массива */
-			else
-			{
-				/* Выводим информацию об этом */
-				mainInfo = "No exceedings are detected";
-				out << mainInfo << endl << endl;
+					/* Вывод информации о выходе в файл */
+					out << mainInfo << endl;
+					out << indexes << endl;
+					out << requestedElement << endl << endl;
+					exceedingForCurrentArray = false;
+				}
+				/* Если выход не произошел для текущего массива */
+				else if (!exceedingForCurrentArray && l == 0)
+				{
+					/* Выводим информацию об этом */
+					mainInfo = "No exceedings are detected";
+					out << mainInfo << endl << endl;
+				}
 			}
 		}
 		out << intro << endl;
