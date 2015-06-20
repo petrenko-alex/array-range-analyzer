@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<arrayInfo>
+<array name="arr" dim1size="10" dim2size="15" dim3size="54" elements="1 9" />
+<array name="mass" dim1size="1000" elements="1 9" />
+</arrayInfo>
