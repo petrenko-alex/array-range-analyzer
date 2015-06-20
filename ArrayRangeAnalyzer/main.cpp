@@ -99,6 +99,5 @@ int main(int argc, char *argv[])
 		printf("\nAnalyzing completed.\nNo errors were detected.\nPlease, check \"ArrayRangeAnalyzer-Results.txt\" file for results.\n");
 	}
 
-	getchar();
 	return 0;
 }

@@ -1,0 +1,15 @@
+*******************************************Array Range Analyzer*******************************************
+
+File with variables:  Vars.xml
+File with arrays:     Arrs.xml
+File with expression: Expr.txt
+
+Array arr[493]
+No exceedings are detected
+
+Array mass[1000]
+Exceeding is detected in 1 dimension
+Variables j = 100; 
+RequestedElement - 1000
+
+*******************************************Array Range Analyzer*******************************************
