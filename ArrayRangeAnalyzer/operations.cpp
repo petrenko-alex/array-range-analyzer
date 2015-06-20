@@ -57,7 +57,12 @@ bool Operations::isFloatNumber(const QString &number)
 		return false;
 
 	if (number[0] == plus || number[0] == minus)
+	{
+		if (strSize < 2)
+			return false;
+
 		i = 1;
+	}
 
 	for (; i < strSize; ++i)
 	{
@@ -82,11 +87,18 @@ bool Operations::isIntNumber(const QString &number)
 	int strSize = number.size();
 	int i = 0;
 
+
 	if (strSize == 0)
 		return false;
 
 	if (number[0] == plus || number[0] == minus)
+	{
+		if (strSize < 2)
+			return false;
+
 		i = 1;
+	}
+
 
 	for (; i < strSize; ++i)
 	{
@@ -100,8 +112,6 @@ bool Operations::isIntNumber(const QString &number)
 
 bool Operations::isPositiveIntNumber(const QString &number)
 {
-	//QRegExp rx("^[+]?[0-9]+$");
-	//return rx.exactMatch(number);
 	int strSize = number.size();
 	int i = 0;
 
@@ -109,7 +119,12 @@ bool Operations::isPositiveIntNumber(const QString &number)
 		return false;
 
 	if (number[0] == plus)
+	{
+		if (strSize < 2)
+			return false;
+
 		i = 1;
+	}
 
 	for (; i < strSize; ++i)
 	{

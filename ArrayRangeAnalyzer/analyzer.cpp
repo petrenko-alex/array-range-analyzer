@@ -23,7 +23,7 @@ void Analyzer::analyzeExpression(QVector<Index> &vars, QVector<Array> &arrs, con
 	for (exprPos = 0; exprPos < exprSize; ++exprPos)
 	{
 		/* Если встретилась константа */
-		if (ops.isNumber(expr[exprPos]))						 
+		if (ops.isFloatNumber(expr[exprPos]))						 
 		{
 			/* Помещаем в стек как константу */
 			stackElement element(constant, expr[exprPos]);
