@@ -53,19 +53,24 @@ bool Operations::isFloatNumber(const QString &number)
 	int dotFlag = false;
 	int i = 0;
 
+	/* Если строка пуста */
 	if (strSize == 0)
 		return false;
 
+	/* На первом месте может быть + или + */
 	if (number[0] == plus || number[0] == minus)
 	{
+		/* Не может быть только знак + или - (без цифр) */
 		if (strSize < 2)
 			return false;
 
 		i = 1;
 	}
 
+	/* Проверка оставшейся части строки на содержание только цифр и 1 точки */
 	for (; i < strSize; ++i)
 	{
+		/* Если i-ый символ строки - точка */
 		if (number[i] == dot)
 		{
 			if (!dotFlag)
@@ -73,7 +78,7 @@ bool Operations::isFloatNumber(const QString &number)
 			else
 				return false;
 		}
-		
+		/* Если i-ый символ строки - не точка и не цифра */
 		if (!number[i].isDigit() && number[i] != dot)
 		{
 			return false;
@@ -87,21 +92,24 @@ bool Operations::isIntNumber(const QString &number)
 	int strSize = number.size();
 	int i = 0;
 
-
+	/* Если строка пуста */
 	if (strSize == 0)
 		return false;
 
+	/* На первом месте может быть + или + */
 	if (number[0] == plus || number[0] == minus)
 	{
+		/* Не может быть только знак + или - (без цифр) */
 		if (strSize < 2)
 			return false;
 
 		i = 1;
 	}
 
-
+	/* Проверка оставшейся части строки на содержание только цифр  */
 	for (; i < strSize; ++i)
 	{
+		/* Если i-ый символ строки - не цифра */
 		if (!number[i].isDigit())
 		{
 			return false;
@@ -115,19 +123,23 @@ bool Operations::isPositiveIntNumber(const QString &number)
 	int strSize = number.size();
 	int i = 0;
 
+	/* Если строка пуста */
 	if (strSize == 0)
 		return false;
 
+	/* На первом месте может быть + */
 	if (number[0] == plus)
 	{
+		/* Не может быть только знак + или - (без цифр) */
 		if (strSize < 2)
 			return false;
 
 		i = 1;
 	}
-
+	/* Проверка оставшейся части строки на содержание только цифр  */
 	for (; i < strSize; ++i)
 	{
+		/* Если i-ый символ строки - не цифра */
 		if (!number[i].isDigit())
 		{
 			return false;
