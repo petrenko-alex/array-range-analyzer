@@ -151,6 +151,7 @@ void Input::readVarAttributes(Index &var, QXmlStreamAttributes &atrs, int i) thr
 	if (atrs.hasAttribute("name"))
 	{
 		tmpString = atrs.value("name").toString();
+		/* Если значение атрибута не задано */
 		if (tmpString == QString(""))
 		{
 			QString errorString = "The value of attribute \"name\" in the " + QString::number(i) + " \"variable\" tag is not set";
@@ -159,8 +160,9 @@ void Input::readVarAttributes(Index &var, QXmlStreamAttributes &atrs, int i) thr
 		else
 			var.name = tmpString;
 	}
+	/* Если атрибут отсутствует в теге */
 	else
-	{
+	{ 
 		QString errorString = "Missed attribute \"name\" in the " + QString::number(i) + " \"variable\" tag";
 		throw errorString;
 	}
@@ -174,6 +176,7 @@ void Input::readVarAttributes(Index &var, QXmlStreamAttributes &atrs, int i) thr
 			QString errorString = "The value of attribute \"from\" in the " + QString::number(i) + " \"variable\" tag is not set";
 			throw errorString;
 		}
+		/* Если значение атрибута - не целое число */
 		else if (!ops.isIntNumber(tmpString))
 		{
 			QString errorString = "The value of attribute \"from\" in the " + QString::number(i) + " \"variable\" tag is not an integer value";
@@ -228,6 +231,7 @@ void Input::readVarAttributes(Index &var, QXmlStreamAttributes &atrs, int i) thr
 			QString errorString = "The value of attribute \"step\" in the " + QString::number(i) + " \"variable\" tag is not an integer value";
 			throw errorString;
 		}
+		/* Если значение атрибута - нуль */
 		else if (tmpString.toInt() == 0)
 		{
 			QString errorString = "The value of attribute \"step\" in the " + QString::number(i) + " \"variable\" tag can't be 0";
