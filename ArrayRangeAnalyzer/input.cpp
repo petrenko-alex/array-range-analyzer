@@ -476,30 +476,9 @@ void Input::readExpression(const QString fileName, QStringList &expr, const QVec
 		}
 
 
-		/* Проверка соответствия количества операндов и операций */
+		/* Проверка флагов выражения */
 		int difference = operandsCount - operationsCount;
-		if (difference > 1)
-		{
-			QString errorString = "Wrong expression. Not enough operations for all the operands. Please, check the expression";
-			throw errorString;
-		}
-		if (arrCounter < 0)
-		{
-			QString errorString = "Wrong expression. Too much square brackets for arrs. Please, check the expression";
-			throw errorString;
-		}
-
-		/* Проверка наличия заданных переменнных и массивов в выражении */
-		if (!arrayUsed)
-		{
-			QString errorString = "Wrong expression. Definite arrays are not used in the expression. Please, check the expression";
-			throw errorString;
-		}
-		else if (!varUsed)
-		{
-			QString errorString = "Wrong expression. Definite variables are not used in the expression. Please, check the expression";
-			throw errorString;
-		}
+		checkExprFlags(varUsed, arrayUsed, arrCounter, difference);
 	}
 	else
 	{
@@ -571,5 +550,33 @@ void Input::removeUnusedVarsAndArrs(QVector<Array> &arrs, QVector<Index> &vars, 
 		}
 		else
 			arr.usedInExpression = false;
+	}
+}
+
+void Input::checkExprFlags(bool varsUsed, bool arrsUsed, int arrCounter, int difference) throw(QString&)
+{
+	/* Проверка соответствия количества операндов и операций */
+	if (difference > 1)
+	{
+		QString errorString = "Wrong expression. Not enough operations for all the operands. Please, check the expression";
+		throw errorString;
+	}
+	/* Проверка соответствия имен массивов и квадратных скобок */
+	if (arrCounter < 0)
+	{
+		QString errorString = "Wrong expression. Too much square brackets for arrs. Please, check the expression";
+		throw errorString;
+	}
+
+	/* Проверка наличия заданных переменнных и массивов в выражении */
+	if (!arrsUsed)
+	{
+		QString errorString = "Wrong expression. Definite arrays are not used in the expression. Please, check the expression";
+		throw errorString;
+	}
+	else if (!varsUsed)
+	{
+		QString errorString = "Wrong expression. Definite variables are not used in the expression. Please, check the expression";
+		throw errorString;
 	}
 }

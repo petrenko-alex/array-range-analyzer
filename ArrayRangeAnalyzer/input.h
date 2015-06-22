@@ -104,6 +104,17 @@ public:
 	 *\param[in]     expr выражение в виде списка строк
 	 */
 	void removeUnusedVarsAndArrs(QVector<Array> &arrs, QVector<Index> &vars, QStringList &expr);
+
+	/*
+	 * Проверяет передаваемые ей флаги - признаки корректности выражения 
+	 * Выдает исключение, если значение флагов не корректно
+	 *\param[in] varsUsed    флаг - встретились ли в выражении имена переменных
+	 *\param[in] arrsUsed    флаг - встретились ли в выражении имена массивов
+	 *\param[in] arrCounter  счетчик - корректно ли соотношение массивов и кв скобок
+	 *\param[in] difference  счетчик - соотношение количества операндов и операций
+	 *\exception errorString строка с информацией о возникшем исключении
+	 */
+	void checkExprFlags(bool varsUsed,bool arrsUsed,int arrCounter,int difference) throw(QString&);
 };
 
 #endif // INPUT_H
