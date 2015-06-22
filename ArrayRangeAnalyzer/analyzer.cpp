@@ -7,6 +7,24 @@ Analyzer::Analyzer()
 	iteration	= 1;
 	exprPos		= 0;
 	leftOpD		= rightOpD = resultD = 0;
+
+	/* Инициализируем массив указателей на функции */
+	operations.insert("+", &Analyzer::addition);
+	operations.insert("-", &Analyzer::substraction);
+	operations.insert("/", &Analyzer::division);
+	operations.insert("*", &Analyzer::multiplication);
+	operations.insert("%", &Analyzer::modulo);
+	operations.insert("+\\", &Analyzer::incL);
+	operations.insert("-\\", &Analyzer::decL);
+	operations.insert("\\+", &Analyzer::incR);
+	operations.insert("\\-", &Analyzer::decR);
+	operations.insert("/-", &Analyzer::unaryMinus);
+	operations.insert("abs()", &Analyzer::absF);
+	operations.insert("ceil()", &Analyzer::ceilF);
+	operations.insert("fabs()", &Analyzer::fabsF);
+	operations.insert("floor()", &Analyzer::floorF);
+	operations.insert("pow()", &Analyzer::powF);
+	operations.insert("(int)", &Analyzer::typeConversionToInt);
 }
 
 Analyzer::~Analyzer()
@@ -46,102 +64,25 @@ void Analyzer::analyzeExpression(QVector<Index> &vars, QVector<Array> &arrs, con
 			curArr.dimension = 0;
 		}
 		/* Если встретилась операция*/
-		else if (ops.isDefiniteOperation(expr[exprPos]))		
+		else if (ops.isDefiniteOperation(expr[exprPos]))
 		{
-			/* Выбираем функцию по операции */
-			if (expr[exprPos] == "+")
-			{
-				addition(operands, vars, arrs);
-			}
-			else if (expr[exprPos] == "-")
-			{
-				substraction(operands, vars, arrs);
-			}
-			else if (expr[exprPos] == "/")
-			{
-				division(operands, vars, arrs);
-			}
-			else if (expr[exprPos] == "*")
-			{
-				multiplication(operands, vars, arrs);
-			}
-			else if (expr[exprPos] == "%")
-			{
-				modulo(operands, vars, arrs);
-			}
-			else if (expr[exprPos] == "[]")
+			/* Если встречается операция обращения по исндексу */
+			if (expr[exprPos] == "[]")
 			{
 				subscript(operands, vars, arrs, exceedings);
 			}
-			else if (expr[exprPos] == "+\\")
+			/* Если встречается одна из операций присваивания */
+			else if (expr[exprPos] == "=" || expr[exprPos] == "+=" || expr[exprPos] == "-=" || expr[exprPos] == "*=" || expr[exprPos] == "/=")
 			{
-				incL(operands, vars, arrs);
+				assignment(operands, vars, arrs, expr[exprPos]);
 			}
-			else if (expr[exprPos] == "-\\")
-			{
-				decL(operands, vars, arrs);
-			}
-			else if (expr[exprPos] == "\\+")
-			{
-				incR(operands);
-			}
-			else if (expr[exprPos] == "\\-")
-			{
-				decR(operands);
-			}
-			else if (expr[exprPos] == "/-")
-			{
-				unaryMinus(operands);
-			}
-			else if (expr[exprPos] == "abs()")
-			{
-				absF(operands, vars, arrs);
-			}
-			else if (expr[exprPos] == "ceil()")
-			{
-				ceilF(operands, vars, arrs);
-			}
-			else if (expr[exprPos] == "fabs()")
-			{
-				fabsF(operands, vars, arrs);
-			}
-			else if (expr[exprPos] == "floor()")
-			{
-				floorF(operands, vars, arrs);
-			}
-			else if (expr[exprPos] == "pow()")
-			{
-				powF(operands, vars, arrs);
-			}
-			else if (expr[exprPos] == "=")
-			{
-				assignment(operands, vars, arrs, QString("="));
-			}
-			else if (expr[exprPos] == "+=")
-			{
-				assignment(operands, vars, arrs, QString("+="));
-			}
-			else if (expr[exprPos] == "-=")
-			{
-				assignment(operands, vars, arrs, QString("-="));
-			}
-			else if (expr[exprPos] == "*=")
-			{
-				assignment(operands, vars, arrs, QString("*="));
-			}
-			else if (expr[exprPos] == "/=")
-			{
-				assignment(operands, vars, arrs, QString("/="));
-			}
-			else if (expr[exprPos] == "(int)")
-			{
-				typeConversionToInt(operands, vars, arrs);
-			}
-			/* Встретился неопределенный символ */
+			/* Если встречаются остальные операции */
 			else
 			{
-				QString errorString = "Undefined operation is detected on the " + QString::number(exprPos + 1) + " position";
-				throw errorString;
+				/* Определяем операцию по ее строковому представлению в выражении */
+				operation myOp = operations.value(expr[exprPos]);
+				/* Вызываем функцию соответствующей операции */
+				(this->*myOp)(operands, vars, arrs);
 			}
 		}
 	}
@@ -532,7 +473,7 @@ void Analyzer::decL(QStack<stackElement> &operands, QVector<Index> &vars, QVecto
 	}
 }
 
-void Analyzer::incR(QStack<stackElement> &operands) throw(QString&)
+void Analyzer::incR(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs) throw(QString&)
 {
 	/* Берем операнд из стека */
 	stackElement rightElement = operands.pop();
@@ -558,7 +499,7 @@ void Analyzer::incR(QStack<stackElement> &operands) throw(QString&)
 	}
 }
 
-void Analyzer::decR(QStack<stackElement> &operands) throw(QString&)
+void Analyzer::decR(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs) throw(QString&)
 {
 	/* Берем операнд из стека */
 	stackElement rightElement = operands.pop();
@@ -584,7 +525,7 @@ void Analyzer::decR(QStack<stackElement> &operands) throw(QString&)
 	}
 }
 
-void Analyzer::unaryMinus(QStack<stackElement> &operands)
+void Analyzer::unaryMinus(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs)
 {
 	/* Берем правый операнд */
 	stackElement rightElement = operands.pop();
@@ -743,7 +684,7 @@ void Analyzer::powF(QStack<stackElement> &operands, QVector<Index> &vars, QVecto
 	}
 }
 
-void Analyzer::assignment(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs, QString &type) throw(QString&)
+void Analyzer::assignment(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs, QString type) throw(QString&)
 {
 	/* Берем операнды из стека */
 	stackElement rightElement = operands.pop();
@@ -884,8 +825,10 @@ void Analyzer::postIncDec(stackElement &element, QVector<Index> &vars, QVector<A
 
 void Analyzer::disableUsedInExpressionFlags(QVector<Index> &vars)
 {
+	/* Проходим по вектору vars */
 	for (auto &var : vars)
 	{
+		/* Сбрасываем значение флага usedInExpression */
 		var.usedInExpression = false;
 	}
 }
@@ -968,3 +911,4 @@ void Analyzer::checkEndlessLoop(QVector<Index>::iterator &var, QVector<Index> &v
 		throw errorString;
 	}
 }
+

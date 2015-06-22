@@ -63,6 +63,7 @@ private:
 	double  leftOpD, rightOpD, resultD;		///< Операнды для вычислений в виде числа
 	int exprPos;							///< Позиция в выражении при обходе
 	
+	
 	enum stackElementType					///< Тип элемента стека
 	{ constant,								///< Элемент в стеке - константа
 	  variable,								///< Элемент в стеке - переменная
@@ -130,6 +131,7 @@ private:
 		QString name;						///< Имя массива
 	}curArr;								
 
+	
 	/*!
 	 * Функция сложения двух операндов.
 	 * Выполняется, когда в выражении встречается знак операции сложения "+"
@@ -173,7 +175,7 @@ private:
 	 *\param[in,out] operands		стек
 	 *\param[in]     vars			вектор переменных
 	 *\param[in]     arrs			вектор массивов
-	 *\exception     errorString		строка с информацией о возникшем исключении(деление на нуль)
+	 *\exception     errorString	строка с информацией о возникшем исключении(деление на нуль)
 	 */
 	void modulo(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs)  throw(QString&);
 
@@ -211,24 +213,30 @@ private:
 	 * Функция операции постфиксной инкрементации.
 	 * Выполняется, когда в выражении встречается знак операции постфиксной инкрементации "\+"
 	 *\param[in,out] operands		стек
+	 *\param[in]     vars			вектор переменных
+	 *\param[in]     arrs			вектор массивов
 	 *\exception     errorString	строка с информацией о возникшем исключении(инкрементация не l-value,операция с неопределенным элементом)
 	 */
-	void incR(QStack<stackElement> &operands) throw(QString&);
+	void incR(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs) throw(QString&);
 
 	/*!
 	 * Функция операции постфиксной декрементации.
 	 * Выполняется, когда в выражении встречается знак операции постфиксной декрементации "\-"
 	 *\param[in,out] operands		стек
+	 *\param[in]	 vars			вектор переменных
+	 *\param[in]	 arrs			вектор массивов
 	 *\exception     errorString	строка с информацией о возникшем исключении(декрементация не l-value,операция с неопределенным элементом)
 	 */
-	void decR(QStack<stackElement> &operands) throw(QString&);
+	void decR(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs) throw(QString&);
 
 	/*!
 	 * Функция операции унарный минус.
 	 * Выполняется, когда в выражении встречается знак операции унарный минус "/-"
+	 *\param[in]	 vars			вектор переменных
+	 *\param[in]	 arrs			вектор массивов
 	 *\param[in,out] operands		стек
 	 */
-	void unaryMinus(QStack<stackElement> &operands);
+	void unaryMinus(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs);
 
 	/*!
 	 * Функция, выполняющаяся, когда в выражении встречается "abs()"
@@ -279,14 +287,14 @@ private:
 	 *\param[in]     type			тип присваивания: "=","+=","-=","*=","/=",
 	 *\exception     errorString	строка с информацией о возникшем исключении(присваивание не l-value,операция с неопределенным элементом)
 	 */
-	void assignment(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs, QString &type) throw(QString&);
+	void assignment(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs, const QString type) throw(QString&);
 
 	/*!
 	 * Функция операции приведения типа к int.
 	 * Выполняется, когда в выражении встречается знак операции приведения типа к int "(int)"
 	 *\param[in,out] operands	стек
-	 *\param[in] vars			вектор переменных
-	 *\param[in] arrs			вектор массивов
+	 *\param[in]     vars		вектор переменных
+	 *\param[in]     arrs		вектор массивов
 	 */
 	void typeConversionToInt(QStack<stackElement> &operands, QVector<Index> &vars, QVector<Array> &arrs);
 
@@ -333,10 +341,13 @@ private:
 	 *\details Увеличивает счётчик зацикливания если равны. При достижении максимального значения счетчика, выбрасывается исключение
 	 *\param[in]	 var			итератор на вектор переменных
 	 *\param[in]	 vars			вектор переменных
-	 *\param[in,out]  loop			массив повторяющихся значений
+	 *\param[in,out] loop			массив повторяющихся значений
 	 *\exception     errorString	строка с информацией о возникшем исключении(зацикливание переменной)
 	 */
 	void checkEndlessLoop(QVector<Index>::iterator &var, QVector<Index> &vars, int *loop) throw(QString&);
+
+	typedef void(Analyzer::*operation)(QStack<stackElement>&, QVector<Index>&, QVector<Array>&); ///< Указатель на функцию
+	QMap<QString, operation> operations;														 ///< Контейнер указателей на функции
 };
 
 #endif // ANALYZER_H
