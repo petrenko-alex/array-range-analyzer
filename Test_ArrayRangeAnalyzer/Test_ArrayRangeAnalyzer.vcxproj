@@ -147,6 +147,7 @@
       <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Testd.lib;Qt5Xmld.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <Profile>false</Profile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profiling|x64'">

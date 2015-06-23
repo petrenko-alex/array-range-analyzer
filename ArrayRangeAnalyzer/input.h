@@ -105,7 +105,7 @@ public:
 	 */
 	void removeUnusedVarsAndArrs(QVector<Array> &arrs, QVector<Index> &vars, QStringList &expr);
 
-	/*
+	/*!
 	 * Проверяет передаваемые ей флаги - признаки корректности выражения 
 	 * Выдает исключение, если значение флагов не корректно
 	 *\param[in] varsUsed    флаг - встретились ли в выражении имена переменных
