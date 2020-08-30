@@ -43,6 +43,10 @@ ArrayRangeAnalyzer.exe <expression.txt> <arrs.xml> <vars.xml> <loop-counter-valu
 - loop-counter-value - счетчик зацикливания  
     
 [Примеры использования](FunctionalTests/)
+[Документация](Docs/)
     
     
   Проект написан на языке C++ в учебных целях. Скомпилирован в Visual Studio 2013. Platform Toolset v120. Дополнительно используется Qt 5.1.1
+  
+  ![Пример 1 - запуск](Img/example-1-run.png)
+  ![Пример 1 - результаты](Img/example-1-result.png)
