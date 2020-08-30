@@ -38,9 +38,10 @@
 
 ArrayRangeAnalyzer.exe <expression.txt> <arrs.xml> <vars.xml> <loop-counter-value>
 - expression.txt - файл с выражением
-- arrs.xml - файл с информацией о масивах
+- arrs.xml - файл с информацией о массивах
 - vars.xml - файл с информацией о переменных
 - loop-counter-value - счетчик зацикливания  
+    
 [Примеры использования](FunctionalTests/)
     
     
