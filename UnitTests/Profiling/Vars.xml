@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="windows-1251"?>
-<arrayRanges>
-<variable name="i" from="0" to="1000" step="1" />
-<variable name="j" from="0" to="700" step="1" />
-</arrayRanges>
