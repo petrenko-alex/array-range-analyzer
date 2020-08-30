@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<arrayRanges>
+<variable name="i" from="0" to="2" step="3" />
+<variable name="j" from="5" to="12" step="10" />
+<variable name="k" from="-5" to="0" step="10" />
+</arrayRanges>

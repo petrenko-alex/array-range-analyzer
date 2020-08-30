@@ -1,0 +1,1 @@
+arr i 3 + [] mass j 2.25 * [] massiv k 1 + [] + +
